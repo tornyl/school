@@ -1,0 +1,7 @@
+V jazyku C vytvořte program, text zašifruje pomocí Ceasarovy šifry. Jako vstupní text bude program šifrovat pouze velká písmena anglické abecedy (malá písmena převede na velká a ostatní znaky bude program ignorovat). Podle zadaného klíče se v zašifrovaném textu posune o příslušný počet písmen vpravo. Při dešifrování naopak se posune písmeno vlevo.
+
+Příklad posunu při klíči 2: A->C, B->D, Y->A, Z->B.
+
+Příklad výstupu: viz obrázek priklad_5.png
+
+open image via: eog <image>

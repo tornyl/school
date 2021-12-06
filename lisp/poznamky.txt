@@ -1,0 +1,3 @@
+consp - predikat, ktery zjisti zda parameter je par
+null - test na prazdny seznam
+list 1 2 3 4 
