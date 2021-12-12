@@ -60,6 +60,7 @@ int reflexive_p(int r[]);
 int symetric_p(int r[]);
 int antisymetric_p(int r[]);
 int transitive_p(int r[]);
+void transitive_closure(int r[]);
 
  int main(){
  	time_t t;
@@ -71,7 +72,11 @@ int transitive_p(int r[]);
 	printf("symtricka: %d\n", symetric_p(R));
 	printf("antisymtricka: %d\n", antisymetric_p(R));
 	printf("tranzitivni: %d\n", transitive_p(R));
-
+	if(!transitive_p(R)){
+		transitive_closure(R);
+		vypis_bin_relaci(R);
+		printf("tranzitivni podruhe: %d\n", transitive_p(R));
+	}
  	return 0;
  }
 
@@ -144,4 +149,21 @@ int transitive_p(int r[]){
 		}
 	}
 	return 1;
+}
+
+void transitive_closure(int r[]){
+	if(!transitive_p(r)){
+		for(int i = 0; i < M; i++){
+			for(int j = 0; j < M; j++){
+				for(int k = 0; k < M; k++){
+					if(r[i * M + j] && r[j * M + k]){
+						if(!r[i*M + k]){
+							r[i * M + k] = 1;
+							transitive_closure(r);
+						}
+					}
+				}
+			}
+		}
+	}
 }
