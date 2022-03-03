@@ -1,5 +1,5 @@
 (defmacro and-2 (cond1 cond2)
-	(list 'if cond1 (list 'if cond2 't 'nil) 'nil))
+	(list 'if cond1 cond2 'nil))
 
 (defmacro and-2-b (cond1 cond2)
 	`(if ,cond1 (if ,cond2 t nil) nil))
@@ -8,7 +8,7 @@
 	(list 'if cond1 't (list 'if cond2 't 'nil)))
 
 (defmacro or-2-b (cond1 cond2)
-	`(if ,cond1 t (if ,cond2 t nil) nil))
+	`(if ,cond1 t ,cond2))
 
 (defmacro if-zero (con a b)
 	(list 'if (list '= con '0) a b))
@@ -21,6 +21,16 @@
 (defmacro my-unless-2 (condition &rest expressions)
 	`(my-when ,(not condition) ,@expressions))
 
+(defmacro whenb ( sym condition &rest expressions)
+	`(let ((,sym ,condition))
+		(when condition ,@expressions)))
 ;;(defmacro whenb (var condition &rest expressions)
 ;;	`(let* ((x ,var))
 ;;			(if ,x (progn ,@expressions) nil)))
+(defun my-mapcar (list)
+	(if (null list)
+			'()
+		(cons (eval (car list)) (my-mapcar (cdr list)))))
+(defmacro reverse-progn (&rest expressions)
+	`(progn ,@(reverse expressions)))
+;;(defmacro my-let (ties body)
