@@ -33,4 +33,18 @@
 		(cons (eval (car list)) (my-mapcar (cdr list)))))
 (defmacro reverse-progn (&rest expressions)
 	`(progn ,@(reverse expressions)))
-;;(defmacro my-let (ties body)
+
+
+(defmacro my-let(bindings &body body)
+	(labels ((getSymbols (bindings)
+					(if (null bindings)
+							'()
+						(cons (caar bindings) (getSymbols (cdr bindings)))))
+				(getValues (bindings)
+					(if (null bindings)
+							'()
+						(cons (cadar bindings) (getValues (cdr bindings))))))
+		`(funcall (lambda ,(getSymbols bindings) ,@body) ,@(getValues bindings))))
+
+(defmacro my-let2 (bindings &body body)
+	`(funcall (lambda (mapcar #'car ,bindings) ,@body) ,@(mapcar #'cadr bindings))) 

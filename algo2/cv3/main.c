@@ -119,6 +119,58 @@ int remove_node(list* seznam, Node* uzel){
 	return -1;
 }
 
+//zasobnik
+typedef struct node_{
+	int data;
+	struct node_ *next;
+	struct node_ *previous;
+}stack_node;
+typedef struct{
+	stack_node *uzel;
+	}stack;
+
+void push(stack *seznam, stack_node *uzel){
+	if(!seznam->uzel){
+		seznam->uzel = uzel;
+		return;
+	}
+	seznam->uzel->next = uzel;
+	uzel->previous = seznam->uzel;
+	seznam->uzel = uzel;	
+}
+
+stack_node* pop(stack *seznam){
+	stack_node *pop_node = seznam->uzel;
+	seznam->uzel = seznam->uzel->previous;
+	seznam->uzel->next = NULL;
+	return pop_node;
+}
+typedef struct {
+	int head;
+	int tail;
+	int length;
+	Node *data[];
+}queue;
+
+int empty(queue *fronta){
+	return fronta->head == fronta->tail;
+}
+
+int full(queue *fronta){
+	return (fronta->tail + 1) % fronta->length == fronta->head;
+}
+
+void enqueue(queue *fronta, Node *data){
+	fronta->data[fronta->tail] = data;
+	fronta->tail = (fronta->tail + 1) % fronta->length;
+}
+
+Node *dequeue(queue *fronta){
+	Node *data = fronta->data[fronta->head];
+	fronta->head = (fronta->head + 1) % fronta->length;
+	return data;
+}
+
 int main(){
 	
 	Node nodes[] = {{5,NULL}, {3,NULL}, {8,NULL}, {1, NULL},{7, NULL}, {12,NULL}};
@@ -147,7 +199,31 @@ int main(){
 
 	remove_node(&seznam, &nodes[5]);
 	print_list(seznam);
-
+	stack_node uzly[] = {{3, NULL, NULL}, {4, NULL, NULL}, {12, NULL, NULL}, {5, NULL, NULL}, {3, NULL, NULL}};	
+	stack stack_seznam;
+	stack_seznam.uzel = NULL;
+	push(&stack_seznam, &uzly[1]);
+	push(&stack_seznam, &uzly[0]);
+	push(&stack_seznam, &uzly[3]);
+	push(&stack_seznam, &uzly[2]);
+	stack_node *pop_node = pop(&stack_seznam);
+	printf("uzel s hodnotou: %d\n", pop_node->data);	
+	pop_node = pop(&stack_seznam);
+	printf("uzel s hodnotou: %d\n", pop_node->data);
+	
+	int queue_length = 20;
+	queue *fronta = malloc(sizeof(queue) + queue_length * sizeof(Node*));
+	fronta->tail = 0;
+	fronta-> head = 0;
+	fronta->length = queue_length;
+	enqueue(fronta, &nodes[1]);
+	enqueue(fronta, &nodes[0]);
+	enqueue(fronta, &nodes[4]);
+	enqueue(fronta, &nodes[3]);
+	Node *dequeued_node = dequeue(fronta);
+	printf("uzel z fronty s hodnotou: %d\n", dequeued_node->data);
+	dequeued_node = dequeue(fronta);
+	printf("uzel z fronty s hodnotou: %d\n", dequeued_node->data);
 	return 0;
 
 }
