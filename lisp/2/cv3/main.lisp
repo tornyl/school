@@ -87,4 +87,5 @@
 
 
 (defmacro op-alias (name shortcut)
-	`(defvar ,shortcut ',name))
+	`(defmacro ,shortcut (&rest exprs)
+		`(,',name ,@exprs)))
