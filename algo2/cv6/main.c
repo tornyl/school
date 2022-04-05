@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 
 typedef struct node{
 	int data;
@@ -214,6 +214,105 @@ void print_bft(Tree *t){
 	free(fronta);
 }
 
+int height(Branch *root){
+	if(!root) return 0;
+	return 1 + height(root->parent);
+}
+
+void print_visual_help(Branch *branch, int arr[], int n, int i, int pos, int slash_pos, int f_slash, int b_slash){
+	if(branch){
+		printf("i: %d", pos);
+		arr[pos - 1] = branch->data;
+		if(i >1){
+			if(slash_pos < 0) arr[-1 * slash_pos -1] = -2;
+			else arr[slash_pos - 1] = 2;
+		}
+		int new_dir = ((n / ( 1 << i)) + 2 - 1) / 2;
+		int new_slash_dir = (new_dir  + 2 - 1) / 2;
+		print_visual_help(branch->left, arr, n, i + 1, pos  + 2 * n - new_dir, -1 *(pos + n - new_slash_dir), f_slash, b_slash);
+		print_visual_help(branch->right, arr, n, i + 1, pos  + 2 * n + new_dir , pos + n + new_slash_dir, f_slash, b_slash );
+	}
+}
+
+void print_visual(Tree *t, int size){
+	Branch *branch = t->root;
+	int dpth = depth(*t) ;
+	int n = 1 << dpth;
+	n *=size;
+	int len  = (n * (2 *(dpth + 1)));
+	int *a = malloc(len  * sizeof(int) );
+	int f_slash = tree_min(branch) - 1;
+	int b_slash = tree_max(branch) + 1;
+	for(int k = 0; k < len; k++){ a[k] = 0;}
+	print_visual_help(branch, a, n, 1, n/2, 0, f_slash, b_slash);
+	printf("\nstart\n");
+	for(int k = 0; k < len; k++){
+		if(a[k] == 0) printf(" ");
+		else if(a[k] == -2) printf("/");
+		else if(a[k] == 2) printf("\\");
+		else printf("%d", a[k]);	
+		//printf("%d", a[k]);
+		if((k + 1) % n == 0 && k !=0) {
+			printf("\n");
+		}
+	}
+	printf("end\n");
+	printf("\n");
+	free(a);
+}
+
+void print_bft_v(Tree *t){
+	int dpth = depth(*t) ;
+	int n = 1 << dpth;
+	int len  = (n * (dpth + 1));
+	printf("%d", len);
+	int *a = malloc(len  * sizeof(int) );
+	for(int k = 0; k < len; k++){ a[k] = 0;}
+	queue *fronta =  malloc(sizeof(queue) + 30 * sizeof(Branch));
+	fronta->tail = 0;
+	fronta->head = 0;
+	fronta->length = 30;
+	enqueue(fronta, t->root);
+	int i=1;
+	int j = 0;
+	a[ n / 2 - 1] = t->root->data;
+	while(!empty(fronta)){
+		Branch *branch = dequeue(fronta);
+		//printf("bzz %d\n", depth_help(branch, i - 2));
+		if( i  != height(branch)){
+			printf("i: %d curr: %d", i, branch->data);
+			i++;
+			j = 0;
+		}
+		//printf("%d, ", branch->data);
+		int incf = 0;
+		int branch_space = n / ( 1 << i); 
+		j += branch_space;
+		if(branch->left){
+			enqueue(fronta, branch->left);
+			//a[n * i + 1 + (n / (i+ 1)) * (j + 1)] = branch->left->data + '0';
+			a[n* i + j - (int)(branch_space + 2 -1) / 2 - 1] =  branch->left->data;
+		}
+		if(branch->right){
+			enqueue(fronta, branch->right);
+			//a[n * i + 1 + (n / (i + 1)) * (j + 1) + 1] = branch->right->data + '0'; 
+			a[n* i + j +  (int)(branch_space + 2 - 1) / 2 - 1] = branch->right->data;
+		}
+		j +=branch_space;
+	}
+	//a[len] = '\0';
+	printf("\nstart\n");
+	for(int k = 0; k < len; k++){	
+		printf("%d", a[k]);	
+		if((k + 1) % n == 0) {
+			printf("\n");
+		}
+	}
+	printf("end\n");
+	printf("\n");
+	free(fronta);
+}
+
 void update_bf(Branch *root){
 	if(root->left) update_bf(root->left);
 	if(root->right) update_bf(root->right);
@@ -255,18 +354,21 @@ int main(){
 	Tree tree ={NULL};
 	tree_add(&tree, 5);
 	tree_add(&tree, 8);
+	tree_add(&tree, 7);
 	tree_add(&tree, 3);
 	tree_add(&tree, 12);
 	tree_add(&tree, 18);
 	tree_add(&tree, 1);	
 	print_in_order(tree);
+	//print_bft_v(&tree);
+	print_visual(&tree, 2);
 	printf("Tree depth: %d\n", depth(tree));
 	printf("Maximum stromu: %d\n", tree_max(tree.root));
 	printf("Mininum  stromu: %d\n", tree_min(tree.root));
 	printf("Remove branch %d\n", tree_remove(&tree, 1));
 	print_in_order(tree);
-	print_bft(&tree);
 	update_bf(tree.root);
+	print_visual(&tree, 1);
 	print_in_order(tree);
 	return 0;
 	

@@ -1,0 +1,219 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Cell_{
+	double value;
+	int i;
+	int j;
+	struct Cell_* row_next;
+	struct Cell_* column_next;
+	
+}Cell;
+
+typedef struct Line_{
+	int index;
+	struct Line_* next;
+	Cell* first_cell;
+}Line;
+
+typedef struct{
+	int rows;
+	int columns;
+	Line* first_row;
+	Line* first_column;
+	
+}Matrix;
+
+
+Matrix *create_matrix(double values[], size_t rows, size_t cols){
+	Matrix *m = (Matrix*)malloc(sizeof(Matrix));
+	m->rows = rows;
+	m->columns = cols;
+	Line *curr_row = (Line*) malloc(sizeof(Line));
+	Line *curr_column = (Line*) malloc(sizeof(Line));
+	m->first_row = curr_row;
+	m->first_column  = curr_column;
+	for(int i = 1; i < rows; i++){
+		curr_row->index = i;
+		curr_row->next = (Line*) malloc(sizeof(Line));
+		curr_row = curr_row->next;
+	}
+
+	for(int i = 1; i < cols; i++){
+		curr_column->index = i;
+		curr_column->next = (Line*) malloc(sizeof(Line));
+		curr_column = curr_column->next;
+	}
+	Cell *previous_row[cols];
+	for(int i = 0; i < cols; i++) previous_row[i] = NULL;
+	curr_row = m->first_row;
+	curr_column = m->first_column;
+	Cell* prev_row_cell = NULL;
+	for(int i = 0; i < rows; i++){	
+		prev_row_cell = NULL;
+		curr_column = m->first_column;
+		for(int j = 0; j < cols; j++){
+			if(values[i* cols + j]){
+				Cell *new_cell = (Cell*) malloc(sizeof(Cell));
+				new_cell->value = values[cols * i + j];
+				new_cell->i = i;
+				new_cell->j = j;
+				if(prev_row_cell !=NULL){
+					prev_row_cell->row_next = new_cell;
+				}
+				prev_row_cell = new_cell;
+				if(previous_row[j]) {
+					previous_row[j]->column_next = new_cell;
+				}
+				previous_row[j] = new_cell;
+				//printf("pr: %d\n", prev_row_cell->value);
+				if(!curr_row->first_cell) curr_row->first_cell = new_cell;
+				if(!curr_column->first_cell) curr_column->first_cell = new_cell;
+			}
+
+			curr_column = curr_column->next;
+		}
+		curr_row = curr_row->next;
+	}
+	return m;
+}
+
+void print(Matrix *m){
+	Line* row = m->first_row;
+
+	while(row){
+		Cell* cell = row->first_cell;
+		printf("{");
+		for(int i = 0; i < m->columns; i++){
+			if(cell  && cell->j == i){
+				printf(" %2.f ", cell->value);
+				cell = cell->row_next;
+			}else printf(" 0 ");
+		}
+		printf("}\n");
+		row = row->next;
+	}
+
+	printf("}\n");
+}
+
+void delete(Matrix *m){
+	Line* row = m->first_row;
+
+	while(row){
+		Cell* cell = row->first_cell;
+		while(cell){
+			Cell* tmp = cell;
+			cell = cell->row_next;
+			free(tmp);
+		}
+		Line* tmp = row;
+		row = row->next;
+		free(tmp);
+	}
+	free(m);
+	printf("}\n");
+}
+
+double element_at(Matrix *m, unsigned int row, unsigned int col){
+	if(row > m->rows - 1 || col > m->columns -1){
+		printf("Spatny index\n");
+		return 0;
+	}
+
+	Line *line_row = m->first_row;
+	int i = 0;
+	while(i != row){
+		line_row = line_row->next;
+		i++;
+	}
+	Cell *cell = line_row->first_cell;
+	int j = 0;
+	printf("bum\n");
+	while(j != col){
+		if(cell->j == j) cell = cell->row_next;
+		j++;
+	}
+	if(cell && cell->j == j) return cell->value;
+	else return 0;
+}
+
+double set_element_at(Matrix *m, unsigned int row, unsigned int col, double value){
+	
+	if(row > m->rows - 1 || col > m->columns -1){
+		printf("Spatny index\n");
+		return 0;
+	}
+
+	Line *line_row = m->first_row;
+	int i = 0;
+	while(i != row){
+		line_row = line_row->next;
+		i++;
+	}
+	int k = 0;
+	Cell *cell = line_row->first_cell;
+	Cell *prev_cell_row = NULL;
+	int j = 0;
+	Line* line_col = m->first_column;
+	while(j != col){
+		if(cell->j == j){
+			prev_cell_row = cell;
+			cell = cell->row_next;
+		}
+		line_col  = line_col->next;
+		j++;
+	}
+	Cell *prev_cell_column = line_col->first_cell;
+	while(prev_cell_column && prev_cell_column->column_next && prev_cell_column->j < j - 1) prev_cell_column = prev_cell_column->column_next;
+	if(cell && cell->j == j) cell->value = value;
+	else{
+		Cell* new_cell = (Cell*) malloc(sizeof(Cell));
+		new_cell->value = value;
+		new_cell->i = i;
+		new_cell->j = j;
+		if(prev_cell_row){
+			if(prev_cell_row->row_next) new_cell->row_next = prev_cell_row->row_next;
+			prev_cell_row->row_next = new_cell;
+		}else {
+			new_cell->row_next = line_row->first_cell;
+			line_row->first_cell = new_cell;
+		}
+
+		if(prev_cell_column){
+			if(prev_cell_column->column_next) new_cell->column_next = prev_cell_column->column_next;
+			prev_cell_column->column_next = new_cell;
+		}else{
+			new_cell->column_next = line_col->first_cell;
+			line_col->first_cell = new_cell;
+		}
+	}
+	return value;
+}
+
+double *matrix_max(Matrix* m){
+	double max;
+	int first = 1, i = 1, j = 1, full =1;
+	Line* row = m->first_row;
+	while(row){
+		Cell *cell = row->first_cell;
+		while(column){
+			if(first) {max = cell->value; first = 0;}
+			else if(cell->value > max) max = cell->value;
+
+		}
+	}
+}
+
+int main(){
+	double vals[] = {0, 1, 0, 0, 2, 3, 0 ,0 ,4};
+	Matrix *m = create_matrix(vals ,3, 3);
+	print(m);
+	//delete(m);
+	printf("%p\n", m);
+	printf("at index: %2.f\n", element_at(m, 2, 2));
+	set_element_at(m, 0, 2, 5);
+	print(m);
+	return 0;
+}
+
