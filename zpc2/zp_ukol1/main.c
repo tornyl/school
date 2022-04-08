@@ -193,21 +193,53 @@ double set_element_at(Matrix *m, unsigned int row, unsigned int col, double valu
 	return value;
 }
 
-Matrix *add(Matrix *left, Matrix *right){
-	double* result_array[left->rows*left->cols];
+double simple_add(double a, double b){
+	return a + b;
+}
+
+double simple_subtract(double a, double b){
+	return a - b;
+}
+
+Matrix *apply_fun(Matrix *left, Matrix *right, double (*fun)(double, double)){
+	double result_array[left->rows*left->columns];
+	for(int i = 0; i < left->rows*left->columns; i++) result_array[i] = 0;
 
 	Line *left_row = left->first_row;
 	Line *right_row = right->first_row;
-	int i =0;
-	while(left_row){
+	for(int i = 0 ;i < left->rows; i++){
 		Cell *left_cell = left_row->first_cell;
 		Cell *right_cell = right_row->first_cell;
-		while(left_cell){
-			
+		for(int j  = 0; j < left->columns; j++){
+			printf("ggsn\n");
+			double arg1 = 0;
+			double arg2 = 0;
+			if(left_cell && left_cell->j == j){
+				arg1 = left_cell->value;
+				left_cell = left_cell->row_next;
+			}
+			if(right_cell && right_cell->j == j){
+				arg2 =right_cell->value;
+				right_cell = right_cell->row_next;
+			}
+			result_array[i * left->columns + j] = fun(arg1, arg2);
 		}
+		left_row = left_row->next;
+		right_row = right_row->next;
 	}
+
+	Matrix *result_m = create_matrix(result_array, left->rows, left->columns);
+	return result_m;
 }
 
+Matrix*  add(Matrix* m1, Matrix* m2){
+	return apply_fun(m1, m2, simple_add);
+}
+
+
+Matrix*  subtract(Matrix* m1, Matrix* m2){
+	return apply_fun(m1, m2, simple_subtract);
+}
 //Matrix *add(Matrix *left, Matrix *right){
 //	Matrix *result_m = (Matrix*) malloc(sizeof(Matrix));
 //	Line *row = (Line*) malloc(sizeof(Line));
@@ -284,15 +316,23 @@ double matrix_max(Matrix* m){
 }
 
 int main(){
-	double vals[] = {0, 1, 0, 0, 2, 3, 0 ,0 ,4};
-	Matrix *m = create_matrix(vals ,3, 3);
+	//double vals[] = {0, 1, 0, 0, 11, 3, 0 ,60 ,4};
+	//double vals2[] = {0, 2, 6, 3, 6, 4, 0 ,3 ,4};
+	double vals[] = {0, 1, 0, 0, 11, 3, 0 ,60 ,4,0, 1,5};
+	double vals2[] = {0, 2, 6, 3, 6, 4, 0 ,3 ,4, 5, 2 ,1};
+	Matrix *m = create_matrix(vals ,4, 3);
+	Matrix *m2 = create_matrix(vals2 ,4, 3);
 	print(m);
 	//delete(m);
 	printf("%p\n", m);
 	printf("at index: %2.f\n", element_at(m, 2, 2));
-	set_element_at(m, 0, 2, 5);
+	//set_element_at(m, 0, 2, 5);
 	print(m);
 	printf("max val: %2.f\n", matrix_max(m));
+	Matrix *result = add(m, m2);
+	Matrix *result2 = subtract(m, m2);
+	print(result);
+	print(result2);
 	return 0;
 }
 

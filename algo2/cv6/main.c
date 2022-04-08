@@ -28,28 +28,6 @@ typedef struct{
 }Tree;
 
 
-void tree_add(Tree *t, int data){
-	Branch *branch = t->root;
-	Branch *parent = NULL;
-	Branch *new_branch = (Branch*) malloc(sizeof(Branch));
-	new_branch->data = data;
-	while(branch){
-		parent = branch;
-		if(new_branch->data < branch->data){
-			branch = branch->left;	
-		}else{
-			branch = branch->right;
-		}	
-	}
-	new_branch->parent = parent;
-	if(!parent){
-		t->root = new_branch;
-	}else if(new_branch->data < parent->data){
-		parent->left = new_branch;	
-	}else{
-		parent->right = new_branch;
-	}
-}
 
 void print_in_order_help(Branch *branch){
 	if(branch){
@@ -326,7 +304,7 @@ Branch* rotate_right(Branch *root){
 	
 	//set-left-child(r, B);
 	root->left = b;
-	if(!b) b->parent = root;
+	if(b) b->parent = root;
 	
 	//set_right-child(x, r);
 	x->right = root;
@@ -340,12 +318,85 @@ Branch* rotate_left(Branch *root){
 	
 	//set-left-child(r, B);
 	root->right = b;
-	if(!b) b->parent = root;
+	if(b) b->parent = root;
 	
 	//set_right-child(x, r);
 	x->left = root;
 	root->parent = x;
 	return x;
+}
+
+void complete_rotation(Tree *t, Branch *branch, Branch *parent){
+	if(!parent) t->root = branch;
+	else if(parent->left == branch->left || parent->left == branch->right) parent->left = branch;
+	else if(parent->right == branch->left || parent->right == branch->right) parent->right = branch; 
+	branch->parent = parent;
+}
+
+void repair_bf(Tree* t, Branch* v_, Branch *u_){
+	Branch* v = v_;
+	Branch* u  = u_;
+	while(u){
+		if(v == u->left) u->bf +=1;
+		else u->bf -=1;
+		
+		if(u->bf == 0) break;
+		Branch *p = u->parent;
+		Branch *w = NULL;
+		if(u->bf == 1 || u->bf == -1){
+			v = u;
+			u = u->parent;
+			continue;
+		}
+		else if(u->bf == 2 && (v->bf == 1 || v->bf == 0)) w = rotate_right(u);
+		else if(u->bf == -2 && (v->bf == -1 || v->bf == 0)) w = rotate_left(u);
+		else if(u->bf == 2 && v->bf == -1){
+			//printf("bb\n");
+			w = rotate_left(v);
+			complete_rotation(t, w, u);
+			w = rotate_right(u);
+			complete_rotation(t, w, p);
+		}else if(u->bf == -2 && v->bf == 1){
+			printf("bb\n");
+			printf("%p\n", v->left);
+			Branch *v_w = rotate_right(v);
+			printf("bb\n");
+			//complete_rotation(t, v_w, u);
+			w = rotate_left(u);
+			//complete_rotation(t, w, p);
+			printf("buz: %d %d\n", v->bf, u->bf);
+		}
+		update_bf(u);
+		v = w;
+		u = p;
+	}
+	printf("cola\n");
+}
+
+
+void tree_add(Tree *t, int data){
+	Branch *branch = t->root;
+	Branch *parent = NULL;
+	Branch *new_branch = (Branch*) malloc(sizeof(Branch));
+	new_branch->bf = 0;
+	new_branch->data = data;
+	while(branch){
+		parent = branch;
+		if(new_branch->data < branch->data){
+			branch = branch->left;	
+		}else{
+			branch = branch->right;
+		}	
+	}
+	new_branch->parent = parent;
+	if(!parent){
+		t->root = new_branch;
+	}else if(new_branch->data < parent->data){
+		parent->left = new_branch;	
+	}else{
+		parent->right = new_branch;
+	}
+	repair_bf(t, new_branch, parent);
 }
 
 int main(){
@@ -369,6 +420,24 @@ int main(){
 	print_in_order(tree);
 	update_bf(tree.root);
 	print_visual(&tree, 1);
+	print_in_order(tree);
+	Branch *new  =rotate_left(tree.root);
+	complete_rotation(&tree,new, NULL);
+	print_visual(&tree, 2);
+	update_bf(tree.root);
+	print_in_order(tree);
+
+	// bf add test
+	tree_add(&tree, 9);
+	print_visual(&tree, 2);
+	print_in_order(tree);
+
+	tree_add(&tree, -10);
+	print_visual(&tree, 2);
+	print_in_order(tree);
+	
+	tree_add(&tree, -12);
+	print_visual(&tree, 2);
 	print_in_order(tree);
 	return 0;
 	
