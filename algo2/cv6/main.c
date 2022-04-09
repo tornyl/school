@@ -202,11 +202,12 @@ void print_visual_help(Branch *branch, int arr[], int n, int i, int pos, int sla
 		printf("i: %d", pos);
 		arr[pos - 1] = branch->data;
 		if(i >1){
-			if(slash_pos < 0) arr[-1 * slash_pos -1] = -2;
-			else arr[slash_pos - 1] = 2;
+			if(slash_pos < 0) arr[-1 * slash_pos -1] = f_slash;
+			else arr[slash_pos - 1] = b_slash;
 		}
 		int new_dir = ((n / ( 1 << i)) + 2 - 1) / 2;
 		int new_slash_dir = (new_dir  + 2 - 1) / 2;
+		//int new_slash_dir = (new_dir) / 2;
 		print_visual_help(branch->left, arr, n, i + 1, pos  + 2 * n - new_dir, -1 *(pos + n - new_slash_dir), f_slash, b_slash);
 		print_visual_help(branch->right, arr, n, i + 1, pos  + 2 * n + new_dir , pos + n + new_slash_dir, f_slash, b_slash );
 	}
@@ -221,13 +222,14 @@ void print_visual(Tree *t, int size){
 	int *a = malloc(len  * sizeof(int) );
 	int f_slash = tree_min(branch) - 1;
 	int b_slash = tree_max(branch) + 1;
-	for(int k = 0; k < len; k++){ a[k] = 0;}
+	printf("flsash:%d \n", f_slash);
+	for(int k = 0; k < len; k++){ a[k] = f_slash -1;}
 	print_visual_help(branch, a, n, 1, n/2, 0, f_slash, b_slash);
 	printf("\nstart\n");
 	for(int k = 0; k < len; k++){
-		if(a[k] == 0) printf(" ");
-		else if(a[k] == -2) printf("/");
-		else if(a[k] == 2) printf("\\");
+		if(a[k] == f_slash - 1 ) printf(" ");
+		else if(a[k] == f_slash) printf("/");
+		else if(a[k] == b_slash) printf("\\");
 		else printf("%d", a[k]);	
 		//printf("%d", a[k]);
 		if((k + 1) % n == 0 && k !=0) {
@@ -328,8 +330,8 @@ Branch* rotate_left(Branch *root){
 
 void complete_rotation(Tree *t, Branch *branch, Branch *parent){
 	if(!parent) t->root = branch;
-	else if(parent->left == branch->left || parent->left == branch->right) parent->left = branch;
-	else if(parent->right == branch->left || parent->right == branch->right) parent->right = branch; 
+	else if(parent->left && (parent->left == branch->left || parent->left == branch->right)){printf("barbell\n"); parent->left = branch;}
+	else if(parent->right && (parent->right == branch->left || parent->right == branch->right)){printf("suzuko\n"); parent->right = branch;} 
 	branch->parent = parent;
 }
 
@@ -348,8 +350,8 @@ void repair_bf(Tree* t, Branch* v_, Branch *u_){
 			u = u->parent;
 			continue;
 		}
-		else if(u->bf == 2 && (v->bf == 1 || v->bf == 0)) w = rotate_right(u);
-		else if(u->bf == -2 && (v->bf == -1 || v->bf == 0)) w = rotate_left(u);
+		else if(u->bf == 2 && (v->bf == 1 || v->bf == 0)) {w = rotate_right(u); complete_rotation(t, w, p);}
+		else if(u->bf == -2 && (v->bf == -1 || v->bf == 0)) {w = rotate_left(u); complete_rotation(t, w, p);}
 		else if(u->bf == 2 && v->bf == -1){
 			//printf("bb\n");
 			w = rotate_left(v);
@@ -357,19 +359,26 @@ void repair_bf(Tree* t, Branch* v_, Branch *u_){
 			w = rotate_right(u);
 			complete_rotation(t, w, p);
 		}else if(u->bf == -2 && v->bf == 1){
-			printf("bb\n");
-			printf("%p\n", v->left);
-			Branch *v_w = rotate_right(v);
-			printf("bb\n");
-			//complete_rotation(t, v_w, u);
+			//printf("%d\n", v->data);
+			Branch* v_w = rotate_right(v);
+			//printf("sik: %p\n", u->right);
+			complete_rotation(t, v_w, u);
 			w = rotate_left(u);
-			//complete_rotation(t, w, p);
-			printf("buz: %d %d\n", v->bf, u->bf);
+			//printf("suka\n");
+			//printf("pointers: %p %p\n", w, p);
+			complete_rotation(t, w, p);
 		}
-		update_bf(u);
+		//printf("data:cur: %d\n", v_->data);
+		//printf("root: %p\n", t->root->right);
+		update_bf(t->root);
+		//print_visual(t, 2);
+		//print_in_order(*t);
+		//printf("bff: %p %p\n", w, p);
 		v = w;
 		u = p;
 	}
+	print_visual(t, 2);
+	print_in_order(*t);
 	printf("cola\n");
 }
 
@@ -396,6 +405,8 @@ void tree_add(Tree *t, int data){
 	}else{
 		parent->right = new_branch;
 	}
+	print_visual(t, 2);
+	printf("er: %d %d\n", parent ? parent->data : 0, data);
 	repair_bf(t, new_branch, parent);
 }
 
@@ -410,34 +421,31 @@ int main(){
 	tree_add(&tree, 12);
 	tree_add(&tree, 18);
 	tree_add(&tree, 1);	
-	print_in_order(tree);
 	//print_bft_v(&tree);
-	print_visual(&tree, 2);
 	printf("Tree depth: %d\n", depth(tree));
 	printf("Maximum stromu: %d\n", tree_max(tree.root));
 	printf("Mininum  stromu: %d\n", tree_min(tree.root));
-	printf("Remove branch %d\n", tree_remove(&tree, 1));
-	print_in_order(tree);
-	update_bf(tree.root);
-	print_visual(&tree, 1);
-	print_in_order(tree);
-	Branch *new  =rotate_left(tree.root);
-	complete_rotation(&tree,new, NULL);
-	print_visual(&tree, 2);
-	update_bf(tree.root);
-	print_in_order(tree);
+	//printf("Remove branch %d\n", tree_remove(&tree, 1));
+	//update_bf(tree.root);
+	//Branch *new  =rotate_left(tree.root->right);
+	//complete_rotation(&tree,new,tree.root);
+	//print_visual(&tree, 2);
+	//printf("ggs: %d %p %d\n", tree.root->right->parent->data, tree.root->right->left, tree.root->right->left->parent->data);
+	//return 0;
+	//update_bf(tree.root);
+	//print_in_order(tree);
 
 	// bf add test
 	tree_add(&tree, 9);
 	print_visual(&tree, 2);
 	print_in_order(tree);
 
-	tree_add(&tree, -10);
+	tree_add(&tree, 1);
 	print_visual(&tree, 2);
 	print_in_order(tree);
 	
-	tree_add(&tree, -12);
-	print_visual(&tree, 2);
+	tree_add(&tree, 0);
+	print_visual(&tree, 3);
 	print_in_order(tree);
 	return 0;
 	
