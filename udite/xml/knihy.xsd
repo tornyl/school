@@ -1,0 +1,45 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="typ_knihy">
+        	<xs:restriction base="xs:string">
+            		<xs:enumeration value="kniha"/>
+            		<xs:enumeration value="ebook"/>
+        	</xs:restriction>
+    	</xs:simpleType>
+	<xs:simpleType name="strany">
+        	<xs:restriction base="xs:integer">
+            		<xs:minInclusive value="1" />
+            		<xs:maxExclusive value="2000" />
+        	</xs:restriction>
+    </xs:simpleType>
+    <xs:element name="knihy">
+        <xs:complexType>
+            <xs:choice maxOccurs="unbounded" minOccurs="0">
+                <xs:element name="kniha">
+                    <xs:complexType>
+                        <xs:sequence>
+                        	 <xs:element name="nazev" type="xs:string" />
+                            <xs:element name="vydavatel" type="xs:string" />
+                            <xs:element name="rok_vydani" type="xs:integer" />
+                            <xs:element name="pocet_stran" type="strany" />
+                            <xs:element name="cena" type="xs:integer" />
+                    	    <xs:element name="zanr" type="xs:string" />
+							<xs:element name="typ" type="typ_knihy" />
+			    			<xs:element name="vypujcka">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="vypujceno" type="xs:boolean"/>
+										<xs:element name="jmeno" type="xs:string"/>
+										<xs:element name="prijmeni" type="xs:string"/>
+										<xs:element name="datum" type="xs:date"/>
+									</xs:sequence>
+								</xs:complexType>
+			    			</xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="isbn" type="xs:string"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:choice>
+      </xs:complexType>
+    </xs:element>
+</xs:schema>
+

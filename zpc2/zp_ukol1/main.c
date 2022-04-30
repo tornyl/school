@@ -24,18 +24,37 @@ typedef struct{
 	
 }Matrix;
 
+void free_mem(Matrix *m){
+	if(m){
+		Line *line = m->first_column;
+		while(line){Line *for_delete = line; line = line->next; free(for_delete);}
+		line = m->first_row;
+		while(line){
+			Line *for_delete = line;
+			Cell *cell = line->first_cell;
+			while(cell){ Cell *cell_for_del = cell; cell =cell->row_next; free(cell_for_del);}
+			line = line->next;
+			free(for_delete);
+		}
+		free(m);
+	}
+}
 
 Matrix *create_matrix(double values[], size_t rows, size_t cols){
 	Matrix *m = (Matrix*)malloc(sizeof(Matrix));
+	if(!m) free_mem(m);
 	m->rows = rows;
 	m->columns = cols;
 	Line *curr_row = (Line*) malloc(sizeof(Line));
+	if(!curr_row) free_mem(m);
 	Line *curr_column = (Line*) malloc(sizeof(Line));
+	if(!curr_column) free_mem(m);
 	m->first_row = curr_row;
 	m->first_column  = curr_column;
 	for(int i = 1; i < rows; i++){
 		curr_row->index = i - 1;
 		curr_row->next = (Line*) malloc(sizeof(Line));
+		if(!curr_row->next) free_mem(m);
 		curr_row = curr_row->next;
 	}
 	curr_row->index = rows - 1;
@@ -43,6 +62,7 @@ Matrix *create_matrix(double values[], size_t rows, size_t cols){
 	for(int i = 1; i < cols; i++){
 		curr_column->index = i - 1;
 		curr_column->next = (Line*) malloc(sizeof(Line));
+		if(!curr_column->next) free_mem(m);
 		curr_column = curr_column->next;
 	}
 	curr_column->index = cols - 1;
@@ -57,6 +77,7 @@ Matrix *create_matrix(double values[], size_t rows, size_t cols){
 		for(int j = 0; j < cols; j++){
 			if(values[i* cols + j]){
 				Cell *new_cell = (Cell*) malloc(sizeof(Cell));
+				if(!new_cell) free_mem(m);
 				new_cell->value = values[cols * i + j];
 				new_cell->i = i;
 				new_cell->j = j;
@@ -96,7 +117,7 @@ void print(Matrix *m){
 		row = row->next;
 	}
 
-	printf("}\n");
+	//printf("}\n");
 }
 
 void delete(Matrix *m){
@@ -114,7 +135,7 @@ void delete(Matrix *m){
 		free(tmp);
 	}
 	free(m);
-	printf("}\n");
+	//printf("}\n");
 }
 
 double element_at(Matrix *m, unsigned int row, unsigned int col){
@@ -131,7 +152,6 @@ double element_at(Matrix *m, unsigned int row, unsigned int col){
 	}
 	Cell *cell = line_row->first_cell;
 	int j = 0;
-	printf("bum\n");
 	while(j != col){
 		if(cell->j == j) cell = cell->row_next;
 		j++;
@@ -211,7 +231,6 @@ Matrix *apply_fun(Matrix *left, Matrix *right, double (*fun)(double, double)){
 		Cell *left_cell = left_row->first_cell;
 		Cell *right_cell = right_row->first_cell;
 		for(int j  = 0; j < left->columns; j++){
-			printf("ggsn\n");
 			double arg1 = 0;
 			double arg2 = 0;
 			if(left_cell && left_cell->j == j){
@@ -240,60 +259,6 @@ Matrix*  add(Matrix* m1, Matrix* m2){
 Matrix*  subtract(Matrix* m1, Matrix* m2){
 	return apply_fun(m1, m2, simple_subtract);
 }
-//Matrix *add(Matrix *left, Matrix *right){
-//	Matrix *result_m = (Matrix*) malloc(sizeof(Matrix));
-//	Line *row = (Line*) malloc(sizeof(Line));
-//	Line *column = (Line*) malloc(sizeof(Line));
-//	result_m->rows = left->rows;
-//	result_m->columns = left->columns;
-//	for(int i = 0; i < left->rows - 1; i++){
-//		row->index = i;
-//		row->next = (Line*) malloc(sizeof(Line));
-//		row = row->next;
-//	}
-//	row->index = left->rows - 1; 
-//	for(int i = 0; i < left->columns - 1; i++){
-//		column->index = i;
-//		column->next = (Line*) malloc(sizeof(Line));
-//		column = column->next;
-//	}
-//	column->index = left->columns - 1; 
-//	
-//	Cell *previous_row[left->columns];
-//	for(int i = 0; i < cols; i++) previous_row[i] = NULL;
-//	curr_row = result_m->first_row;
-//	curr_column = result_m->first_column;
-//	Cell* prev_row_cell = NULL;
-//	for(int i = 0; i < left->rows; i++){	
-//		prev_row_cell = NULL;
-//		curr_column = m->first_column;
-//		for(int j = 0; j < left->columns; j++){
-//			double result_val = 0;
-//			if(leeft
-//			if(){
-//				Cell *new_cell = (Cell*) malloc(sizeof(Cell));
-//				new_cell->value = values[cols * i + j];
-//				new_cell->i = i;
-//				new_cell->j = j;
-//				if(prev_row_cell !=NULL){
-//					prev_row_cell->row_next = new_cell;
-//				}
-//				prev_row_cell = new_cell;
-//				if(previous_row[j]) {
-//					previous_row[j]->column_next = new_cell;
-//				}
-//				previous_row[j] = new_cell;
-//				//printf("pr: %d\n", prev_row_cell->value);
-//				if(!curr_row->first_cell) curr_row->first_cell = new_cell;
-//				if(!curr_column->first_cell) curr_column->first_cell = new_cell;
-//			}
-//
-//			curr_column = curr_column->next;
-//		}
-//		curr_row = curr_row->next;
-//	}
-//	return result_m;
-//}
 
 double matrix_max(Matrix* m){
 	double max;
@@ -318,21 +283,23 @@ double matrix_max(Matrix* m){
 int main(){
 	//double vals[] = {0, 1, 0, 0, 11, 3, 0 ,60 ,4};
 	//double vals2[] = {0, 2, 6, 3, 6, 4, 0 ,3 ,4};
-	double vals[] = {0, 1, 0, 0, 11, 3, 0 ,60 ,4,0, 1,5};
-	double vals2[] = {0, 2, 6, 3, 6, 4, 0 ,3 ,4, 5, 2 ,1};
-	Matrix *m = create_matrix(vals ,4, 3);
-	Matrix *m2 = create_matrix(vals2 ,4, 3);
+	double vals[] = {0, 1, 0, 0, 11, 3, 0 ,60 ,4,0, 1,5, 18, 14, 86, 15, 9, 0, 0, 0, 0, 0 , 0, 0, 0, 0, 0, 0};
+	double vals2[] = {0, 2, 6, 3, 6, 4, 0 ,3 ,4, 5, 2 ,1, 2 , 2, 21, 5, 1, 3, 5, 12, 412, 41, 24, 12, 21, 24, 12, 43, 122 , 121, 21};
+	Matrix *m = create_matrix(vals ,4, 7);
+	Matrix *m2 = create_matrix(vals2 ,4, 7);
+	printf("vytvoreni matice\n");
 	print(m);
 	//delete(m);
-	printf("%p\n", m);
 	printf("at index: %2.f\n", element_at(m, 2, 2));
 	//set_element_at(m, 0, 2, 5);
-	print(m);
 	printf("max val: %2.f\n", matrix_max(m));
 	Matrix *result = add(m, m2);
 	Matrix *result2 = subtract(m, m2);
+	printf("secteni matice\n");
 	print(result);
+	printf("odecteni matice\n");
 	print(result2);
+	delete(m2);
 	return 0;
 }
 

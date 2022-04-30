@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='utf-8'?>
+<?xml-model href="knihy.xsd"?>
+<knihy>
+	<kniha isbn="K003">
+		<nazev>Stopařův průvodce po galaxii</nazev>
+		<vydavatel>MF</vydavatel>
+		<rok_vydani>1985</rok_vydani>
+		<pocet_stran>214</pocet_stran>
+		<cena>120</cena>
+		<zanr>scifi</zanr>
+		<typ>kniha</typ>
+		<vypujcka>
+          <vypujceno>false</vypujceno>
+			<jmeno></jmeno>
+			<prijmeni></prijmeni>
+			<datum>1000-01-01</datum>	
+		</vypujcka>	
+	</kniha>
+  <kniha isbn="K045">
+		<nazev>Pán prstenů -Dvě věže</nazev>
+		<vydavatel>MF</vydavatel>
+		<rok_vydani>1948</rok_vydani>
+		<pocet_stran>251</pocet_stran>
+		<cena>240</cena>
+		<zanr>fantasy</zanr>
+		<typ>kniha</typ>
+		<vypujcka>
+          <vypujceno>false</vypujceno>
+			<jmeno></jmeno>
+			<prijmeni></prijmeni>
+			<datum>1000-01-01</datum>	
+		</vypujcka>	
+	</kniha>
+  <kniha isbn="K051">
+		<nazev>Kedrigern a hlas pro princeznu</nazev>
+		<vydavatel>MF</vydavatel>
+		<rok_vydani>1996</rok_vydani>
+		<pocet_stran></pocet_stran>
+		<cena>53</cena>
+		<zanr>fantasy</zanr>
+		<typ>kniha</typ>
+		<vypujcka>
+          <vypujceno>false</vypujceno>
+			<jmeno></jmeno>
+			<prijmeni></prijmeni>
+			<datum>1000-01-01</datum>	
+		</vypujcka>	
+	</kniha>
+  <kniha isbn="K043">
+		<nazev>Hobit</nazev>
+		<vydavatel>MF</vydavatel>
+		<rok_vydani>1950</rok_vydani>
+		<pocet_stran>410</pocet_stran>
+		<cena>178</cena>
+		<zanr>fanasy</zanr>
+		<typ>kniha</typ>
+		<vypujcka>
+          <vypujceno>false</vypujceno>
+			<jmeno></jmeno>
+			<prijmeni></prijmeni>
+			<datum>1000-01-01</datum>	
+		</vypujcka>	
+	</kniha>
+  <kniha isbn="K045">
+		<nazev>Barva kouzel</nazev>
+		<vydavatel>Talpress</vydavatel>
+		<rok_vydani>1989</rok_vydani>
+		<pocet_stran>221</pocet_stran>
+		<cena>358</cena>
+		<zanr>fantasy</zanr>
+		<typ>ebook</typ>
+		<vypujcka>
+          <vypujceno>false</vypujceno>
+			<jmeno></jmeno>
+			<prijmeni></prijmeni>
+			<datum>1000-01-01</datum>	
+		</vypujcka>	
+	</kniha>
+  <kniha isbn="K026">
+		<nazev>Stráže! Stráže!</nazev>
+		<vydavatel>Talpress</vydavatel>
+		<rok_vydani>2000</rok_vydani>
+		<pocet_stran></pocet_stran>
+		<cena>214</cena>
+		<zanr>fanstasy</zanr>
+		<typ>ebook</typ>
+		<vypujcka>
+          <vypujceno>false</vypujceno>
+			<jmeno></jmeno>
+			<prijmeni></prijmeni>
+			<datum>1000-01-01</datum>	
+		</vypujcka>	
+	</kniha>
+  <kniha isbn="K027">
+		<nazev>Lehké fantastično</nazev>
+		<vydavatel>Talpress</vydavatel>
+		<rok_vydani>1999</rok_vydani>
+		<pocet_stran>145</pocet_stran>
+		<cena>415</cena>
+		<zanr>fanstasy</zanr>
+		<typ>ebook</typ>
+		<vypujcka>
+          <vypujceno>true</vypujceno>
+			<jmeno>Mirek</jmeno>
+			<prijmeni>Fialka</prijmeni>
+			<datum>2022-03-21</datum>	
+		</vypujcka>	
+	</kniha>
+</knihy>
+

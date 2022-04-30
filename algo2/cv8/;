@@ -1,0 +1,142 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define t 3
+
+typedef struct Node_{
+	int keys[2 * t - 1];
+	struct Node_* children[2 * t];
+	struct Node_* parent;
+	int n;
+	int leaf;
+}Node;
+
+typedef struct{
+	Node* root;
+} Btree;
+
+typedef struct{
+	Node* node;
+	int index;
+}Node_return;
+
+typedef struct{
+	int m;
+	Node* left;
+	Node* right;
+}Split_return;
+
+Node* make_node(){
+	Node * node = (Node*) malloc(sizeof(Node));
+	node->parent = NULL;
+	for(int i = 0; i < 2 * t; i++) node->children[i] = NULL;
+	for(int i = 0; i < 2 * t - 1; i++) node->keys[i] = 0;
+	node->n = 0;
+	node->leaf = 1;
+	return node;
+}
+
+Node_return* search(Node* x, int k){
+	int i = 0;
+	while(i < x->n && k > x->keys[i]) i++;
+
+	if( i < x->n && k == x->keys[i]){
+		Node_return* ret = (Node_return*) malloc(sizeof(Node_return));
+		ret->node = x;
+		ret->index = i;
+		return ret;
+	}else if (x->leaf) return NULL;
+	else return search(x->children[i], k);
+}
+
+Node* find_insertion_node(Node* x ,int k){
+	int  i  = 0;
+	while( i < x->n && k >  x->keys[i]) i++;
+
+	if(x->leaf) return x;
+	else find_insertion_node(x->children[i], k);
+}
+
+void shift_right(Node* x, int i){
+	x->children[x->n] = x->children[x->n - 1];
+	for(int j = x->n - 1; j > i; j--){
+		x->keys[j] = x->keys[j - 1];
+		x->children[j] = x->children[j - 1];
+	}
+}
+void set_as_child(Node *x, int i, Node* y){
+	x->children[i] = y;
+	if(y) y->parent = x;
+}
+Split_return* split_node(Node *x){
+	int m = x->keys[t - 1];
+
+	Node * z = make_node(); 
+	z->leaf = x->leaf;
+	z->n = t - 1;
+
+	for(int i = 0; i < t - 1; i++){
+		z->keys[i] = x->keys[t + i];
+		z->children[i] = x->children[t + i];
+	}
+	z->children[ t - 1] = x->children[2 * t - 1];
+
+	x->n = t - 1;
+	Split_return * ret = (Split_return*) malloc(sizeof(Split_return));
+	ret->m = m;
+	ret->left = x;
+	ret->right = z;
+	return ret;
+}
+
+void insert_with_subtrees(Btree tree, Node* x, int k, Node* left, Node* right){
+	if(!x){
+		Node* z = make_node();
+		z->keys[0] = k;
+		z->leaf = 0;
+		z->n = 1;
+		z->parent = NULL;
+
+		set_as_child(z, 0, left);
+		set_as_child(z, 1, right);
+
+		tree.root = z;
+	}else if( x->n == 2 * t - 1){
+		Node* p  = x->parent;
+		Split_return* split = split_node(x);
+		int up_key = split->m;
+		Node* l  = split->left;
+		Node * r = split->right;
+
+		if( k < up_key) insert_with_subtrees(tree, l, k, left, right);
+		else insert_with_subtrees(tree, r, k, left, right);
+		
+		insert_with_subtrees(tree, p ,up_key, l, r);
+	}else{
+		int i = 0;
+		while( i < x->n && k > x->keys[i]) i++;
+		shift_right(x, i);
+		x->keys[i] = k;
+		x->n ++;
+		set_as_child(x, i ,left);
+		set_as_child(x, i + 1, right);
+	}
+}
+
+void Insert(Btree tree, int key){
+	Node *target = find_insertion_node(tree.root, key);
+	insert_with_subtrees(tree, target, key, NULL, NULL); 
+}
+int main(){
+	Btree tree = {NULL};
+	tree.root = make_node();
+	tree.root->n =0;
+	tree.root->parent = NULL;
+	Insert(tree, 5);
+	Insert(tree, -12);
+	Insert(tree, -23);
+	Insert(tree, 6);
+	Insert(tree, 9);
+	Node_return* x = search(tree, 6);
+	return 0;
+}
