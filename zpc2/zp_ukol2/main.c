@@ -37,7 +37,7 @@ Bitset* create_bitset(size_t size){
 
 Bitset* create_bitset_with_values(size_t size, const int *values, size_t array_size){
 	Bitset* bitset = create_bitset(size);
-	for(int i = 0; i < size; i++) bitset->data[ values[i] / (sizeof(char) * 8)] = bitset->data[values[i] / (sizeof(char) * 8)] | ( 1 << (values[i] % (sizeof(char) * 8)));
+	for(int i = 0; i < array_size; i++) bitset->data[ values[i] / (sizeof(char) * 8)] |=  ( 1 << (values[i] % (sizeof(char) * 8)));
 	return bitset;
 }
 
@@ -60,12 +60,82 @@ void print(Bitset *bitset){
 	printf("\n");
 }
 
+int getPos(int element){
+	return (element) / (sizeof(char) * 8);
+}
+
+void set_insert(Bitset* bitset, int element){
+	bitset->data[getPos(element)] |= 1 << (element % (sizeof(char) *8 ));
+}
+
+void set_remove(Bitset* bitset, int element){
+	bitset->data[getPos(element)] &= ~(1 << (element % (sizeof(char) *8 )));
+}
+
+int contains(Bitset* bitset, int element){
+	return bitset->data[getPos(element)] >= (1 << (element % (sizeof(char) *8 ))) ;  
+}
+
+char and(char a, char b) return a & b;
+char or(char a, char b) return a | b;
+char neg(char a) return ~a;
+char id(char a) return a;
+
+void form_operation(Bitset *left, Bitset *right, char (*bin_op)(char, char), char (*un_op)(char)){
+	for(int i = 0; i < left->data_len; i++){
+		if(i + 1 <= right->data_len) left->data[i] = bin_op(left->data[i], un_op(right->data[i]));
+		else left->data[i] = 0;
+	}
+}
+
+void form_intersection(Bitset *left, Bitset* right) form_opreation(left, right, and, id);
+void form_union(Bitset *left, Bitset* right) form_opreation(left, right, or, id);
+void form_difference(Bitset *left, Bitset* right) form_opreation(left, right, and, neg);
+
+Bitset* greater(Bitset* a, Bitset* b) return a->data_len > b->data_len ? a : b;
+Bitset* leasser(Bitset* a, Bitset* b) return a->data_len > b->data_len ? b : a;
+
+Bitset *set_operation(Bitset *left, Bitset *right, char (*bin_op)(char, char), char (*un_op)(char), int (*size_op) (int, int)){
+	int data_len = size_op(left->data_len, right->data_len);
+	int array[] =  (int*) malloc(sizeof(int) * data_len);
+	for(int a = 0; i < data_len; i++){
+		if(left->data_len <= data_len && right->data_len <= data_len) array[i] = bin_op(left->data[i],  un_op(right->data[i]));
+		else array[i] = greater(left,right)->data[i];
+	return create_bitset_with_values(data_len * (sizeof(char) * 8), array, data_len);
+}
+
+Bitset *set_intersection(Bitset *left, Bitset *right) set_operation(left,right, and, id, lesser);
+Bitset *set_union(Bitset *left, Bitset *right) set_operation(left,right, or, id, greater);
+Bitset *set_difference(Bitset *left, Bitset *right) set_operation(left,right, and, neg, greater);
+
+int is_subset(Bitset* left, Bitset* right){
+	if(left->size > right->size) return 0;
+
+	Bitset *inter = set_intersection(left, right);
+	for(int i  = 0; i < left->data_len; i++){
+		if(left->data[i] != inter->data[i]) return 0;
+	}
+	
+	return 1;
+}
+
 int main(){
 	printf("%li\n", sizeof(char));
-	Bitset* bitset = create_bitset_with_range(100, 20);
+	Bitset* bitset = create_bitset_with_range(20, 19);
+	printf("%i %i\n", bitset->data_len, bitset->size);
 	print(bitset);
-	int vals[] = { 5, 3 ,2 ,6, 9, 3, 5, 2, 5, 6, 2, 6, 9};
-	Bitset* b2 = create_bitset_with_values(12, vals, 12);
+	printf("\n");
+	int vals[] = { 5, 3 ,1 ,6, 9, 3, 5, 2, 5, 8, 585, 6, 9};
+	Bitset* b2 = create_bitset_with_values(800, vals, 12);
 	print(b2);
+	printf("\n");
+	set_insert(b2, 4);
+	set_remove(b2, 8);
+	print(b2);
+	printf("%i\n", contains(b2, 670)); 
+	printf("%i\n", contains(b2, 585)); 
+	form_intersection(bitset, b2);
+	printf("\n");
+	print(bitset);
 	return 0;
 }
