@@ -137,8 +137,7 @@ int main(){
 	Insert(tree, -23);
 	Insert(tree, 6);
 	Insert(tree, 9);
-	Node_return* x = search(tree.root, -23);
-	if(x) printf("found: %d\n", x->node->keys[x->index]);
-	else printf("not found\n");
+	Node_return* x = search(tree.root, -24);
+	//printf("found: %d\n", x->node->keys[x->index]);
 	return 0;
 }
