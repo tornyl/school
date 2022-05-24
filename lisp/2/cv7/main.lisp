@@ -72,3 +72,88 @@
 			(incf n)
 			(rem n 2))))
 
+(defun stream-to-list (stream &optional max-count)(if (or (null stream)(eql max-count 0))'()(cons (stream-car stream)(stream-to-list (stream-cdr stream)(when max-count (- max-count 1))))))
+
+(defmacro stream (&rest exprs)(if (null exprs)'()`(cons-stream ,(car exprs) (stream ,@(cdr exprs)))))
+
+(defun naturals (&optional (from 0))
+	(cons-stream from (naturals (1+ from))))
+
+(defun stream-ref (stream index)
+	(if (= index 0)
+			(stream-car stream)
+		(stream-ref (stream-cdr stream) (1- index))))
+
+(defun stream-heads (stream)
+	(if (null (stream-cdr stream))
+			(cons-stream (stream-car stream) nil)
+		(cons-stream (stream-car stream) (stream-heads (cons-stream
+																	(+ (stream-car stream)
+																		(stream-car (stream-cdr stream)))
+																	(stream-cdr (stream-cdr stream)))))))
+
+
+(defun stream-remove-if (test stream)
+  (cond ((null stream) '())
+        ((funcall test (stream-car stream))
+         (stream-remove-if test (stream-cdr stream)))
+        (t (cons-stream (stream-car stream) 
+                        (stream-remove-if test (stream-cdr stream))))))
+
+(defun stream-map (f s)
+  (if (null s)
+      '()
+    (cons-stream
+      (funcall f (stream-car s))
+      (stream-map f (stream-cdr s)))))
+
+(defun stream-each-other (stream)
+  (when stream
+    (let ((car (stream-car stream))
+          (cdr (stream-cdr stream)))
+      (if cdr
+          (cons-stream car (stream-each-other (stream-cdr cdr)))
+        (cons-stream car nil)))))
+
+(defun dividesp (m n)
+  (= (rem n m) 0))
+
+(defun sieve (stream)
+  (let ((car (stream-car stream))
+        (cdr (stream-cdr stream)))
+    (cons-stream car
+                 (sieve (stream-remove-if (lambda (n)
+                                            (dividesp car n))
+                                          cdr)))))
+
+(defun eratosthenes ()
+  (sieve (naturals 2)))
+
+
+(defun prime-twins (&optional (stream (eratosthenes)))
+	(if (= (stream-car stream) (stream-ref stream 1)) 
+			(cons-stream (cons (stream-car stream) (stream-ref stream 2)) (prime-twins (stream-cdr (stream-cdr stream)) ))
+		(prime-twins (stream-cdr (stream-cdr stream)))))
+
+
+(defun stream-cust (stream)
+	(stream-heads (stream-map (lambda (x) (* x x x)) (stream-each-other stream))))
+
+
+(defun naturals (&optional (start 1))
+	(cons-stream start (naturals (+ start 1))))
+
+
+(defun next (gen)
+	(funcall gen))
+
+(defun stream-sqrta (a &optional (x 1))
+	(cons-stream (/ (+ x (/ a x)) 2) (stream-sqrta a (/ (+ x (/ a x)) 2))))
+
+(defun gen-sqrta ()
+	(let ((s (stream-sqrta 2)))
+		(lambda ()
+			(prog1 
+				(stream-car s)
+				(setf s (stream-cdr s))))))
+

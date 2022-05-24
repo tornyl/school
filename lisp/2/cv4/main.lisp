@@ -61,6 +61,10 @@ x)
 (defun set-radius (circle val)
 	(funcall circle 'set-radius val))
 
+(defun move (point a  b)
+	(funcall point 'set-x (+ (funcall point 'x) a)) 
+	(funcall point 'set-y (+ (funcall point 'y) b))) 
+
 
 (let ((act_val (gensym)))
 

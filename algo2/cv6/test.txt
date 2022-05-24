@@ -1,0 +1,254 @@
+
+start
+5 
+  
+end
+
+
+start
+5 
+  
+end
+
+{val: 5 bf: 0}, 
+
+start
+ 5  
+  \ 
+  8 
+    
+end
+
+
+start
+ 5  
+  \ 
+  8 
+    
+end
+
+{val: 5 bf: -1}, {val: 8 bf: 0}, 
+
+start
+   5    
+    \   
+     8  
+    /   
+    7   
+        
+end
+
+
+start
+ 7  
+/ \ 
+5 8 
+    
+end
+
+{val: 5 bf: 0}, {val: 7 bf: 0}, {val: 8 bf: 0}, 
+
+start
+   7    
+  / \   
+ 5   8  
+/       
+3       
+        
+end
+
+
+start
+   7    
+  / \   
+ 5   8  
+/       
+3       
+        
+end
+
+{val: 3 bf: 0}, {val: 5 bf: 1}, {val: 7 bf: 1}, {val: 8 bf: 0}, 
+
+start
+   7    
+  / \   
+ 5   8  
+/     \ 
+3     12 
+        
+end
+
+
+start
+   7    
+  / \   
+ 5   8  
+/     \ 
+3     12 
+        
+end
+
+{val: 3 bf: 0}, {val: 5 bf: 1}, {val: 7 bf: 0}, {val: 8 bf: -1}, {val: 12 bf: 0}, 
+
+start
+       7        
+     /   \      
+   5       8    
+  /         \   
+ 3           12  
+              \ 
+              18 
+                
+end
+
+
+start
+   7    
+  / \   
+ 5   12  
+/   / \ 
+3   8 18 
+        
+end
+
+{val: 3 bf: 0}, {val: 5 bf: 1}, {val: 7 bf: -1}, {val: 8 bf: 0}, {val: 12 bf: 0}, {val: 18 bf: 0}, 
+
+start
+       7        
+     /   \      
+   5       12    
+  /       / \   
+ 3       8   18  
+/               
+1               
+                
+end
+
+
+start
+   7    
+  / \   
+ 3   12  
+/ \ / \ 
+1 5 8 18 
+        
+end
+
+{val: 1 bf: 0}, {val: 3 bf: 0}, {val: 5 bf: 0}, {val: 7 bf: 1}, {val: 8 bf: 0}, {val: 12 bf: 0}, {val: 18 bf: 0}, 
+Tree depth: 2
+Maximum stromu: 18
+Mininum  stromu: 1
+
+start
+       7        
+     /   \      
+   3       12    
+  / \     / \   
+ 1   5   8   18  
+          \     
+          9     
+                
+end
+
+
+start
+       7        
+     /   \      
+   3       12    
+  / \     / \   
+ 1   5   8   18  
+          \     
+          9     
+                
+end
+
+{val: 1 bf: 0}, {val: 3 bf: 0}, {val: 5 bf: 0}, {val: 7 bf: 0}, {val: 8 bf: -1}, {val: 9 bf: 0}, {val: 12 bf: 1}, {val: 18 bf: 0}, 
+
+start
+       7        
+     /   \      
+   3       12    
+  / \     / \   
+ 1   5   8   18  
+          \     
+          9     
+                
+end
+
+{val: 1 bf: 0}, {val: 3 bf: 0}, {val: 5 bf: 0}, {val: 7 bf: 0}, {val: 8 bf: -1}, {val: 9 bf: 0}, {val: 12 bf: 1}, {val: 18 bf: 0}, 
+
+start
+       7        
+     /   \      
+   3       12    
+  / \     / \   
+ 1   5   8   18  
+  \       \     
+  1       9     
+                
+end
+
+
+start
+       7        
+     /   \      
+   3       12    
+  / \     / \   
+ 1   5   8   18  
+  \       \     
+  1       9     
+                
+end
+
+{val: 1 bf: -1}, {val: 1 bf: 0}, {val: 3 bf: 1}, {val: 5 bf: 0}, {val: 7 bf: 1}, {val: 8 bf: -1}, {val: 9 bf: 0}, {val: 12 bf: 1}, {val: 18 bf: 0}, 
+
+start
+       7        
+     /   \      
+   3       12    
+  / \     / \   
+ 1   5   8   18  
+  \       \     
+  1       9     
+                
+end
+
+{val: 1 bf: -1}, {val: 1 bf: 0}, {val: 3 bf: 1}, {val: 5 bf: 0}, {val: 7 bf: 1}, {val: 8 bf: -1}, {val: 9 bf: 0}, {val: 12 bf: 1}, {val: 18 bf: 0}, 
+
+start
+       7        
+     /   \      
+   3       12    
+  / \     / \   
+ 1   5   8   18  
+/ \       \     
+0 1       9     
+                
+end
+
+
+start
+       7        
+     /   \      
+   3       12    
+  / \     / \   
+ 1   5   8   18  
+/ \       \     
+0 1       9     
+                
+end
+
+{val: 0 bf: 0}, {val: 1 bf: 0}, {val: 1 bf: 0}, {val: 3 bf: 1}, {val: 5 bf: 0}, {val: 7 bf: 1}, {val: 8 bf: -1}, {val: 9 bf: 0}, {val: 12 bf: 1}, {val: 18 bf: 0}, 
+
+start
+           7            
+        /     \         
+     3           12      
+   /   \       /   \    
+  1     5     8     18   
+ / \           \        
+0   1           9       
+                        
+end
+
+{val: 0 bf: 0}, {val: 1 bf: 0}, {val: 1 bf: 0}, {val: 3 bf: 1}, {val: 5 bf: 0}, {val: 7 bf: 1}, {val: 8 bf: -1}, {val: 9 bf: 0}, {val: 12 bf: 1}, {val: 18 bf: 0}, 

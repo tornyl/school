@@ -1,0 +1,38 @@
+#include <stdio.h>
+void *my_memset(void *s, int c,  unsigned int len);
+void *is_allocated(void *pt);
+typedef struct {
+	int size;
+	int data_len;
+	char data[];
+}Bitset;
+void set_all(Bitset* bitset, char value);
+int create_num(int ones);
+Bitset* create_bitset(size_t size);
+Bitset* create_bitset_with_values(size_t size, const int *values, size_t array_size);
+Bitset* create_bitset_with_range(size_t size, int upto);
+void print(Bitset *bitset);
+int getPos(int element);
+void set_insert(Bitset* bitset, int element);
+void set_remove(Bitset* bitset, int element);
+int contains(Bitset* bitset, int element);
+char and(char a, char b);
+char or(char a, char b);
+char neg(char a);
+char id(char a);
+void form_operation(Bitset *left, Bitset *right, char (*bin_op)(char, char), char (*un_op)(char));
+void form_intersection(Bitset *left, Bitset* right);
+void form_union(Bitset *left, Bitset* right);
+void form_difference(Bitset *left, Bitset* right);
+Bitset* greater(Bitset* a, Bitset* b);
+Bitset* lesser(Bitset* a, Bitset* b);
+Bitset *set_operation(Bitset *left, Bitset *right, char (*bin_op)(char, char), char (*un_op)(char), Bitset* (*size_op) (Bitset*, Bitset* ));
+Bitset *set_intersection(Bitset *left, Bitset *right);
+Bitset *set_union(Bitset *left, Bitset *right);
+Bitset *set_difference(Bitset *left, Bitset *right);
+int is_subset(Bitset* left, Bitset* right);
+int save_bitsets_to_file(FILE *stream, Bitset **bitsets, size_t bitsets_count);
+int max(int *array, int length);
+Bitset** load_bitsets(FILE *stream);
+int is_bigger(Bitset* bitset);
+Bitset** load_bitsets_if(int (*condition)(Bitset*), FILE* stream);

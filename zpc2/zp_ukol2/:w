@@ -159,6 +159,7 @@ Bitset *set_operation(Bitset *left, Bitset *right, char (*bin_op)(char, char), c
 			j++;
 		}
 	}
+	//printf("size: %i %i \n", b, array[0]);
 	return create_bitset_with_values(chosen->size, int_arr, size);
 }
 
@@ -223,6 +224,7 @@ int max(int *array, int length){
 			}
 			i++;
 		}
+		printf("\n max: %i\n", max);
 		return max;
 	}
 }
@@ -235,16 +237,26 @@ Bitset** load_bitsets(FILE *stream){
 	int max_size= 0;
 	int sum = 0;
 	int bitsets_len = 0;
+	int first_time = 1;
 	while( (c = fgetc(stream)) != EOF){
+		printf("char : %c", c);
 		if(c == '\n'){
+			printf("new_line\n");
 			if(max_size){
+				printf("max_size: %i\n", max_size);
 				bitsets_len +=1;
+				//if(first_time) 
 				bitsets = (Bitset**) realloc(bitsets, sizeof(Bitset*) * bitsets_len);
+				//bitsets = (Bitset**) malloc(sizeof(Bitset*) * 1);
+				printf("sukas\n");
 				bitsets[bitsets_len - 1] = create_bitset_with_values(max(array, size) + 1, array, size);
 				my_memset(array, 0, max_size);
 			}
 			size = 0;
 			sum = 0;
+			first_time = 0;
+			//array = (int*) is_allocated(realloc(array, sizeof(array) + sizeof(int)));
+			//arrays[i] = (int*) is_allocated(malloc(sizeof(int)));
 		}else if(c == ' '){
 			if(size == max_size){
 				int* temp = (int*) (realloc(array, sizeof(int) * (size + 1)));
@@ -257,44 +269,13 @@ Bitset** load_bitsets(FILE *stream){
 			array[size - 1] = sum;
 			sum = 0;	
 		}else{
+			//printf("%c", c);
 			int r = c - '0';
 			sum  = sum * 10 + r;	
 		}
-	}	
-	bitsets = (Bitset**) realloc(bitsets, sizeof(Bitset*) * (bitsets_len + 1));
-	bitsets[bitsets_len] = NULL;
+	}
+
 	return bitsets;
-}
-
-int is_bigger(Bitset* bitset){
-	if(bitset->size > 10){
-		return 1;
-	}else{
-		return 0;
-	}
-}
-
-Bitset** load_bitsets_if(int (*condition)(Bitset*), FILE* stream){
-	Bitset** bitsets = load_bitsets(stream);
-	if(!bitsets){
-		return NULL;
-	}
-	Bitset** filtered = NULL;
-	int i  = 0;
-	int j =  0;
-	while(bitsets[i]){
-		if(condition(bitsets[i])){
-			filtered = (Bitset**) realloc(filtered, sizeof(Bitset*) * (j + 1));
-			filtered[j] = bitsets[i];
-			j++;
-		}else{
-			free(bitsets[i]);
-		}
-		i++;
-	}
-	filtered = (Bitset**) realloc(filtered, sizeof(Bitset*) * (j + 1));
-	filtered[j] = NULL;
-	return filtered;
 }
 
 int main(){
@@ -339,9 +320,12 @@ int main(){
 	//FILE* stream = fopen("bitsets.txt", "a");
 	//printf("%i\n", save_bitsets_to_file(stream, bitsets, 3));
 	FILE* stream = fopen("bitsets.txt", "r");
-	Bitset** bitsets2 = load_bitsets_if(is_bigger, stream);
+	Bitset** bitsets2 = load_bitsets(stream);
+	printf("bunga %p\n", bitsets2);
+	//print(bitsets2[0]);
 	int i = 0;
 	while(bitsets2[i]){
+		printf("%p \n", bitsets2[i]);
 		print(bitsets2[i]);
 		i++;
 	}

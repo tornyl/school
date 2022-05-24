@@ -118,6 +118,18 @@
 		(let ((b-list (fun list)))
 			(cons b-list (bidir-last b-list)))))
 
+(defun list-to-bidir-2 (list)
+	(labels ((fun (list prev-p)
+					(if (null list)
+							prev-p
+						(let ((new (bidir-cons-2 (car list))))
+							(when prev-p
+									(setf (next prev-p) new)
+									(setf (prev new) prev-p))
+							(fun (cdr list) new)))))
+		(fun list nil)))
+
+
 (defun bidir-list (&rest elements)
 	(list-to-bidir-list elements))
 
