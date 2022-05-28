@@ -203,3 +203,19 @@
 		(stream-ref (cdr-stream stream) (1- index))))
 
 
+(defun multiplier (x)(lambda (y)(* y x)))
+
+(defmacro toggle(expr)
+	(list (quote setf) expr (list (quote not) expr)))
+
+(defmacro my-and (&rest forms)
+	`(if ,(not (null forms))
+			(when  ,(car forms) (my-and ,@(cdr forms)))
+		t))
+
+
+(defmacro my-andd (&rest forms)
+	(if forms
+			`(when  ,(car forms) (my-and @,(cdr forms)))
+		t))
+

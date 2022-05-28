@@ -131,7 +131,7 @@
 
 
 (defun prime-twins (&optional (stream (eratosthenes)))
-	(if (= (stream-car stream) (stream-ref stream 1)) 
+	(if (= (stream-car stream) (stream-ref stream 2)) 
 			(cons-stream (cons (stream-car stream) (stream-ref stream 2)) (prime-twins (stream-cdr (stream-cdr stream)) ))
 		(prime-twins (stream-cdr (stream-cdr stream)))))
 

@@ -1,9 +1,13 @@
-(defvar *bm-height* 250)
-(defvar *bm-width* 250)
+(defvar *bm-height* 25)
+(defvar *bm-width* 25)
 
 (defun bm-black-bitmap ()
   (make-array (list *bm-width* *bm-height*) 
               :initial-element nil))
+
+(defun bm-bitmap (elem)
+  (make-array (list *bm-width* *bm-height*) 
+              :initial-element elem))
 
 (defun bm-bitmap-from-array (array)
   array)
@@ -101,13 +105,18 @@
 
 |#
 
-(defvar *lbm-width* 250)
-(defvar *lbm-height* 250)
+(defvar *lbm-width* 25)
+(defvar *lbm-height* 25)
 
 (defun lbm-black-bitmap ()
   (lambda (x y)
     (declare (ignore x y))
     nil))
+
+(defun lbm-mono-bitmap (val)
+  (lambda (x y)
+    (declare (ignore x y))
+    val))
 
 (defun lbm-bitmap-from-array (arr)
   (lambda (x y)
@@ -192,7 +201,68 @@
 (time (lbm-edges-test ljj))
 
 |#
-
+(defun diff (a b)
+	(and a (not b)))
+		
 (defun bm-xor (bm1 bm2)
-	(bm-diff (bm-and-2 bm1 bm2) (bm-or-2 bm1 bm2)))
+	(bm-diff (bm-or-2 bm1 bm2) (bm-and-2 bm1 bm2)))
 
+(defun bm-xor-2 (bm1 bm2)
+	(let ((result (bm-black-bitmap)))
+		(dotimes (x *bm-width*)
+			(dotimes (y *bm-height*)
+				(setf (bm-bit result x y)
+				(diff (or (bm-bit bm1 x y) (bm-bit bm2 x y)) (and (bm-bit bm1 x y) (bm-bit bm2 x y))))))
+		result))
+
+(defun lbm-xor (lbm1 lbm2)
+	(lbm-diff (lbm-or-2 lbm1 lbm2) (lbm-and-2 lbm1 lbm2)))
+
+(defun dotimes-test ()
+	(let ((list nil))
+		(dotimes (x 10)
+			(setf list (cons (lambda () x) list)))
+		list))
+
+
+(defun dolist-test ()
+	(let ((list nil))
+		(dolist (x (list 1 2 3 4 5 6 7 8 9  10))
+			(setf list (cons (lambda () x) list)))
+		list))
+
+
+(defun bm-left-half-plane (bm y)
+	(bm-shift bm 0 (* y -1)))
+
+(defun bm-right-half-plane (bm y)
+	(bm-shift bm 0 y))
+
+(defun bm-upper-half-plane (bm x)
+	(bm-shift bm (* x -1) 0))
+
+(defun bm-lower-half-plane (bm x)
+	(bm-shift bm x 0 ))
+
+
+(defun lbm-left-half-plane (lbm y)
+	(lbm-shift lbm 0 (* y -1)))
+
+(defun lbm-right-half-plane (lbm y)
+	(lbm-shift lbm 0 y))
+
+(defun lbm-upper-half-plane (lbm x)
+	(lbm-shift lbm (* x -1) 0))
+
+(defun lbm-lower-half-plane (lbm x)
+	(lbm-shift lbm x 0 ))
+
+
+(defun bm-rectangle (left upper right lower)
+	(let ((bm (bm-bitmap t)))
+		(bm-and (bm-left-half-plane bm (- *bm-width* right)) (bm-right-half-plane bm left) (bm-upper-half-plane bm (- *bm-height* lower)) (bm-lower-half-plane bm upper))))
+
+
+(defun lbm-rectangle (left upper right lower)
+	(let ((lbm (lbm-mono-bitmap t)))
+		(lbm-and (lbm-left-half-plane lbm (- *lbm-width* right)) (lbm-right-half-plane lbm left) (lbm-upper-half-plane lbm (- *lbm-height* lower)) (lbm-lower-half-plane lbm upper))))
