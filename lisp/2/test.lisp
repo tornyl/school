@@ -219,3 +219,12 @@
 			`(when  ,(car forms) (my-and @,(cdr forms)))
 		t))
 
+
+(defun distance (x1 y1 x2 y2)
+	(sqrt (+ (* (- x1 x2) (x1 x2)) (* (- y1 y2) (- y1 y2)))))
+
+(defun make-circle(c-x c-y r)
+	(lambda (x y)
+		(if (< (distance c-x c-y x y) r)
+				1
+			0)))

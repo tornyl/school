@@ -591,3 +591,8 @@ if
 (car l3)
 (car (cdr l3))
 |#
+
+(define list (lambda (x)
+					(if (= x 0)
+							(cons x (list 1))
+						(cons 1 (list 0)))))
