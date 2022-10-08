@@ -35,18 +35,15 @@
     (vertex-c :initform (make-instance 'point))))
 	
 (defmethod get-vertex-a ((tr triangle))
-	(slot-value tr 'vertex-a)
-	tr)
+	(slot-value tr 'vertex-a))
 (defmethod get-vertex-b ((tr triangle))
-	(slot-value tr 'vertex-b)
-	tr)
+	(slot-value tr 'vertex-b))
 (defmethod get-vertex-c ((tr triangle))
-	(slot-value tr 'vertex-c)
-	tr)
+	(slot-value tr 'vertex-c))
 
 (defmethod to-polygon ((tr triangle))
 	(let* ((poly (make-instance 'polygon)))
-		(set-items poly (list (point-copy (get-vertex-a tr)) (point-copy (get-vertex-b tr)) (point-copy (get-vertex-c tr))))
+		(set-items-poly poly (list (point-copy (get-vertex-a tr)) (point-copy (get-vertex-b tr)) (point-copy (get-vertex-c tr))))
 		poly))
 
 (defmethod point-copy ((pt point))
@@ -59,9 +56,32 @@
 	((items :initform '())
 		(types :initform '())))
 
-(defmethod check-item ((pic picture))
-	(dolist (type (slot-value pic 'types))
-		(unless (typep type 
+(defun list-checker (list item)
+	(unless (null list)
+		(or (typep item (car list)) (list-checker (cdr list) item))))
+
+(defmethod check-item-pic ((pic picture) item)
+	(unless (list-checker (slot-value pic 'types) item)
+		(error "Item of pciture is incorrect type"))
+	pic)
+
+(defmethod check-items-pic ((pic picture) items)
+	(dolist (item items)
+		(check-item-pic pic item))
+	pic)
+
+
+(defmethod set-items-pic ((pic picture) value) 
+  (check-items-pic pic value)
+  (setf (slot-value pic 'items) (copy-list value))
+  pic)
+
+(defmethod set-types-pic ((pic picture) value) 
+  (setf (slot-value pic 'types) (copy-list value))
+  pic)
+ 
+(defmethod items-pic ((pic picture)) 
+  (copy-list (slot-value pic 'items)))
 
 (defmethod set-triangle ((triangle triangle) a b c)
     (setf (slot-value triangle 'vertex-a) a
@@ -117,21 +137,21 @@
 ;;; Vlastnost items
 ;;;
 
-(defmethod check-item ((poly polygon) item)
+(defmethod check-item-poly ((poly polygon) item)
   (unless (typep item 'point) 
     (error "Items of polygon must be points."))
   poly)
 
-(defmethod check-items ((poly polygon) items)
+(defmethod check-items-poly ((poly polygon) items)
   (dolist (item items)
-    (check-item poly item))
+    (check-item-poly poly item))
   poly)
 
-(defmethod items ((poly polygon)) 
+(defmethod items-poly ((poly polygon)) 
   (copy-list (slot-value poly 'items)))
 
-(defmethod set-items ((poly polygon) value) 
-  (check-items poly value)
+(defmethod set-items-poly ((poly polygon) value) 
+  (check-items-poly poly value)
   (setf (slot-value poly 'items) (copy-list value))
   poly)
 
