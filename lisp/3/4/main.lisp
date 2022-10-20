@@ -11,6 +11,7 @@
 (defmethod set-x ((point point) value)
   (unless (typep value 'number)
     (error "x coordinate of a point should be a number"))
+                  (thickness pt))
   (setf (slot-value point 'x) value)
   point)
 
@@ -42,19 +43,20 @@
 	 (thickness :initform 1)))
 
 (defmethod set-mg-params ((tr triangle) mgw) 
-  (mg:set-param mgw :foreground (color pt)) 
+  (mg:set-param mgw :foreground :black) 
   (mg:set-param mgw :filledp nil)
+  (mg:set-param mgw :closedp t)
   tr)
 
 (defmethod do-draw ((tr triangle) mgw) 
-  (mg:draw-circle mgw 
-                  (x (get-vertex-a tr)) 
+  (mg:draw-polygon mgw 
+                  (list (x (get-vertex-a tr)) 
                   (y (get-vertex-a tr)) 
                   (x (get-vertex-b tr)) 
                   (y (get-vertex-b tr)) 
                   (x (get-vertex-c tr)) 
-                  (y (get-vertex-c tr))) 
-  pt) 
+                  (y (get-vertex-c tr))))
+  tr) 
 
 (defmethod draw ((tr triangle) mgw)
 	(set-mg-params tr mgw)

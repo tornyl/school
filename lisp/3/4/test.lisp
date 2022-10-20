@@ -1,0 +1,17 @@
+(setf a (make-instance 'point))
+(set-x a 10)
+(set-y a 10)
+(setf b (make-instance 'point))
+(set-x b 50)
+(set-y b 10)
+(setf c (make-instance 'point))
+(set-x c 30)
+(set-y c 30)
+;
+(setf tr (make-instance 'triangle))
+(set-triangle tr a b c)
+;(setf poly (to-polygon tr))
+;(setf pic (make-instance 'picture))
+;(set-types-pic pic (list 'triangle 'point 'polygon))
+;;(set-items-pic pic (list a tr b poly))
+
