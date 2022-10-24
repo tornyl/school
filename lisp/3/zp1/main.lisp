@@ -29,7 +29,7 @@ filledp), geometrické transformace, kreslení.
    (filledp :initform nil)))
 
 
-;;;
+
 ;;; Vlastnosti související s kreslením
 ;;;
 
@@ -193,6 +193,12 @@ když transformace nedělají nic.
     pt))
 
 
+(defmethod copy-point ((pt point))
+	(let ((new-pt (make-instance 'point)))
+		(set-x new-pt (x pt))
+		(set-y new-pt (y pt))
+		new-pt))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Třída circle
@@ -219,6 +225,11 @@ když transformace nedělají nic.
 (defmethod center ((c circle))
   (slot-value c 'center))
 
+(defmethod set-center ((c circle) p)
+	(unless (typep p 'point)
+		(error "Center is not type of point"))
+	(setf (slot-value c 'center) (copy-point p))
+	c)
 
 ;;;
 ;;; Kreslení
@@ -444,10 +455,8 @@ Třída zůstává beze změny.
 
 
 
+(defclass triangle (polygon) ())
 
-(defclass triangle (polygon)
-
-(defmethod intialize-instance ((tr trinagle)
 (defmethod vertex-a ((tr triangle))
 	(first (items tr)))
 (defmethod vertex-b ((tr triangle))
@@ -476,69 +485,68 @@ Třída zůstává beze změny.
 		  		(= (* a a) (+ (* a a) (* c c))) 
 				(= (* c c) (+ (* b b) (* a a))))))
 
+(defun make-point (x y)
+	(let ((p (make-instance 'point)))
+		(set-x p x)
+		(set-y p y)
+		p))
+
+(defun make-triangle (a b c color)
+	(let ((tr (make-instance 'triangle)))
+		(set-triangle tr a b c)
+		(set-color tr color)
+		(set-filledp tr t)
+		tr))
+
+(defun make-circle (center radius color)	
+	(let ((c (make-instance 'circle)))
+		(set-center c center)
+		(set-radius c radius)
+		(set-color c color)
+		(set-filledp c t)
+		c))
+
+(defun make-ghost (color scale-coeff)
+	(let* ((pic (make-instance 'picture))
+			(x (+ 50 (random 500)))
+			(y (+ 50 (random 500)))
+			(body1 (make-triangle (make-point x (+ y 50)) (make-point (+ x 150) (+ y 50)) (make-point x (+ y 150)) color))
+			(body2 (make-triangle (make-point (+ x 150) (+ y 50)) (make-point x (+ y 150)) (make-point (+ x 150) (+ y 150)) color))
+			(head  (make-circle (make-point (+ x 75) (+ y 50)) 75 color))
+			(leg1 (make-triangle (make-point x (+ y 150)) (make-point (+ x 25) (+ y 150)) (make-point x (+ y 200)) color))
+			(leg2 (make-triangle (make-point (+ x 25) (+ y 150)) (make-point (+ x 75) (+ y 150)) (make-point (+ x 50) (+ y 200)) color))
+			(leg3 (make-triangle (make-point (+ x 75) (+ y 150)) (make-point (+ x 125) (+ y 150)) (make-point (+ x 100) (+ y 200)) color))
+			(leg4 (make-triangle (make-point (+ x 125) (+ y 150)) (make-point (+ x 150) (+ y 150)) (make-point (+ x 150) (+ y 200)) color))
+			(eye-left (make-circle (make-point (+ x 40) (+ y 50)) 25 :white))
+			(eye-right (make-circle (make-point (+ x 110) (+ y 50)) 25 :white))
+			(pupil-left (make-circle (make-point (+ x 30) (+ y 50)) 8 :black))
+			(pupil-right (make-circle (make-point (+ x 100) (+ y 50)) 8 :black)))
+		(set-items pic (list pupil-left pupil-right eye-left eye-right body1 body2 head leg1 leg2 leg3 leg4))
+		(scale pic scale-coeff (make-point x y))
+		(rotate pic (random (* 2 pi)) (make-point x y)) 
+		pic))
+
+(defun display-halloween-window (ghost-count)
+	(let ((wd (make-instance 'window))
+			(colors (list :blue :red :green :yellow :purple))
+			(ghosts-pic (make-instance 'picture))
+			(ghosts '()))
+
+		(set-background wd :black)	 
+		(dotimes (i ghost-count)
+			(setf ghosts (cons (make-ghost (nth (random (length colors)) colors) (+ 0.25 (random 0.25))) ghosts)))
+		(set-items ghosts-pic ghosts)
+		(set-shape wd ghosts-pic)
+		(redraw wd)
+		wd))
 
 
-(defclass ellipse (shape)
-	 ((focal-point-1 :initform (make-instance 'point))
-	 (focal-point-2 :initform (make-instance 'point))
-	 (major-semiaxis :initform 0)
-	 (phi 0)))
+; (nth (random (length colors)) colors)
 
-(defmethod fp1 ((ellipse ellipse))
-	(slot-value ellipse 'focal-point-1))
 
-(defmethod fp2 ((ellipse ellipse))
-	(slot-value ellipse 'focal-point-2))
 
-(defmethod set-fp1 ((ellipse ellipse) point)
-	(setf (slot-value ellipse 'focal-point-1) point))
 
-(defmethod set-fp2 ((ellipse ellipse) point)
-	(setf (slot-value ellipse 'focal-point-2) point))
 
-(defmethod major-semiaxis ((ellipse ellipse))
-	(slot-value ellipse 'major-semiaxis))
 
-(defmethod set-major-semiaxis ((ellipse ellipse) val)
-	(setf (slot-value ellipse 'major-semiaxis) val))
 
-(defmethod phi ((el ellipse))
-	(slot-value el 'phi))
 
-(defmethod set-phi ((el ellipse) val)
-	(setf (slot-value el 'phi) val)
-	el)
-
-(defmethod center ((el ellipse))
-	(let ((s make-instance 'point))	
-		(set-x s (/ (+ (x (fp1 el)) (x (fp2 el))) 2))
-		(set-y s (/ (+ (y (fp1 el)) (y (fp2 el))) 2))
-		s))
-
-(defmethod minor-semiaxis ((el ellipse))
-	(let* ((s (center el)))
-		(sqrt (- (* (major-semiaxis el) (major-semiaxis el)) (* (dist s (fp1 el)) (dist s (fp1 el)))))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; vykreslovani
-
-(defmethod do-draw ((el ellipse) mgw)
-	(mgw:draw-ellipse (x (center el)) (y (center el)) (major-semiaxis el)  (minor-semiaxis el)  (phi el))
-	el)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; geometricke transofrmace
-
-(defmethod move ((el ellipse) dx dy)
-	(move (fp1 el) dx dy)
-	(move (fp2 el) dx dy)
-	el)
-
-(defmethod rotate ((el ellipse) angle center)
-	(rotate (fp1 el) angle center)
-	(rotate (fp2 el) angle center)
-	el)
-
-(defmethod scale ((el ellipse) coeff center)
-	(scale (fp1 el) coeff center)
-	(scale (fp2 el) coeff center)
-	(set-major-semiaxis el (* (major-semiaxis el) coeff))
-	el)
