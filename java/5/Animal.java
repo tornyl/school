@@ -10,4 +10,8 @@ public  class Animal{
 		this.type = type;
 		this.gender = gender;
 	}
+
+	String getDescription(){
+		return type.getDescription(this.gender);
+	}
 }

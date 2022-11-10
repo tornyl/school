@@ -14,16 +14,29 @@ public class Cviceni implements BlockInterface{
 		this.to = to;
 	}
 
-	public String getName(){return this.name;}
+		/** @return nazev Cviceni */	
+	public String getName(){
 
-	public String getPlace(){ return "mistnost:"+this.place;}
+	return this.name;}
+
+		/** @return misto konani  */
+	public String getPlace(){ 
+
+	return "mistnost:"+this.place;}
 	
-	public String getTypeName() {return "cviceni";}
+		/** @return String "cviceni" */
+	public String getTypeName() {
 
+	return "cviceni";}
+
+		/** @return doba trvani */
 	public String getTime(){
+
 		return " od "+ from.getHour() +":"+ from.getMinute() + " do "+ to.getHour() +":"+ to.getMinute();
 	}
 
-	public String getExtras() {return " ";}
+		/** @return extra informace pokud jsou k dispozici */
+	public String getExtras() {
+	return " ";}
 
 }

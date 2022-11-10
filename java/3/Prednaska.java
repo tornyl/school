@@ -14,16 +14,27 @@ public class Prednaska implements BlockInterface{
 		this.to = to;
 	}
 
-	public String getName(){return this.name;}
+		/** @return nazev prednasky */	
+	public String getName(){	
+		return this.name;}
 
-	public String getPlace(){ return "mistnost"+this.place;}
+		/** @return misto konani zkousky */
+	public String getPlace(){
+	return "mistnost"+this.place;}
 	
-	public String getTypeName() {return "prednaska";}
+		/** @return String "prednaska" */
+	public String getTypeName() {
 
+	return "prednaska";}
+
+		/** @return doba trvani */
 	public String getTime(){
+
 		return " od "+ from.getHour() +":"+ from.getMinute() + " do "+ to.getHour() +":"+ to.getMinute();
 	}
 
-	public String getExtras() {return " ";}
+		/** @return extra informace pokud jsou k dispozici */
+	public String getExtras() {
+	return " ";}
 
 }

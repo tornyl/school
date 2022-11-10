@@ -1,6 +1,7 @@
 
 import java.time.LocalDateTime;
 public class Zkouska implements BlockInterface{
+	/** trida Zkouska */
 
 	String name;
 	String place;
@@ -14,16 +15,25 @@ public class Zkouska implements BlockInterface{
 		this.obsazeni = obsazeni;
 	}
 
-	public String getName(){return this.name;}
+	/** @return nazev zkousky */	
+	public String getName(){
+		return this.name;}
 
-	public String getPlace(){ return "mistnost:"+this.place;}
-	
-	public String getTypeName() {return "zkouska";}
+	/** @return misto konani zkousky */
+	public String getPlace(){ 
+	return "mistnost:"+this.place;}
 
+
+	/** @return String "zkouska" */
+	public String getTypeName() {
+	return "zkouska";}
+
+		/** @return doba trvani */
 	public String getTime(){
 		return from.getHour() +":"+ from.getMinute();	
 	}
 
+		/** @return extra informace pokud jsou k dispozici */
 	public String getExtras() {
 		return obsazeni;
 	}

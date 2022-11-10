@@ -13,7 +13,7 @@ public class Animalfarm{
 
 	public void list(){
 		for(Animal animal : this.animals){
-			System.out.println(animal.name+" je "+animal.type.getDescription(animal.gender)+" a dela "+animal.type.getSound());
+			System.out.println(animal.name+" je "+animal.getDescription()+" a dela "+animal.type.getSound());
 		}
 	}
 

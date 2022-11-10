@@ -10,19 +10,30 @@ public class Volno implements BlockInterface{
 		this.to = to;
 	}
 
+		/** @return trvani volna */	
 	public String getName(){
 		Duration  duration = Duration.between(from, to);
 		return "Volno ( "+duration.toHours()+" hodiny "+duration.toMinutes() % 60 +" minut)";
 	}
 
-	public String getPlace(){ return "";}
-	
-	public String getTypeName() {return "volno";}
+		/** @return prazdny String */
+	public String getPlace(){
 
+	return "";}
+	
+		/** @return String "volno" */
+	public String getTypeName() {
+	
+	return "volno";}
+
+		/** @return doba trvani */
 	public String getTime(){
+
 		return " od "+ from.getHour() +":"+ from.getMinute() + " do "+ to.getHour() +":"+ to.getMinute();
 	}
 
-	public String getExtras() {return " ";}
+		/** @return extra informace pokud jsou k dispozici */
+	public String getExtras() {
+	return " ";}
 
 }
