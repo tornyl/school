@@ -1,0 +1,10 @@
+DROP TABLE IF EXISTS stag;
+Create TABLE students
+	(id INT PRIMARY KEY NOT NULL,
+	name VARCHAR(50) NOT NULL);
+
+
+
+Create TABLE 
+	(id INT PRIMARY KEY NOT NULL,
+	name VARCHAR(50) NOT NULL);
