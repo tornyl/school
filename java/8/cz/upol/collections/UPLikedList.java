@@ -1,14 +1,14 @@
 //package cz.upol.collections;
-
+import java.util.Iterator;
 /**
  * LinkedList implementation for integers
  */
-public class UPLikedList<T> implements Sequence<T>{
+public class UPLikedList<T> implements Iterable<T>, Sequence<T>, Comparable<UPLikedList>{
 
     /**
      * Class represents item in LinkedList
      */
-    private class Node<T> implements Iterable<T>{
+    private class Node<T>{
         /**
          * Node value
          */
@@ -18,24 +18,24 @@ public class UPLikedList<T> implements Sequence<T>{
          * Pointer to the next node in the list.
          * If NULL this node is the last one.
          */
-        private Node next;
+        private Node next_;
 
         public Node(T value, Node next) {
             this.value = value;
-            this.next = next;
+            this.next_ = next_;
         }
 
         public Node(T value) {
             this.value = value;
-            this.next = null;
+            this.next_ = null;
         }
 
         public Node getNext() {
-            return next;
+            return next_;
         }
 
-        public void setNext(Node next) {
-            this.next = next;
+        public void setNext(Node next_) {
+            this.next_ = next_;
         }
 
         public T getValue() {
@@ -44,16 +44,29 @@ public class UPLikedList<T> implements Sequence<T>{
 
         public void setValue(T value) {
             this.value = value;
-        }
-		  
-		  public  boolean hasNext(){
-			return this.next != null;
-		  }
+        } 
+   }
 
-		  public T next(){
-				return (T) this.next.getValue();	
-		  }
-    }
+	public class CustomIterator implements Iterator<T>{
+		Node node;
+		public CustomIterator(Node root){
+			this.node = root;
+		}
+
+		public boolean hasNext(){
+			return !(node.getNext() == null);
+		}
+
+		public T next(){
+			if(this.node != null){
+				T val =(T) this.node.getValue();
+				this.node =this.node.getNext();
+				return val;
+			}else{
+				return null;
+			}
+		}
+	}
 
     /**
      * List first value.
@@ -69,6 +82,10 @@ public class UPLikedList<T> implements Sequence<T>{
         insert(value);
 		  this.size_++;
     }
+
+	 public CustomIterator iterator(){
+		return new CustomIterator(this.root);
+	 }
 
 	 public int size(){ return this.size_; }
 
@@ -87,11 +104,12 @@ public class UPLikedList<T> implements Sequence<T>{
             current = current.getNext();
         }
         
-        current.next = new Node<T>(value);
+        current.next_ = new Node<T>(value);
 		  this.size_++;
     }
 
 	 public boolean contains(T value){
+	 	if(this.root == null) return false;
 		Node current = this.root;
 		while(current.getNext() != null){
 			if(current.getValue() == value) return true;
@@ -106,7 +124,7 @@ public class UPLikedList<T> implements Sequence<T>{
 		while(current.getNext() != null){
 			if(current.getValue() == value){
 				if(previous != null){
-					previous.next = current.getNext();
+					previous.next_ = current.getNext();
 				}else{
 					this.root = current.getNext();
 				}
@@ -116,6 +134,10 @@ public class UPLikedList<T> implements Sequence<T>{
 			current = current.getNext();
 		}
 		return false;
+	}
+
+	public int compareTo(UPLikedList o){
+		return Integer.compare(this.size(), o.size());
 	}
 
 
@@ -139,3 +161,6 @@ public class UPLikedList<T> implements Sequence<T>{
         return description.toString();
     }
 }
+
+
+

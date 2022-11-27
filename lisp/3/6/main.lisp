@@ -93,3 +93,28 @@
 	(scale (fp2 el) coeff center)
 	(set-major-semiaxis el (* (major-semiaxis el) coeff))
 	el)
+
+
+(defmethod left ((p point))
+	(x p))
+
+(defmethod right ((p point))
+	(x p))
+
+(defmethod top ((p point))
+	(y p))
+
+(defmethod bottom ((p point))
+	(y p))
+
+(defclass segment (point)
+	((x2 :initform 0)
+	(y2 :initform 0)))
+
+(defmethod
+
+(defmethod right ((s segment))
+	(x2 s))
+
+(defmethod bottom ((s segment))
+	(y2 s))

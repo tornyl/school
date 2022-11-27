@@ -41,7 +41,7 @@ public class Main {
         var matrixValue = matrix[1][1];
         System.out.println(String.format("Value at [1, 1] is %d", matrixValue));
 
-		  IntSet ints = new IntSet(4 , 21, 1 , 4 ,2 ,1, 53 ,4);
+		  IntSet ints = new IntSet(4 , 21, 0 , 4 ,2 ,1, 53 ,4);
 		  System.out.println(ints.toString());
     }
 }

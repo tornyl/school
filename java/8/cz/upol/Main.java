@@ -1,5 +1,6 @@
 //package cz.upol;
 
+import java.util.Iterator;
 //import cz.upol.collections.UPLikedList;
 
 public class Main {
@@ -42,6 +43,13 @@ public class Main {
         System.out.println(String.format("Value at [1, 1] is %d", matrixValue));
 
 		  IntSet<Integer> ints = new IntSet<>(4 , 21, 1 , 4 ,2 ,1, 53 ,4);
+		  IntSet<Boolean> bools = new IntSet<>(false, true, false);
 		  System.out.println(ints.toString());
+		  System.out.println(bools.compareTo(ints));
+		  System.out.println(ints.compareTo(bools));
+		  Iterator it = ints.iterator();
+		  System.out.println(it.next());
+		  System.out.println(it.next());
+		  System.out.println(it.hasNext());
     }
 }

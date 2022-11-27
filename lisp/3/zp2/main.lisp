@@ -1,3 +1,6 @@
+
+;; zadne warningy mne to nevypisuje, ani u check-semaphore-phase.
+
 (defclass semaphore (abstract-picture)
 	((semaphore-type :initform :pedestrian)	
 	 (phase-count :initform 2)
@@ -43,7 +46,7 @@
 (defmethod semaphore-type ((smp semaphore))
 	(slot-value smp 'semaphore-type))
 
-(defmethod check-semaphore-phase ((smp semaphore) phase)
+(defmethod check-semaphore-phase ((smp semaphore) phase) 
 	(unless (typep phase number)
 		(error "phase is not a number"))
 	smp)
@@ -117,9 +120,6 @@
 (defmethod check-items ((cr crossroads) item-list)
 	(do-check-items cr item-list))
 
-(defmethod set-items ((cr crossroads) items)
-	(call-next-method))
-
 (defmethod phase-count ((cr crossroads))
 	(length (program cr)))
 
@@ -140,17 +140,20 @@
 (defmethod crossroads-phase ((cr crossroads))
 	(slot-value cr 'crossroads-phase))
 
-(defun flatten (list)
-	(cond ((consp list) (append (flatten (car list)) (flatten (cdr list))))
-			((eql list nil) '())
-			(t (list list))))
+;;(defun flatten (list)
+;;	(cond ((consp list) (append (flatten (car list)) (flatten (cdr list))))
+;;			((eql list nil) '())
+;;			(t (list list))))
 
 (defmethod semaphores ((cr crossroads))
 	(let ((objects '()))
-	(dolist (item (flatten (items cr)))
-		(when (typep item 'semaphore)
-			(setf objects (cons item objects))))
-	objects))
+		(labels ((find-semaphores (shape)
+						(dolist (item (items shape))
+							(cond ((typep item 'semaphore) (setf objects (cons item objects)))
+									((typep item 'abstract-picture) (find-semaphores item))
+									(t t)))))
+			(find-semaphores cr))
+		objects))
 
 (defmethod next-phase ((cr crossroads))
 	(setf (slot-value cr 'crossroads-phase) (rem (+ 1 (crossroads-phase cr)) (phase-count cr)))

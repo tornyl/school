@@ -92,6 +92,7 @@ public class UPLikedList implements Sequence{
     }
 
 	 public boolean contains(int value){
+	 	if (this.root == null) return false;
 		Node current = this.root;
 		while(current.getNext() != null){
 			if(current.getValue() == value) return true;
@@ -118,8 +119,6 @@ public class UPLikedList implements Sequence{
 		return false;
 	}
 
-
-
     @Override
     public String toString() {
         StringBuilder description = new StringBuilder();
@@ -137,5 +136,27 @@ public class UPLikedList implements Sequence{
         description.append("]");
 
         return description.toString();
+    }
+}
+
+
+class CustomIterator<> implements Iterator<> {
+      
+    // constructor
+    CustomIterator<>(CustomDataStructure obj) {
+        // initialize cursor
+    }
+      
+    // Checks if the next element exists
+    public boolean hasNext() {
+    }
+      
+    // moves the cursor/iterator to next element
+    public T next() {
+    }
+      
+    // Used to remove an element. Implement only if needed
+    public void remove() {
+        // Default throws UnsupportedOperationException.
     }
 }
