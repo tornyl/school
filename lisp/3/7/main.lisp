@@ -1,5 +1,12 @@
 
+(defmethod set-window ((c circle) value)
+	(call-next-method)
+	(set-window (center c) value))
+
 (defclass triangle (abstract-polygon) ())
+
+(defmethod check-items ((tr triangle) items)
+	(do-check-items tr items))
 
 (defmethod vertex-a ((tr triangle))
 	(first (items tr)))
@@ -92,4 +99,36 @@
 	(scale (fp1 el) coeff center)
 	(scale (fp2 el) coeff center)
 	(set-major-semiaxis el (* (major-semiaxis el) coeff))
-	e
+	el)
+
+
+(defun darken-color (color)(let ((color-spec (color:get-color-spec color)))(color:make-hsv (color:color-hue color-spec)(color:color-saturation color-spec)(/ (color:color-value color-spec) 2))))
+
+(defclass sim-window (window)
+ ())
+
+ (defmethod ev-changing ((w sim-window) shape)
+	(set-background w (darken-color (color shape))))
+
+(defclass w2-window (window)
+	((last-color :initform nil)
+  	(last-shape :initform nil)))
+
+(defmethod ev-changing ((w2 w2-window) shape)
+	(when (slot-value w2 'last-shape)
+		(print "chango")
+		(do-set-color (slot-value w2 'last-shape) (slot-value w2 'last-color)))
+	(setf (slot-value w2 'last-color) (color shape))
+	(setf (slot-value w2 'last-shape) shape)
+	(do-set-color shape :red))
+
+;;(defmethod ev-change ((w2 w2-window) shape)
+;;	(call-next-method)
+
+
+(defclass w3-window (window)
+	())
+
+(defmethod ev-changing ((w3 w3-window) shape)
+	(unless (capi:confirm-yes-or-no "Umožnit změnu?")
+		(error "erorr here")))

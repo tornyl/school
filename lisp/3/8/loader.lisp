@@ -1,0 +1,5 @@
+(load "micro-graphics/load.lisp")
+(load "07_click_circle.lisp")
+(load "07.lisp")
+(load "07_cwaw.lisp")
+(load "main.lisp")

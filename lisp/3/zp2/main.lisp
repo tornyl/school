@@ -1,5 +1,4 @@
 
-;; zadne warningy mne to nevypisuje, ani u check-semaphore-phase.
 
 (defclass semaphore (abstract-picture)
 	((semaphore-type :initform :pedestrian)	
@@ -10,6 +9,7 @@
 
 (defmethod initialize-instance ((smp semaphore) &key)
 	(call-next-method)
+	(make-semaphore smp)
 	;;(set-semaphore-type smp :vehicle)
 	)
 
@@ -47,7 +47,7 @@
 	(slot-value smp 'semaphore-type))
 
 (defmethod check-semaphore-phase ((smp semaphore) phase) 
-	(unless (typep phase number)
+	(unless (typep phase 'number)
 		(error "phase is not a number"))
 	smp)
 
@@ -124,6 +124,10 @@
 	(length (program cr)))
 
 (defmethod set-crossroads-phase ((cr crossroads) phase)
+	(do-set-crossroads-phase cr phase)
+	(change-semaphores cr))
+
+(defmethod do-set-crossroads-phase ((cr crossroads) phase)
 	(setf (slot-value cr 'crossroads-phase) phase))
 
 (defmethod program ((cr crossroads))
@@ -133,9 +137,9 @@
 	(setf (slot-value cr 'program) program))
 
 (defmethod set-program ((cr crossroads) program)
-	(do-set-program cr (mapcar #'reverse program))
-	(set-crossroads-phase cr -1)
-	(next-phase cr))
+;;	(do-set-program cr (mapcar #'reverse program))
+	(do-set-program cr  program)
+	(set-crossroads-phase cr 0))
 
 (defmethod crossroads-phase ((cr crossroads))
 	(slot-value cr 'crossroads-phase))
@@ -153,7 +157,7 @@
 									((typep item 'abstract-picture) (find-semaphores item))
 									(t t)))))
 			(find-semaphores cr))
-		objects))
+		(reverse objects)))
 
 (defmethod next-phase ((cr crossroads))
 	(setf (slot-value cr 'crossroads-phase) (rem (+ 1 (crossroads-phase cr)) (phase-count cr)))
