@@ -30,8 +30,7 @@ public class Point{
 
 	@Override
 	public int hashCode(){
-		Point p =  (Point) this;
-		return (int) (p.X() + p.Y());
+		return (int) (thi.X() + this.Y());
 	}
 
 }

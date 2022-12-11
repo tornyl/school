@@ -16,6 +16,12 @@ public class Main{
 		set.add(new Point(3, 1));
 
 		System.out.println(set);
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("aa", 5);
+		map.put("coeff", 42);
+		System.out.println(rpnCalc("1 2 3 + +", map));
+		System.out.println(rpnCalc("1 32 + 42 *  5 + 66 -", map));
+		System.out.println(rpnCalc("1 32 + coeff *  aa + 66 -", map));
 	}
 
 	Map<String, Integer> freq(String s){
@@ -38,6 +44,36 @@ public class Main{
 		//return Arrays.stream(s.split("\\W+")).map();
 	}
 
+	static int rpnCalc(String exprt,Map<String, Integer> variables){
+		Stack<Integer> stack = new Stack<Integer>();	
+		for(int i = 0; i < exprt.length(); i++){
+			char ch = exprt.charAt(i);
+			if(ch == '+'){
+				stack.push(stack.pop() + stack.pop());
+			}else if(ch == '-'){	
+				stack.push(stack.pop() - stack.pop());
+			}else if(ch == '*'){
+				stack.push(stack.pop() * stack.pop());
+			}else if(ch == '/'){	
+				stack.push(stack.pop() / stack.pop());
+			}else if(Character.isDigit(ch)){
+				int j = 0;
+				while(Character.isDigit(exprt.charAt(i+j))){
+					j++;
+				}
+				stack.push(Integer.parseInt(exprt.substring(i, i+j)));
+				i +=j;
+			}else if(Character.isAlphabetic(ch)){
+				int j = 0;
+				while(Character.isAlphabetic(exprt.charAt(i+j))){
+					j++;
+				}
+				stack.push(variables.get(exprt.substring(i, i+j)));	
+				i +=j;
+			}
+		}
+		return stack.pop();
+	}
 	
 	Map<String, Integer> freqIgnoreCase(String s){
 		HashMap<String, Integer> map = new HashMap<String, Integer>();

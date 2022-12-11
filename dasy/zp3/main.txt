@@ -1,0 +1,28 @@
+zamestnanec
+	id
+	jmeno
+	prijmeni
+	plat
+	datum nastupu
+
+
+nemovitost
+	id
+	typ
+	velikost
+	adresa
+
+zakaznik
+	id
+	jmeno
+	prijmeni
+
+obchod
+	id
+	nemovitost
+	kupujici
+	prodavajici
+	makler
+	cena
+	provize
+	datum

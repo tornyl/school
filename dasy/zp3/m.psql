@@ -1,0 +1,112 @@
+
+drop table if exists people cascade;
+create table people(
+	person_id integer primary key,
+	first_name text not null,
+	last_name text not null
+);
+
+drop table if exists employees cascade;
+create table employees(
+	employee_id  integer primary key,
+	salary float not null check(salary >= 0),
+	hire_date date not null,
+	foreign key (employee_id) references people (person_id) on update cascade on delete cascade
+);
+
+
+create type property_t as enum('house', 'flat', 'land');
+drop table if exists properties cascade;
+create table properties(
+	property_id integer primary key,
+	type property_t not null,
+	area text not null,
+	city text not null,
+	street text not null,
+	land_number int not null
+);
+
+drop table if exists records;
+create table records(
+	record_id int primary key,
+	property_id int not null,
+	buyer_id int not null,
+	seller_id int not null,
+	broker_id int not null,
+	price int not null check (price >= 0),
+	commission float not null check (commission >= 0),
+	date date not null,
+	foreign key (property_id) references properties (property_id) on update cascade on delete cascade,
+	foreign key (buyer_id) references people (person_id) on update cascade on delete cascade,
+	foreign key (seller_id) references people (person_id) on update cascade on delete cascade,
+	foreign key (broker_id) references people (person_id) on update cascade on delete cascade
+);
+
+
+insert into people (person_id, first_name, last_name) values(23, 'Petr', 'Chajda');
+insert into people (person_id, first_name, last_name) values(24, 'Jiri', 'Bolek');
+insert into people (person_id, first_name, last_name) values(25, 'Tomas', 'Marny');
+insert into people (person_id, first_name, last_name) values(26, 'Josef', 'Nejezchleb');
+insert into people (person_id, first_name, last_name) values(27, 'Karel', 'Vejpustek');
+insert into people (person_id, first_name, last_name) values(28, 'Ivana', 'Blatna');
+insert into people (person_id, first_name, last_name) values(29, 'Jan', 'Pavel');
+insert into people (person_id, first_name, last_name) values(30, 'Jiri', 'Lunt');
+insert into people (person_id, first_name, last_name) values(31, 'Alena', 'Koulova');
+insert into people (person_id, first_name, last_name) values(32, 'Josef', 'Lemr');
+insert into people (person_id, first_name, last_name) values(33, 'Jirina', 'Novakova');
+insert into people (person_id, first_name, last_name) values(34, 'Jan', 'Suchy');
+insert into people (person_id, first_name, last_name) values(35, 'Alois', 'Boura');
+
+insert into employees(employee_id, salary, hire_date)  values(32, 40000, '2022-07-01');
+insert into employees(employee_id, salary, hire_date)  values(34, 40000, '2022-07-01');
+insert into employees(employee_id, salary, hire_date)  values(35, 35000, '2022-08-06');
+
+insert into properties(property_id, type, area, city, street, land_number) values(32, 'flat', '1+1', 'olomouc', 'kosinova', 10);
+insert into properties(property_id, type, area, city, street, land_number) values(34, 'land', 'neznamo', 'olomouc', 'holicka', 20);
+insert into properties(property_id, type, area, city, street, land_number) values(36, 'flat', '2+1', 'olomouc', 'pavlovicka', 8);
+insert into properties(property_id, type, area, city, street, land_number) values(38, 'house', 'neznamo', 'velky tynec', 'olomoucka', 4);
+insert into properties(property_id, type, area, city, street, land_number) values(40, 'house', 'neznamo', 'Sternberk', 'opavska', 4);
+insert into properties(property_id, type, area, city, street, land_number) values(42, 'house', '5+2', 'olomouc', 'bystrovanska', 28);
+insert into properties(property_id, type, area, city, street, land_number) values(44, 'flat', 'neznamo', 'olomouc', 'kosinova', 10);
+insert into properties(property_id, type, area, city, street, land_number) values(46, 'flat', '2+1', 'olomouc', 'riegerova', 10);
+
+insert into records(record_id, property_id, buyer_id, seller_id, broker_id, price, commission, date) values(5, 32, 23, 24, 32, 3000000, 150000, '2022-07-22');
+insert into records(record_id, property_id, buyer_id, seller_id, broker_id, price, commission, date) values(4, 34, 24, 25, 34, 2500000, 50000, '2022-07-25');
+insert into records(record_id, property_id, buyer_id, seller_id, broker_id, price, commission, date) values(6, 36, 26, 27, 35, 2000000, 50000, '2022-08-13');
+insert into records(record_id, property_id, buyer_id, seller_id, broker_id, price, commission, date) values(7, 38, 25, 28, 32, 5250000, 250000, '2022-09-20');
+insert into records(record_id, property_id, buyer_id, seller_id, broker_id, price, commission, date) values(8, 40, 30, 29, 35, 6000000, 300000, '2022-09-23');
+insert into records(record_id, property_id, buyer_id, seller_id, broker_id, price, commission, date) values(9, 42, 23, 31, 32, 10000000, 300000, '2022-10-14');
+insert into records(record_id, property_id, buyer_id, seller_id, broker_id, price, commission, date) values(10, 44, 30, 23, 34, 3500000, 100000 , '2022-10-28');
+insert into records(record_id, property_id, buyer_id, seller_id, broker_id, price, commission, date) values(11, 46, 32, 33, 32, 4000000, 0, '2022-10-30');
+
+
+
+--dotazy
+
+--A
+select p1.first_name as seller_fn, p1.last_name as seller_ln, p2.first_name as buyer_fn, p2.last_name as buyer_ln, price from people as p1, people as p2, records where records.seller_id = p1.person_id and records.buyer_id = p2.person_id;
+
+--B
+select properties.*, price from properties, records where records.property_id = properties.property_id;
+
+--C
+-- vybral jsem odbodobi od 1.9.2022 do 26.10.2022
+select people.first_name, people.last_name, foo.sum from people, (select employees.employee_id,  sum(records.commission) as sum from records, employees where records.broker_id = employees.employee_id and records.date >= '2022-09-01' and records.date <= '2022-10-26' group by employee_id order by sum desc limit 1) as foo where foo.employee_id = people.person_id; 
+
+--D
+	--1
+select people.first_name, people.last_name, foo.sum from people, (select employees.employee_id,  sum(records.commission) as sum from records, employees where records.broker_id = employees.employee_id group by employee_id order by sum desc) as foo where foo.employee_id = people.person_id; 
+
+	--2	
+select people.first_name, people.last_name, (current_date - hire_date) / 12 * salary  as "salary paid" from employees, people where employees.employee_id = people.person_id;
+
+	--3
+
+drop view if exists com_sum;
+create view com_sum as select employees.employee_id,  sum(records.commission) as com_made from records, employees where records.broker_id = employees.employee_id group by employee_id order by com_made desc;
+
+drop view if exists salary_sum;
+create view salary_sum as select employee_id, (current_date - hire_date) / 12 * salary  as "salary paid" from employees;
+
+select people.first_name, people.last_name, com_sum.com_made - salary_sum."salary paid" as difference from people, com_sum, salary_sum where people.person_id = com_sum.employee_id and people.person_id = salary_sum.employee_id;
+
