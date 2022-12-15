@@ -64,7 +64,7 @@ insert into employees(employee_id, salary, hire_date)  values(35, 35000, '2022-0
 insert into properties(property_id, type, area, city, street, land_number) values(32, 'flat', '1+1', 'olomouc', 'kosinova', 10);
 insert into properties(property_id, type, area, city, street, land_number) values(34, 'land', 'neznamo', 'olomouc', 'holicka', 20);
 insert into properties(property_id, type, area, city, street, land_number) values(36, 'flat', '2+1', 'olomouc', 'pavlovicka', 8);
-insert into properties(property_id, type, area, city, street, land_number) values(38, 'house', 'neznamo', 'velky tynec', 'olomoucka', 4);
+insert into properties(property_id, type, area, city, street, land_number) values(38, 'house', '6+1', 'velky tynec', 'olomoucka', 4);
 insert into properties(property_id, type, area, city, street, land_number) values(40, 'house', 'neznamo', 'Sternberk', 'opavska', 4);
 insert into properties(property_id, type, area, city, street, land_number) values(42, 'house', '5+2', 'olomouc', 'bystrovanska', 28);
 insert into properties(property_id, type, area, city, street, land_number) values(44, 'flat', 'neznamo', 'olomouc', 'kosinova', 10);

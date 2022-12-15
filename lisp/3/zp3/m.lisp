@@ -17,6 +17,26 @@
 		(add-object-properties w 'polygon (append shape compound-shape polygon)))
 	(display-window-info w))
 
+
+(defmethod install-callbacks ((w inspector-window))
+  (call-next-method)
+  (install-double-click-callback w))
+
+(defmethod install-mouse-down-callback ((w inspector-window))
+	(mg:set-callback (slot-value w 'mg-window)
+		:mouse-down nil))
+
+(defmethod install-double-click-callback ((w inspector-window))
+  (mg:set-callback 
+   (slot-value w 'mg-window) 
+   :double-click (lambda (mgw button x y)
+		 (declare (ignore mgw))
+		 (window-mouse-down 
+                  w
+                  button 
+                  (move (make-instance 'point) x y)))))
+ 
+
 (defmethod check-shape ((w inspector-window) shape)
 	t)
 
@@ -36,6 +56,7 @@
 	(slot-value w 'inspected-window))
 
 (defmethod set-inspected-window ((w inspector-window) win)
+	(clear-inspected-delegate w)
 	(do-set-inspected-window w win)
 	(display-window-info w))
 
@@ -45,6 +66,10 @@
 		(set-delegate win w)
 		(add-event win 'ev-mouse-down 'ev-iw-inspect-object)
 		(add-event win 'ev-mouse-down-no-shape 'ev-iw-inspect-window)))
+
+(defmethod clear-inspected-delegate ((w inspector-window))
+	(when (inspected-window w)
+		(set-delegate (inspected-window w) nil)))
 
 (defmethod display-window-info ((w inspector-window))
 	(if (inspected-window w)
@@ -112,11 +137,14 @@
 (defclass inspected-window (window)
 	())
 
+
+;;(defmethod mouse-down-no-shape ((w inspected-window) button  position)
+;;	(ev-mouse-down-no-shape w button position))
 (defmethod mouse-down-no-shape ((w inspected-window) button  position)
-	(ev-mouse-down-no-shape w button position))
+  (send-event w 'ev-mouse-down-no-shape button position))
 
 (defmethod ev-mouse-down-no-shape ((w inspected-window) button position)
-  (send-event w 'ev-mouse-down-no-shape button position))
+	w)
  
 (defmethod solid-shapes-count ((w inspected-window))
 	(if (shape w)
