@@ -1,3 +1,4 @@
+;; kdyby inspector informace nebyly videt je treba trosku zvetsit okno
 (defclass inspector-window (abstract-window)
 	((inspected-window :initform nil)
 	 (inspected-object :initform nil)
@@ -35,10 +36,11 @@
                   w
                   button 
                   (move (make-instance 'point) x y)))))
- 
 
 (defmethod check-shape ((w inspector-window) shape)
 	t)
+
+
 
 (defmethod object-properties-list ((w inspector-window))
 	(slot-value w 'object-properties-list))
@@ -80,10 +82,13 @@
 	(set-shape w (make-window-info w "Neni nastaveno zadne okno k prohlizeni")))
 
 (defmethod do-display-info-about-window ((w inspector-window))	
-	(set-shape w (make-window-info w (format nil "okno  s ~a objekty" (solid-shapes-count (inspected-window w))))))
+	(let ((pic (make-instance 'picture))
+			(w-info (make-window-info w (format nil "okno obsahuje  s ~a objekty a barva okna je ~a" (solid-shapes-count (inspected-window w)) (background (inspected-window w))))))
+		(set-items pic (list w-info))
+		(set-shape w pic)))
 
 (defmethod make-window-info ((w inspector-window) text)
-	(make-window-info-text  w text 400 30 10))
+	(make-window-info-text  w text 10 30 10))
 
 (defmethod make-window-info-text ((w inspector-window) text x y scale-coeff)
 	(scale (move (set-text (make-instance 'text-shape-w-prop) text) x y ) scale-coeff (move (make-instance 'point) x y)))	
@@ -92,19 +97,19 @@
 	(let* ((props (object-properties w object))
 			 (pairs (mapcar (lambda(x) (cons x (funcall x object))) props))
 			 (pic (make-instance 'picture))
-			 (window-info (make-window-info w (format nil "okno s ~a objekty" (solid-shapes-count (inspected-window w)))))
+			 (window-info (make-window-info w (format nil "informace o ~a" (type-of object))))
 			 (i 2)
 			 (default-props (list 'scale 'rotate 'move-x 'move-y)))
 		(set-inspected-object w object)
 		(dolist (item pairs)
-			(setf text (make-window-info-text w (format nil "~a ~a" (car item) (cdr item)) 250 (+ 150 (* i (+ 20 (- (bottom window-info) (top window-info))))) 10))
+			(setf text (make-window-info-text w (format nil "~a ~a" (car item) (cdr item)) 50 (+ 150 (* i (+ 20 (- (bottom window-info) (top window-info))))) 10))
 			(set-prop text (car item))
 			(set-delegate text pic)
 			(set-items pic (cons text (items pic)))
 			(setf i (+ i 1)))
 		(when (typep object 'shape)
 			(dolist (item default-props)
-				(setf text (make-window-info-text w (format nil "~a " item) 250 (+ 150 (* (+ i 1) (+ 20 (- (bottom window-info) (top window-info))))) 10))
+				(setf text (make-window-info-text w (format nil "~a " item) 50 (+ 150 (* (+ i 1) (+ 20 (- (bottom window-info) (top window-info))))) 10))
 				(set-prop text item)
 				(set-delegate text pic)
 				(set-items pic (cons text (items pic)))
