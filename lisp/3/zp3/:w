@@ -79,13 +79,12 @@
 		(do-display-info-no-window w)))
 
 (defmethod do-display-info-no-window ((w inspector-window))
-	(set-shape w (make-window-info w 'text-shape-w-prop "Neni nastaveno zadne okno k prohlizeni")))
+	(set-shape w (make-window-info w 'text-shape-nosolid "Neni nastaveno zadne okno k prohlizeni")))
 
 (defmethod do-display-info-about-window ((w inspector-window))	
 	(let ((pic (make-instance 'picture))
-			(object-count (make-window-info w 'text-shape-w-nosolid (format nil "okno obsahuje  s ~a objekty" (solid-shapes-count (inspected-window w)))))
-			(b-color (make-window-info w 'text-shape-w-prop (format nil "barva okna je ~a" (background (inspected-window w))))))
-		(set-items pic (list w-info b-color))
+			(w-info (make-window-info w 'text-shape-w-prop (format nil "okno obsahuje  s ~a objekty a barva okna je ~a" (solid-shapes-count (inspected-window w)) (background (inspected-window w))))))
+		(set-items pic (list w-info))
 		(set-shape w pic)))
 
 (defmethod make-window-info ((w inspector-window) type text)
@@ -102,6 +101,7 @@
 			 (i 2)
 			 (default-props (list 'scale 'rotate 'move-x 'move-y)))
 		(set-inspected-object w object)
+		(set-solidp window-info nil)
 		(dolist (item pairs)
 			(setf text (make-window-info-text w 'text-shape-w-prop (format nil "~a ~a" (car item) (cdr item)) 50 (+ 150 (* i (+ 20 (- (bottom window-info) (top window-info))))) 10))
 			(set-prop text (car item))
@@ -176,10 +176,5 @@
 (defmethod solidp ((ts text-shape-nosolid))
 	nil)
 
-(defmethod solid-subshapes ((ts text-shape-nosolid))
-	nil)
-
-(defmethod contains-point-p ((ts text-shape-nosolid) point)
-	nil)
 ;; Pkud uzivatel bude chtit pridat dalsi typ objektu staci zavolat funkci add-object-properties, kde uvede typ objktu a seznam vsench nastavitelnych vlastnosti
 
