@@ -1,4 +1,5 @@
 ;; kdyby inspector informace nebyly videt je treba trosku zvetsit okno
+;; zadny warning mi to nevypisuje, ale dival jsem se na nej a stale nevim cim to je.
 (defclass inspector-window (abstract-window)
 	((inspected-window :initform nil)
 	 (inspected-object :initform nil)
@@ -83,9 +84,11 @@
 
 (defmethod do-display-info-about-window ((w inspector-window))	
 	(let ((pic (make-instance 'picture))
-			(object-count (make-window-info w 'text-shape-w-nosolid (format nil "okno obsahuje  s ~a objekty" (solid-shapes-count (inspected-window w)))))
-			(b-color (make-window-info w 'text-shape-w-prop (format nil "barva okna je ~a" (background (inspected-window w))))))
-		(set-items pic (list w-info b-color))
+			(object-count (make-window-info w 'text-shape-nosolid (format nil "okno obsahuje  s ~a objekty" (solid-shapes-count (inspected-window w)))))
+			(b-color (make-window-info-text w 'text-shape-w-prop (format nil "barva okna je ~a" (background (inspected-window w))) 10 70 10)))
+		(add-event pic 'ev-mouse-down 'ev-property-click)
+		(set-prop b-color 'w-background)
+		(set-items pic (list object-count b-color))
 		(set-shape w pic)))
 
 (defmethod make-window-info ((w inspector-window) type text)
@@ -100,6 +103,7 @@
 			 (pic (make-instance 'picture))
 			 (window-info (make-window-info w 'text-shape-nosolid (format nil "informace o ~a" (type-of object))))
 			 (i 2)
+			 (text nil)
 			 (default-props (list 'scale 'rotate 'move-x 'move-y)))
 		(set-inspected-object w object)
 		(dolist (item pairs)
@@ -137,6 +141,7 @@
 					((eql (prop clicked) 'rotate) (rotate (inspected-object w) (car new-val) (make-instance 'point)))
 					((eql (prop clicked) 'move-x) (move (inspected-object w) (car new-val) 0))
 					((eql (prop clicked) 'move-y) (move (inspected-object w) 0 (car new-val)))
+					((eql (prop clicked) 'w-background) (set-background (inspected-window w)(car new-val)))
 					(t (progn (funcall (setter-name (prop clicked)) (inspected-object w) (car new-val))
 								 (set-text clicked (format nil "~a ~a" (prop clicked) (car new-val)))))))))
 

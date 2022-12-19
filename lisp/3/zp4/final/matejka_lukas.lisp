@@ -42,8 +42,6 @@
 
 
 ;;ukol 10
-;;[object remove "REC"]
-;;[object add "REC" :value {(b) [[b eql "xd"] if-true "yoo" :else [self rec "xd"]]}]
 
 ;;pruchod sezname do konce
 [cons add "LAST-PAIR" :value {() [[[self cdr] eql nil] if-true self :else [[self cdr] last-pair]]}]
@@ -61,24 +59,6 @@
 [p2 set-cdr [cons clone]]
 [[p2 cdr] set-car 88]
 [p1 append p2]
-
-;;ukol 11
-
-;;[cons add "BROADCAST" :value {(arg1) [[[self eql nil] not] if-true [[{() [{} arg1 [self car]] [[self cdr] broadcast arg1]}] :else [nil clone]]}]
-[cons add "BROADCAST" :value {(arg1) [{} arg1 [self car]] [[self cdr] broadcast {(s) [[{} arg1] s]}]}]
-[nil add "BROADCAST" :value {(arg1) nil}]
-
-;;(lobby add "EVEN" :value {() [c
-
-
-
-;;[p1 broadcast {(arg1) [arg1 print]}]
-
-[zero add "*" :value {(arg1) one}]
-[one add "*" :value {(arg1) [[self super] * [[arg1 succ] + [arg1 clone]]]}]
-
-[[[5 esoteric] * [4 esoteric]] name]
-
 
 ;;ukol 12
 [lobby add "EL":value {(arg1) [[[object clone] add "METHOD":value{() [self add "VAR":value [cons clone]] [[self var] set-car arg1] [[self var] set-cdr {() [{} EL [arg1 + 2]]}]}] method ]}]

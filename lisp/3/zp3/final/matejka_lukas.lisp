@@ -1,4 +1,5 @@
 ;; kdyby inspector informace nebyly videt je treba trosku zvetsit okno
+;; zadny warning mi to nevypisuje, ale dival jsem se na nej a stale nevim cim to je.
 (defclass inspector-window (abstract-window)
 	((inspected-window :initform nil)
 	 (inspected-object :initform nil)
@@ -79,37 +80,40 @@
 		(do-display-info-no-window w)))
 
 (defmethod do-display-info-no-window ((w inspector-window))
-	(set-shape w (make-window-info w "Neni nastaveno zadne okno k prohlizeni")))
+	(set-shape w (make-window-info w 'text-shape-w-prop "Neni nastaveno zadne okno k prohlizeni")))
 
 (defmethod do-display-info-about-window ((w inspector-window))	
 	(let ((pic (make-instance 'picture))
-			(w-info (make-window-info w (format nil "okno obsahuje  s ~a objekty a barva okna je ~a" (solid-shapes-count (inspected-window w)) (background (inspected-window w))))))
-		(set-items pic (list w-info))
+			(object-count (make-window-info w 'text-shape-nosolid (format nil "okno obsahuje  s ~a objekty" (solid-shapes-count (inspected-window w)))))
+			(b-color (make-window-info-text w 'text-shape-w-prop (format nil "barva okna je ~a" (background (inspected-window w))) 10 70 10)))
+		(add-event pic 'ev-mouse-down 'ev-property-click)
+		(set-prop b-color 'w-background)
+		(set-items pic (list object-count b-color))
 		(set-shape w pic)))
 
-(defmethod make-window-info ((w inspector-window) text)
-	(make-window-info-text  w text 10 30 10))
+(defmethod make-window-info ((w inspector-window) type text)
+	(make-window-info-text w type text 10 30 10))
 
-(defmethod make-window-info-text ((w inspector-window) text x y scale-coeff)
-	(scale (move (set-text (make-instance 'text-shape-w-prop) text) x y ) scale-coeff (move (make-instance 'point) x y)))	
+(defmethod make-window-info-text ((w inspector-window) type text x y scale-coeff)
+	(scale (move (set-text (make-instance type) text) x y ) scale-coeff (move (make-instance 'point) x y)))	
 
 (defmethod ev-iw-inspect-object ((w inspector-window) sender object button position)
 	(let* ((props (object-properties w object))
 			 (pairs (mapcar (lambda(x) (cons x (funcall x object))) props))
 			 (pic (make-instance 'picture))
-			 (window-info (make-window-info w (format nil "informace o ~a" (type-of object))))
+			 (window-info (make-window-info w 'text-shape-nosolid (format nil "informace o ~a" (type-of object))))
 			 (i 2)
 			 (default-props (list 'scale 'rotate 'move-x 'move-y)))
 		(set-inspected-object w object)
 		(dolist (item pairs)
-			(setf text (make-window-info-text w (format nil "~a ~a" (car item) (cdr item)) 50 (+ 150 (* i (+ 20 (- (bottom window-info) (top window-info))))) 10))
+			(setf text (make-window-info-text w 'text-shape-w-prop (format nil "~a ~a" (car item) (cdr item)) 50 (+ 150 (* i (+ 20 (- (bottom window-info) (top window-info))))) 10))
 			(set-prop text (car item))
 			(set-delegate text pic)
 			(set-items pic (cons text (items pic)))
 			(setf i (+ i 1)))
 		(when (typep object 'shape)
 			(dolist (item default-props)
-				(setf text (make-window-info-text w (format nil "~a " item) 50 (+ 150 (* (+ i 1) (+ 20 (- (bottom window-info) (top window-info))))) 10))
+				(setf text (make-window-info-text w 'text-shape-w-prop (format nil "~a " item) 50 (+ 150 (* (+ i 1) (+ 20 (- (bottom window-info) (top window-info))))) 10))
 				(set-prop text item)
 				(set-delegate text pic)
 				(set-items pic (cons text (items pic)))
@@ -136,6 +140,7 @@
 					((eql (prop clicked) 'rotate) (rotate (inspected-object w) (car new-val) (make-instance 'point)))
 					((eql (prop clicked) 'move-x) (move (inspected-object w) (car new-val) 0))
 					((eql (prop clicked) 'move-y) (move (inspected-object w) 0 (car new-val)))
+					((eql (prop clicked) 'w-background) (set-background (inspected-window w)(car new-val)))
 					(t (progn (funcall (setter-name (prop clicked)) (inspected-object w) (car new-val))
 								 (set-text clicked (format nil "~a ~a" (prop clicked) (car new-val)))))))))
 
@@ -169,5 +174,16 @@
 	(values (find-symbol (format nil "SET-~a" prop))))
 
 
+(defclass text-shape-nosolid (text-shape)
+	())
+
+(defmethod solidp ((ts text-shape-nosolid))
+	nil)
+
+(defmethod solid-subshapes ((ts text-shape-nosolid))
+	nil)
+
+(defmethod contains-point-p ((ts text-shape-nosolid) point)
+	nil)
 ;; Pkud uzivatel bude chtit pridat dalsi typ objektu staci zavolat funkci add-object-properties, kde uvede typ objktu a seznam vsench nastavitelnych vlastnosti
 
