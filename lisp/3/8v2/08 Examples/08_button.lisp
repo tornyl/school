@@ -41,6 +41,7 @@ a 08_text-shape.lisp
   b)
 
 (defmethod set-button-text ((b button) text)
+	;;(send-event b 'ev-button-text-change b (button-text b) text)
   (set-text (button-text-shape b) text)
   (recomp-frame b))
 
@@ -63,10 +64,12 @@ a 08_text-shape.lisp
                          (set-filledp (make-instance 'polygon) t)
                          :light-blue)))
   (recomp-frame b) ;tohle i vyvolá změnu
+  ;;(add-event b 'ev-button-text-change 'ev-button-text-change) 
   b)
 
+
 (defmethod mouse-down ((b button) mouse-button position)
-  (call-next-method) 0 
+  (call-next-method)
   (when (eql mouse-button :left)
     (send-event b 'ev-button-click))
   b)

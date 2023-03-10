@@ -66,7 +66,7 @@ a 08_text-shape.lisp
   b)
 
 (defmethod mouse-down ((b button) mouse-button position)
-  (call-next-method) 0 
+  (call-next-method)
   (when (eql mouse-button :left)
     (send-event b 'ev-button-click))
   b)
