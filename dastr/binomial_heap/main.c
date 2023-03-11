@@ -16,9 +16,9 @@ typedef struct{
 }Binomial_heap;
 
 Bh_node* binomial_heap_minimum(Bh_node *bt){
-	Bh_node* y = NULL;
+	Bh_node* y = bt;
 	Bh_node *x = bt;
-	int min = -1;
+	int min = bt->key;
 	while(x){
 		if(x->key < min){
 			min = x->key;
@@ -38,13 +38,31 @@ void binomial_link(Bh_node *h1, Bh_node *h2){
 }
 
 Bh_node *binomial_heap_merge(Bh_node *h1, Bh_node *h2){
-	Bh_node *x = h1;
-	while(x->sibling){ x = x->sibling;}
-	x->sibling = h2;
-	return h1;
+	Bh_node *x = NULL;
+	Bh_node *first = NULL;
+	while(h1 && h2){
+		Bh_node *new = NULL;
+		if( h1->degree < h2->degree){
+			new = h1;
+			h1 = h1->sibling;
+		}else{
+			new = h2;
+			h2 = h2->sibling;
+		}
+		if(!x){
+			x = new;	
+			first = x;
+		}else{
+			x->sibling = new;
+			x = x->sibling;
+		}
+	}
+	x->sibling = h1 ? h1 : h2;
+	return first;
 }
 
 Bh_node *binomial_heap_union(Bh_node *h1, Bh_node *h2){
+	if(!h1 || !h2) return h1 ? h1: h2;
 	Bh_node *h = binomial_heap_merge(h1, h2);	
 	if(h == NULL) return NULL;
 
@@ -70,13 +88,14 @@ Bh_node *binomial_heap_union(Bh_node *h1, Bh_node *h2){
 				x = next_x;
 			}
 		}
+
 		next_x = x->sibling;
 	}
 
 	return h;
 }
 
-binomial_heap_insert(Bh_node** h, int x){
+void binomial_heap_insert(Bh_node** h, int x){
 	Bh_node *h_ = (Bh_node *) malloc(sizeof(Bh_node));
 	h_->key = x;
 	h_->parent = NULL;
@@ -95,17 +114,36 @@ Bh_node *remove_min_list(Bh_node *h){
 		x = x->sibling;
 	}
 
-	prev->sibling = x->sibling;
+	if(prev) prev->sibling = x->sibling;
 	return min;
 }
 
 Bh_node *reverse_list(Bh_node *h){
-	
+	Bh_node *prev = NULL;
+	Bh_node *x = h;
+
+	while(x){
+		Bh_node *next = x->sibling;
+		x->sibling = prev;
+		prev = x;
+		x = next;
+	}
+	return prev; 
+}
+
+void delete_parent(Bh_node *h){
+	while(h) {
+		h->parent = NULL;
+		h = h->sibling;
+	}
 }
 
 Bh_node *binomial_heap_extract_min(Bh_node **h){
-	Bh_node *x = remove_min_list(h);
+	Bh_node *x = remove_min_list(*h);
+	if( *h == x) *h = x->sibling;
+	printf("min: %i\n", x->key);
 
+	delete_parent(x->child);
 	Bh_node *y = reverse_list(x->child);
 
 	*h = binomial_heap_union(*h, y);
@@ -129,14 +167,67 @@ void binomial_heap_decrease_key(Bh_node *h, Bh_node *x, int k){
 	}
 }
 
+
+
+void print_heap_rec(Bh_node *h){
+	Bh_node *x = h;
+	while(x){
+		if(!x->parent) {printf("\n");}
+		printf("  %i", x->key);
+		print_heap_rec(x->child);
+		x = x->sibling;
+	}
+}
+
+void print_heap(Bh_node *h){
+	print_heap_rec(h);
+	//printf("end\n");
+	printf("\nend\n");
+}
+
 int main(){
 	Binomial_heap bh;
 	bh.first = (Bh_node*) malloc(sizeof(Bh_node));
-	bh.first->key = 5;
-	bh.first->key = 0;
+	bh.first->key = 12;
+	bh.first->degree = 0;
 	bh.first->child = NULL;
 	bh.first->sibling = NULL;
 	bh.first->parent = NULL;
+
+	binomial_heap_insert(&bh.first, 5);
+	print_heap(bh.first);
+	binomial_heap_insert(&bh.first, 3);
+	print_heap(bh.first);
+	binomial_heap_insert(&bh.first, 4);
+	print_heap(bh.first);
+	binomial_heap_insert(&bh.first, 8);
+	print_heap(bh.first);
+	binomial_heap_insert(&bh.first, 1);
+	print_heap(bh.first);
+
+	Bh_node *min = binomial_heap_extract_min(&bh.first);
+	printf("min: %i\n",min->key);
+	print_heap(bh.first);
+	min = binomial_heap_extract_min(&bh.first);
+	printf("min: %i\n",min->key);
+	print_heap(bh.first);
+	binomial_heap_insert(&bh.first, 1);
+	binomial_heap_insert(&bh.first, 2);
+	binomial_heap_insert(&bh.first, 1);
+	binomial_heap_insert(&bh.first, 4);
+	binomial_heap_insert(&bh.first, 39);
+	binomial_heap_insert(&bh.first, 22);
+	binomial_heap_insert(&bh.first, 3);
+	print_heap(bh.first);
+	min = binomial_heap_extract_min(&bh.first);
+	print_heap(bh.first);
+	min = binomial_heap_extract_min(&bh.first);
+	print_heap(bh.first);
+	min = binomial_heap_extract_min(&bh.first);
+	print_heap(bh.first);
+	min = binomial_heap_extract_min(&bh.first);
+	min = binomial_heap_extract_min(&bh.first);
+	print_heap(bh.first);
 
 	return 0;
 }
