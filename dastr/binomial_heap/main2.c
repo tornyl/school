@@ -110,7 +110,6 @@ void binomial_heap_insert(Binomial_heap* h, int x){
 	h_->child = NULL;
 	h_->sibling = NULL;
 	h_->degree = 0;
-	//if(h->first == NULL) h->first = 
 	h->first = binomial_heap_union(h->first, h_);
 }
 
@@ -151,7 +150,6 @@ Bh_node *binomial_heap_extract_min(Binomial_heap* h){
 	if(h->first == NULL) return NULL;
 	Bh_node *x = remove_min_list(h->first);
 	if( h->first == x) h->first = x->sibling;
-	//printf("min: %i\n", x->key);
 
 	delete_parent(x->child);
 	Bh_node *y = reverse_list(x->child);
@@ -195,22 +193,13 @@ void print_heap(Bh_node *h){
 	printf("\nend\n");
 }
 
-
-#define init_ize 10
-
 #define num_insert_operation 1000000
 #define num_extract_operation 1000000
 
 int main(){
 	Binomial_heap bh;
 	bh.first = NULL;
-	//bh.first = (Bh_node*) malloc(sizeof(Bh_node));
-	//bh.first->key = 12;
-	//bh.first->degree = 0;
-	//bh.first->child = NULL;
-	//bh.first->sibling = NULL;
-	//bh.first->parent = NULL;
-	
+
     time_t t;
     srand((unsigned) time(&t));
 

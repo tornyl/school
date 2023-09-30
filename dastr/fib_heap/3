@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <assert.h>
+#include <time.h>
+
+#define SIZEOF(arr) sizeof(arr) / sizeof(arr[0])
+
+
+int random_int(int from , int to){
+   return from + (rand() % (to - from + 1));
+}
+
+typedef struct node{
+	int key;
+	struct node *left;
+	struct node *right;
+	struct node *child;
+	int degree;
+	bool mark;
+	struct node *p;
+}Tree;
+
+typedef struct{
+	Tree *min;
+	int r;
+}Heap;
+
+void connect(Tree* x, Tree* y){
+}
+
+void Insert(Heap* heap, int key){
+	Tree *tree = (Tree*) malloc(sizeof(Tree));
+	tree->key = key;
+	tree->left = tree;
+	tree->right = tree;
+	tree->child = NULL;
+	tree->degree = 0;
+	tree->mark = false;
+	tree->p = NULL;
+	tree->left = heap->min;
+	tree->right = heap->min->right;
+
+}
+
+int main(){
+
+
+	return 0;
+}
+
+

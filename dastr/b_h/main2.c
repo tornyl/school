@@ -72,13 +72,11 @@ void heap_increase_key(Binary_heap *heap, int i, int key){
 	assert(key > heap->arr[i]);
 
 	heap->arr[i] = key;
-	//print_heap(heap);
 
 	while(i > 0 && heap->arr[parent(i)] > heap->arr[i]){
 		swap(heap->arr + i, heap->arr + parent(i));
 		i = parent(i);
 	}
-	//print_heap(heap);
 }
 
 void heap_insert(Binary_heap *heap, int key){
@@ -87,8 +85,6 @@ void heap_insert(Binary_heap *heap, int key){
 	heap_increase_key(heap, heap->size - 1, key);
 }
 
-
-#define init_ize 10
 
 #define num_insert_operation 1000000
 #define num_extract_operation 1000000
@@ -107,28 +103,9 @@ int main(){
 	for(int i = 0; i < num_extract_operation; i++){
 	    heap_extract_min(heap);
 	}
-	/*Do something*/
     clock_t end = clock();
     float seconds = (float)(end - start) / CLOCKS_PER_SEC;
     printf("Insert operations: %d\nExtract operations: %d\nTime needed: %f\n", num_insert_operation, num_extract_operation, seconds);
-	//heap->arr = (int *) malloc(init_size * sizeof(int));
-	
-	//heap_insert(heap, 4);
-	//print_heap(heap);
-	//heap_insert(heap, 23);
-	//print_heap(heap);
-	//heap_insert(heap, 1);
-	//print_heap(heap);
-	//heap_insert(heap, 6);
-	//heap_insert(heap, 11);
-	//print_heap(heap);
 
-	//heap_extract_min(heap);
-	//print_heap(heap);
-	//heap_extract_min(heap);
-	//print_heap(heap);
-	//heap_insert(heap, 1);
-	//print_heap(heap);
-	
 	return 0;
 }
