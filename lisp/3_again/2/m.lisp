@@ -1,20 +1,4 @@
 ;; classs POINT
-;; metody pro praci se sloty
-(defmethod x ((p point))
-	(slot-value p 'x))
-
-(defmethod set-x ((p point) value)
-	(setf (slot-value p 'x) value)
-	p)
-
-(defmethod y ((p point))
-	(slot-value p 'y))
-
-(defmethod set-y ((p point) value)
-	(setf (slot-value p 'y) value)
-	p)
-
-
 ;; operace s points
 (defmethod distance ((p1 point) p2)
 	(let ((difference-x (expt (- (x p1) (x p2)) 2))
@@ -87,7 +71,7 @@
 	tri)
 
 (defmethod vertices ((tri triangle))
-	(list (vertex-a tri) (vertex-c tri) (vertex-c tri)))   
+	(list (vertex-a tri) (vertex-b tri) (vertex-c tri)))   
 
 (defmethod perimeter ((tri triangle))
 	(let ((line-segment-a (distance (vertex-b tri) (vertex-c tri)))
@@ -104,33 +88,60 @@
 	  		(pythagorean-equation-p line-segment-c line-segment-b line-segment-a)
 			(pythagorean-equation-p line-segment-a line-segment-c line-segment-b))))
 
+
+(defmethod to-polygon ((tri triangle))
+	(let ((poly (make-instance 'polygon)))
+		(set-items poly (copy-list (vertices tri)))))
+
+
 (defun pythagorean-equation-p (a b c)
 	(= (expt c 2) (+ (expt a 2) (expt b 2))))
 
-
+;; trida ELLIPSE
 (defclass ellipse ()
 	((focal-point-1 :initform (make-instance 'point))
 	 (focal-point-2 :initform (make-instance 'point))
-	 (major-semiaxis :initform 1)))
+	 (major-semiaxis :initform 1)
+	 (direction :initform 'horizontal)))
 
 (defmethod focal-point-1 ((el ellipse))
 	(slot-value el 'focal-point-1))
 
-(defmethod set-focal-point-1 ((el ellipse) value)
-	(setf (slot-value el 'focal-point-1) value)
-	el)
-
 (defmethod focal-point-2 ((el ellipse))
 	(slot-value el 'focal-point-2))
-	
-(defmethod set-focal-point-2 ((el ellipse) value)
-	(setf (slot-value el 'focal-point-2) value)
+
+
+(defmethod recalculate-focal-points ((el ellipse) value)	
+	(let* ((center (mult (add (focal-point-1 el) (focal-point-2 el) t) 0.5))
+			 (excentricity (sqrt (- (expt value 2) (expt (minor-semiaxis el) 2)))))
+		(if (eql (ell-direction el) 'horizontal)
+			(horizontal-focal-points-recalculation el center excentricity)
+		 (vertical-focal-points-recalculation el center excentricity))))
+
+(defmethod horizontal-focal-points-recalculation ((el ellipse) center excentricity)
+	(set-x (set-y (focal-point-1 el) (y center)) (+ (x center) excentricity))
+	(set-x (set-y (focal-point-2 el) (y center)) (- (x center) excentricity))
 	el)
+
+(defmethod vertical-focal-points-recalculation ((el ellipse) center excentricity)
+	(set-y (set-x (focal-point-1 el) (x center)) (+ (y center) excentricity))
+	(set-y (set-x (focal-point-2 el) (x center)) (- (y center) excentricity))
+	el)
+
+(defmethod ell-direction ((el ellipse))
+	(slot-value el 'direction))
+
+(defmethod flip-direction ((el ellipse))
+	(if (eql (ell-direction el) 'horizontal)
+		(setf (slot-value el 'direction) 'vertical)
+	 (setf (slot-value el 'direction) 'horizontal)))
 
 (defmethod major-semiaxis ((el ellipse))
 	(slot-value el 'major-semiaxis))
 
 (defmethod set-major-semiaxis ((el ellipse) value)
+	(when (< value (minor-semiaxis el) (flip-direction el)))
+	(recalculate-focal-points el value)
 	(setf (slot-value el 'major-semiaxis) value)
 	el)
 
@@ -139,28 +150,24 @@
 			 (excentricity (distance center (focal-point-1 el))))
 		(sqrt (- (expt (major-semiaxis el) 2) (expt excentricity 2)))))
 
+(defmethod set-minor-semiaxis ((el ellipse) value)
+	(if (> value (major-semiaxis el))
+		(progn (flip-direction el)
+				 (set-major-semiaxis el value))
+	 (recalculate-focal-points-by-minor-semiaxis el value)))
 
+(defmethod recalculate-focal-points-by-minor-semiaxis ((el ellipse) value)	
+	(let* ((center (mult (add (focal-point-1 el) (focal-point-2 el) t) 0.5))
+			 (excentricity (sqrt (-  (expt (major-semiaxis el) 2) (expt value 2)))))
+		(if (eql (ell-direction el) 'horizontal)
+			(horizontal-focal-points-recalculation el center excentricity)
+		 (vertical-focal-points-recalculation el center excentricity))))
 
 (defmethod to-ellipse ((c circle))
 	(let ((el (make-instance 'ellipse)))
-		(set-focal-point-1 el (set-x (set-y (make-instance 'point) (x (center c))) (y (center c))))
-		(set-focal-point-2 el (set-x (set-y (make-instance 'point) (x (center c))) (y (center c))))
+		(set-x (focal-point-1 el) (x (center c)))
+		(set-y (focal-point-1 el) (y (center c)))
+		(set-x (focal-point-2 el) (x (center c)))
+		(set-y (focal-point-2 el) (y (center c)))
 		(set-major-semiaxis el (radius c))))
 
-
-
-;; funkce pro cicle
-
-(defmethod radius ((c circle))
-	(slot-value c 'radius))
-
-(defmethod set-radius ((c circle) value)
-	(setf (slot-value c 'radius) value)
-	c)
-
-(defmethod center ((c circle))
-	(slot-value c 'center))
-
-(defmethod set-center ((c circle) point)
-	(setf (slot-value c 'center) point)
-	c)
