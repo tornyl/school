@@ -7,3 +7,22 @@
 (defun make-point (x y)
 	(set-x (set-y (make-instance 'point) y) x))
 
+(defun make-triangle (x1 y1 x2 y2 x3 y3 color thickness filledp )
+	(let ((triangle (make-instance 'triangle)))
+		(set-x (set-y (vertex-a triangle) y1) x1)
+		(set-x (set-y (vertex-b triangle) y2) x2)
+		(set-x (set-y (vertex-c triangle) y3) x3)
+		(set-color triangle color)
+		(set-thickness triangle thickness)
+		(set-filledp triangle filledp)
+		triangle))
+
+(defun make-circle (x y r color thickness filledp) 
+	(let ((circle (make-instance 'circle)))
+		(set-x (center circle) x)
+		(set-y (center circle) y)
+		(set-radius circle r)
+		(set-color circle color)
+		(set-thickness circle thickness)
+		(set-filledp circle filledp)))
+

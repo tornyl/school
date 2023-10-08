@@ -166,19 +166,19 @@
 ;;; Geometrické transformace
 ;;;
 
-(defun move ((tri trinagle) dx dy)
+(defmethod move ((tri triangle) dx dy)
 	(move (vertex-a tri) dx dy)
 	(move (vertex-b tri) dx dy)
 	(move (vertex-c tri) dx dy)
 	tri)
 
-(defun rotate ((tri triangle) angle center)
+(defmethod rotate ((tri triangle) angle center)
 	(rotate (vertex-a tri) angle center)
 	(rotate (vertex-b tri) angle center)
 	(rotate (vertex-c tri) angle center)
 	tri)
 
-(defun scale ((tri triangle) coeff center)
+(defmethod scale ((tri triangle) coeff center)
 	(scale (vertex-a tri) coeff center)	
 	(scale (vertex-b tri) coeff center)	
 	(scale (vertex-c tri) coeff center)	
@@ -342,3 +342,71 @@
 	(mapcar #'+ (mapcar (lambda (item) (perimeter item))(items pic))))
 
 ;----------------------------------------------------------------------
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;;trida FULL-SHAPE
+;;;
+
+(defclass full-shape ()
+  ((shape :initform (set-filledp (make-instance 'circle) t))))
+
+
+;;;
+;;; Vlastnost shape
+;;;
+
+(defmethod check-shape ((s full-shape) item)
+  (unless (and (or (typep item 'circle) 
+              		 (typep item 'polygon)
+				  		 (typep item 'triangle)
+				  		 (typep item 'ellipse))
+					(filledp item))
+    (error "Invalid full-shape element type."))
+  s)
+
+(defmethod shape ((s full-shape)) 
+  (slot-value s 'shape))
+
+(defmethod set-shape ((s full-shape) value) 
+  (check-shape s value)
+  (setf (slot-value s 'shape) value)
+  s)
+
+
+;;;
+;;; Kreslení
+;;;
+
+(defmethod draw ((s full-shape) mg-window)
+    (draw (shape s) mg-window)
+  s)
+
+
+;;;
+;;; Geometrické transformace
+;;;
+
+(defmethod move ((s full-shape) dx dy)
+	(move (shape s) dx dy)
+  s)
+
+(defmethod rotate ((s full-shape) angle center)
+    (rotate (shape s) angle center)
+  s)
+
+(defmethod scale ((s full-shape) coeff center)
+    (scale (shape s) coeff center)
+  s)
+ 
+
+;----------------------------------------------------------------------
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;;trida EMPTY-SHAPE
+;;;

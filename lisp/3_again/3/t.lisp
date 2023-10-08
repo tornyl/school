@@ -35,9 +35,20 @@
 (test (minor-semiaxis el2))
 (test (major-semiaxis el2))
 
-(test (setf w (make-instance 'window)))
-(test (set-shape w tr))
-(test (redraw w))
+(test (setf items1 (list (make-triangle 0 0 50 50 100 50 :black 2 nil) (make-triangle 0 0 50 50 100 50 :black 2 nil) (make-triangle 0 0 50 50 100 50 :black 2 nil))))
+(test (move (second items1) 100 0))
+(test (move (third items1) 300 0)) 
+(test (setf pic1 (make-instance 'picture)))
+(test (set-items pic1 (list (to-polygon (first items1)) (to-polygon (second items1)) (to-polygon (third items1)))))
+
+(test (setf full-shape1 (make-instance 'full-shape)))
+(test (set-shape full-shape1 (make-triangle 50 50 50 200 300 200 (color:make-rgb 0.5 0.5 0.5) 3 t)))
+
+;(test (setf w (make-instance 'window)))
+;(test (set-shape w full-shape1))
+;(test (redraw w))
+
+(test (setf w2 (display-halloween-window 50)))
 
 
 
