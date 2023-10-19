@@ -49,15 +49,40 @@
 ;(test (move (focal-point-1 el2) -20 0))
 ;(test (move (focal-point-2 el2) 80 0))
 
+(test (print "tringle pos"))
+(test (list (x (vertex-a tr)) (y (vertex-a tr)) (x (vertex-b tr)) (y (vertex-b tr)) (x (vertex-c tr)) (y (vertex-c tr))))
+(test (left tr))
+(test (right tr))
+(test (top tr))
+(test (bottom tr))
+
+(test (print "circle pos"))
+(test (list (x (center c1)) (y (center c1)) (radius c1)))
+(test (left c1))
+(test (right c1))
+(test (top c1))
+(test (bottom c1))
+
+
+(test (left (shape w2)))
+(test (right (shape w2)))
+(test (top (shape w2)))
+(test (bottom (shape w2)))
+
+(test (setf g (move (make-ghost :red 0.5) 300 160)))
+(test (left g))
+(test (right g))
+(test (top g))
+(test (bottom g))
+
+(test (setf ep (make-instance 'extended-picture)))
+(test (set-items ep (list (make-circle 50 50 80 :green 1 t) (make-triangle 200 200 400 200 300 400 :yellow 1 t ) (make-triangle 50 300 150 300 200 600 :brown 1 5))))
+
+
 (test (setf w (make-instance 'window)))
-(test (set-shape w el2))
+(test (set-shape w ep))
 (test (redraw w))
 
 ;(test (setf w2 (display-halloween-window 50)))
-
-
-
-
-
 
 

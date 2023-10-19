@@ -207,10 +207,7 @@
 	((focal-point-1 :initform (make-instance 'point))
 	 (focal-point-2 :initform (make-instance 'point))
 	 (major-semiaxis :initform 1)
-	 (direction :initform 'horizontal)
-	 (color :initform :black)
-	 (thickness :initform 1)
-	 (filledp :initform nil)))
+	 (direction :initform 'horizontal)))
 
 ;;;
 ;;;vlastnosti:
@@ -248,9 +245,6 @@
 				 (set-major-semiaxis el value))
 	 (recalculate-focal-points-by-minor-semiaxis el value)))
 
-(defmethod center ((el ellipse))
-	(mult (add (focal-point-1 el) (focal-point-2 el) t) 0.5))
-
 ;;;
 ;;; potrebne metody k vlastnostem
 ;;;
@@ -286,79 +280,6 @@
 		(if (eql (ell-direction el) 'horizontal)
 			(horizontal-focal-points-recalculation el center excentricity)
 		 (vertical-focal-points-recalculation el center excentricity))))
-
-;;;
-;;; Vlastnosti související s kreslením:
-;;;
-
-(defmethod color ((el ellipse))
-  (slot-value el 'color))
-
-(defmethod set-color ((el ellipse) value)
-  (setf (slot-value el 'color) value)
-  el)
-
-(defmethod thickness ((el ellipse))
-  (slot-value el 'thickness))
-
-(defmethod set-thickness ((el ellipse) value)
-  (setf (slot-value el 'thickness) value)
-  el)
-
-(defmethod filledp ((el ellipse))
-  (slot-value el 'filledp))
-
-(defmethod set-filledp ((el ellipse) value)
-  (setf (slot-value el 'filledp) value)
-  el)
-
-
-;;;
-;;; Kresleni
-;;;
-
-(defmethod set-mg-params ((el ellipse) mgw)
-	(mg:set-param mgw :foreground (color el))
-	(mg:set-param mgw :thickness (thickness el))
-	(mg:set-param mgw :filledp (filledp el))
-	(mg:set-param mgw :closedp t)
-	el)
-
-(defmethod do-draw ((el ellipse) mg-window)
-	(mg:draw-ellipse mg-window
-							(x (center el))
-							(y (center el))
-							(major-semiaxis el)
-							(minor-semiaxis el)
-							0)
-	el)
-
-(defmethod draw ((el ellipse) mg-window)
-	(set-mg-params el mg-window)
-	(do-draw el mg-window))
-
-
-
-;;;
-;;; Geometrické transformace
-;;;
-
-(defmethod move ((el ellipse) dx dy)
-	(move (focal-point-1 el) dx dy)
-	(move (focal-point-2 el) dx dy)
-	el)
-
-(defmethod rotate ((el ellipse) angle center) 
-	(rotate (focal-point-1 el) angle center)
-	(rotate (focal-point-2 el) angle center)
-	el)
-
-(defmethod scale ((el ellipse) coeff center)
-	(scale (focal-point-1 el) coeff center)
-	(scale (focal-point-2 el) coeff center)
-	(set-major-semiaxis el (* (major-semiaxis el) coeff))
-	el)
-
 
 ;----------------------------------------------------------------------
 
@@ -438,10 +359,11 @@
 ;;;
 
 (defmethod check-shape ((s full-shape) item)
-  (unless (or (typep item 'circle) 
-              (typep item 'polygon)
-				  (typep item 'triangle)
-				  (typep item 'ellipse))
+  (unless (and (or (typep item 'circle) 
+              		 (typep item 'polygon)
+				  		 (typep item 'triangle)
+				  		 (typep item 'ellipse))
+					(filledp item))
     (error "Invalid full-shape element type."))
   s)
 
@@ -488,51 +410,3 @@
 ;;;
 ;;;trida EMPTY-SHAPE
 ;;;
-
-
-(defclass empty-shape ()
-  ((shape :initform (make-instance 'picture))))
-
-
-;;;
-;;; Vlastnost shape
-;;;
-
-(defmethod check-shape ((s empty-shape) item)
-  (unless (and (or (typep item 'picture)))
-    (error "Invalid empty-shape element type."))
-  s)
-
-(defmethod shape ((s empty-shape)) 
-  (slot-value s 'shape))
-
-(defmethod set-shape ((s empty-shape) value) 
-  (check-shape s value)
-  (setf (slot-value s 'shape) value)
-  s)
-
-
-;;;
-;;; Kreslení
-;;;
-
-(defmethod draw ((s empty-shape) mg-window)
-  s)
-
-
-;;;
-;;; Geometrické transformace
-;;;
-
-(defmethod move ((s empty-shape) dx dy)
-	(move (shape s) dx dy)
-  s)
-
-(defmethod rotate ((s empty-shape) angle center)
-    (rotate (shape s) angle center)
-  s)
-
-(defmethod scale ((s empty-shape) coeff center)
-    (scale (shape s) coeff center)
-  s)
- 

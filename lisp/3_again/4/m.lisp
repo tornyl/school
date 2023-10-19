@@ -1,6 +1,28 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
+;;; trida SHAPE
+;;;
+
+(defmethod left ((s shape))
+	s)
+
+(defmethod right ((s shape))
+	s)
+
+(defmethod top ((s shape))
+	s)
+
+(defmethod bottom ((s shape))
+	s)
+
+;----------------------------------------------------------------------
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
 ;;; trida POINT
 ;;;
 
@@ -12,6 +34,17 @@
 (defmethod perimeter ((p point))
 	0)
 
+(defmethod left ((p point))
+	(x p))
+
+(defmethod right ((p point))
+	(x p))
+
+(defmethod top ((p point))
+	(y p))
+
+(defmethod bottom ((p point))
+	(y p))
 
 ;;;
 ;;; uzitecne metody:
@@ -52,13 +85,13 @@
 	(modify-by-object p object #'+ copy))
 
 (defmethod sub ((p point) object &optional (copy nil))
-	(modify-by-object p p2 #'- copy))
+	(modify-by-object p object #'- copy))
 
 (defmethod mult ((p point) object &optional (copy nil))
 	(modify-by-object p object #'* copy))
 
 (defmethod div ((p point) object &optional (copy nil))
-	(interact p p2 #'/ copy))
+	(interact p object #'/ copy))
 ;----------------------------------------------------------------------
 
 
@@ -67,13 +100,12 @@
 ;;; trida TRIANGLE
 ;;;
 
-(defclass triangle ()
-	((vertex-a :initform (make-instance 'point)) 
-	 (vertex-b :initform (make-instance 'point))
-	 (vertex-c :initform (make-instance 'point)) 
-    (color :initform :black)
-    (thickness :initform 1)
-    (filledp :initform nil)))
+(defclass triangle (polygon)
+	())
+
+(defmethod initialize-instance ((tri triangle) &key)
+	(call-next-method)
+	(set-items tri (list (make-instance 'point) (make-instance 'point) (make-instance 'point))))
 
 ;;;
 ;;; vlastnosti: 
@@ -85,13 +117,13 @@
 	;right-triangle-p -cteni
 
 (defmethod vertex-a ((tri triangle))
-	(slot-value tri 'vertex-a))
+	(first (items tri)))
 
 (defmethod vertex-b ((tri triangle))
-	(slot-value tri 'vertex-b))
+	(second (items tri)))
 
 (defmethod vertex-c ((tri triangle))
-	(slot-value tri 'vertex-c))
+	(third (items tri)))
 
 (defmethod perimeter ((tri triangle))
 	(let ((line-segment-a (distance (vertex-b tri) (vertex-c tri)))
@@ -112,78 +144,13 @@
 ;;; Vlastnosti související s kreslením:
 ;;;
 
-(defmethod color ((tri triangle))
-  (slot-value tri 'color))
-
-(defmethod set-color ((tri triangle) value)
-  (setf (slot-value tri 'color) value)
-  tri)
-
-(defmethod thickness ((tri triangle))
-  (slot-value tri 'thickness))
-
-(defmethod set-thickness ((tri triangle) value)
-  (setf (slot-value tri 'thickness) value)
-  tri)
-
-(defmethod filledp ((tri triangle))
-  (slot-value tri 'filledp))
-
-(defmethod set-filledp ((tri triangle) value)
-  (setf (slot-value tri 'filledp) value)
-  tri)
-
-
-
 ;;;
 ;;; Kresleni
 ;;;
 
-(defmethod set-mg-params ((tri triangle) mgw)
-	(mg:set-param mgw :foreground (color tri))
-	(mg:set-param mgw :thickness (thickness tri))
-	(mg:set-param mgw :filledp (filledp tri))
-	(mg:set-param mgw :closedp t)
-	tri)
-
-(defmethod triangle-coordinates ((tri triangle))	
-  (let (coordinates)
-    (dolist (point (reverse (vertices tri)))
-      (setf coordinates (cons (y point) coordinates)
-            coordinates (cons (x point) coordinates)))
-    coordinates))
-
-(defmethod do-draw ((tri triangle) mg-window)
-	(mg:draw-polygon mg-window
-						  (triangle-coordinates tri))
-	tri)
-
-(defmethod draw ((tri triangle) mg-window)
-	(set-mg-params tri mg-window)
-	(do-draw tri mg-window))
-
 ;;;
 ;;; Geometrické transformace
 ;;;
-
-(defmethod move ((tri triangle) dx dy)
-	(move (vertex-a tri) dx dy)
-	(move (vertex-b tri) dx dy)
-	(move (vertex-c tri) dx dy)
-	tri)
-
-(defmethod rotate ((tri triangle) angle center)
-	(rotate (vertex-a tri) angle center)
-	(rotate (vertex-b tri) angle center)
-	(rotate (vertex-c tri) angle center)
-	tri)
-
-(defmethod scale ((tri triangle) coeff center)
-	(scale (vertex-a tri) coeff center)	
-	(scale (vertex-b tri) coeff center)	
-	(scale (vertex-c tri) coeff center)	
-	tri)
-
 
 ;;;
 ;;;uzitecne metody:
@@ -195,6 +162,133 @@
 (defmethod to-polygon ((tri triangle))
 	(let ((poly (make-instance 'polygon)))
 		(set-items poly (vertices tri))))
+
+(defmethod left ((tri triangle))
+	(min (x (vertex-a tri)) (x (vertex-b tri)) (x (vertex-c tri))))
+
+(defmethod right ((tri triangle))
+	(max (x (vertex-a tri)) (x (vertex-b tri)) (x (vertex-c tri))))
+
+(defmethod top ((tri triangle))
+	(min (y (vertex-a tri)) (y (vertex-b tri)) (y (vertex-c tri))))
+
+(defmethod bottom ((tri triangle))
+	(max (y (vertex-a tri)) (y (vertex-b tri)) (y (vertex-c tri))))
+
+;-------------------------------------------------------
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; trida TRIANGLE2 (potomek shape)
+;;;
+
+(defclass triangle-2(shape)
+	((vertex-a :initform (make-instance 'point)) 
+	 (vertex-b :initform (make-instance 'point))
+	 (vertex-c :initform (make-instance 'point))))
+;;;
+;;; vlastnosti: 
+;;;
+	;vertex-a -cteni 
+	;vertex-b -cteni 
+	;vertex-c -cteni
+	;perimeter -cteni
+	;right-triangle-p -cteni
+
+(defmethod vertex-a ((tri triangle-2))
+	(slot-value tri 'vertex-a))
+
+(defmethod vertex-b ((tri triangle-2))
+	(slot-value tri 'vertex-b))
+
+(defmethod vertex-c ((tri triangle-2))
+	(slot-value tri 'vertex-c))
+
+(defmethod perimeter ((tri triangle-2))
+	(let ((line-segment-a (distance (vertex-b tri) (vertex-c tri)))
+			(line-segment-b (distance (vertex-a tri) (vertex-c tri)))
+			(line-segment-c (distance (vertex-a tri) (vertex-b tri))))
+	  (+ line-segment-a line-segment-b line-segment-c)))
+
+(defmethod right-triangle-p ((tri triangle-2))
+	(let ((line-segment-a (distance (vertex-b tri) (vertex-c tri)))
+			(line-segment-b (distance (vertex-a tri) (vertex-c tri)))
+			(line-segment-c (distance (vertex-a tri) (vertex-b tri))))
+	  (or (pythagorean-equation-p line-segment-a line-segment-b line-segment-c)
+	  		(pythagorean-equation-p line-segment-c line-segment-b line-segment-a)
+			(pythagorean-equation-p line-segment-a line-segment-c line-segment-b))))
+
+
+;;;
+;;; Vlastnosti související s kreslením:
+;;;
+
+;;;
+;;; Kresleni
+;;;
+
+(defmethod set-mg-params ((tri triangle-2) mgw)
+	(call-next-method)
+	(mg:set-param mgw :closedp t)
+	tri)
+
+(defmethod triangle-coordinates ((tri triangle-2))	
+  (let (coordinates)
+    (dolist (point (reverse (vertices tri)))
+      (setf coordinates (cons (y point) coordinates)
+            coordinates (cons (x point) coordinates)))
+    coordinates))
+
+(defmethod do-draw ((tri triangle-2) mg-window)
+	(mg:draw-polygon mg-window
+						  (triangle-coordinates tri))
+	tri)
+
+;;;
+;;; Geometrické transformace
+;;;
+
+(defmethod move ((tri triangle-2) dx dy)
+	(move (vertex-a tri) dx dy)
+	(move (vertex-b tri) dx dy)
+	(move (vertex-c tri) dx dy)
+	tri)
+
+(defmethod rotate ((tri triangle-2) angle center)
+	(rotate (vertex-a tri) angle center)
+	(rotate (vertex-b tri) angle center)
+	(rotate (vertex-c tri) angle center)
+	tri)
+
+(defmethod scale ((tri triangle-2) coeff center)
+	(scale (vertex-a tri) coeff center)	
+	(scale (vertex-b tri) coeff center)	
+	(scale (vertex-c tri) coeff center)	
+	tri)
+
+;;;
+;;;uzitecne metody:
+;;;
+
+(defmethod vertices ((tri triangle-2))
+	(list (copy (vertex-a tri)) (copy (vertex-b tri)) (copy (vertex-c tri))))   
+
+(defmethod to-polygon ((tri triangle-2))
+	(let ((poly (make-instance 'polygon)))
+		(set-items poly (vertices tri))))
+
+(defmethod left ((tri triangle-2))
+	(min (x (vertex-a tri)) (x (vertex-b tri)) (x (vertex-c tri))))
+
+(defmethod right ((tri triangle-2))
+	(max (x (vertex-a tri)) (x (vertex-b tri)) (x (vertex-c tri))))
+
+(defmethod top ((tri triangle-2))
+	(min (y (vertex-a tri)) (y (vertex-b tri)) (y (vertex-c tri))))
+
+(defmethod bottom ((tri triangle-2))
+	(max (y (vertex-a tri)) (y (vertex-b tri)) (y (vertex-c tri))))
 ;-------------------------------------------------------
 
 
@@ -203,15 +297,11 @@
 ;;;
 ;;; trida ELLIPSE
 ;;;
-(defclass ellipse ()
+(defclass ellipse (shape)
 	((focal-point-1 :initform (make-instance 'point))
 	 (focal-point-2 :initform (make-instance 'point))
 	 (major-semiaxis :initform 1)
-	 (direction :initform 'horizontal)
-	 (color :initform :black)
-	 (thickness :initform 1)
-	 (filledp :initform nil)))
-
+	 (direction :initform 'horizontal)))
 ;;;
 ;;;vlastnosti:
 ;;;
@@ -220,6 +310,7 @@
 	;focal-point-2 -cteni
 	;major-semiaxis -cteni, zapis
 	;minor-semiaxis -cteni, zapis
+	;center -cteni
 
 (defmethod focal-point-1 ((el ellipse))
 	(slot-value el 'focal-point-1))
@@ -291,38 +382,9 @@
 ;;; Vlastnosti související s kreslením:
 ;;;
 
-(defmethod color ((el ellipse))
-  (slot-value el 'color))
-
-(defmethod set-color ((el ellipse) value)
-  (setf (slot-value el 'color) value)
-  el)
-
-(defmethod thickness ((el ellipse))
-  (slot-value el 'thickness))
-
-(defmethod set-thickness ((el ellipse) value)
-  (setf (slot-value el 'thickness) value)
-  el)
-
-(defmethod filledp ((el ellipse))
-  (slot-value el 'filledp))
-
-(defmethod set-filledp ((el ellipse) value)
-  (setf (slot-value el 'filledp) value)
-  el)
-
-
 ;;;
 ;;; Kresleni
 ;;;
-
-(defmethod set-mg-params ((el ellipse) mgw)
-	(mg:set-param mgw :foreground (color el))
-	(mg:set-param mgw :thickness (thickness el))
-	(mg:set-param mgw :filledp (filledp el))
-	(mg:set-param mgw :closedp t)
-	el)
 
 (defmethod do-draw ((el ellipse) mg-window)
 	(mg:draw-ellipse mg-window
@@ -332,12 +394,6 @@
 							(minor-semiaxis el)
 							0)
 	el)
-
-(defmethod draw ((el ellipse) mg-window)
-	(set-mg-params el mg-window)
-	(do-draw el mg-window))
-
-
 
 ;;;
 ;;; Geometrické transformace
@@ -359,7 +415,6 @@
 	(set-major-semiaxis el (* (major-semiaxis el) coeff))
 	el)
 
-
 ;----------------------------------------------------------------------
 
 
@@ -380,6 +435,18 @@
 ;;;
 ;;; uzitecne metody
 ;;;
+
+(defmethod left ((c circle))
+	(- (x (center c)) (radius c)))
+
+(defmethod right ((c circle))
+	(+ (x (center c)) (radius c)))
+
+(defmethod top ((c circle))
+	(- (y (center c)) (radius c)))
+
+(defmethod bottm ((c circle))
+	(+ (y (center c)) (radius c)))
 
 (defmethod to-ellipse ((c circle))
 	(let ((el (make-instance 'ellipse)))
@@ -404,6 +471,9 @@
 (defmethod perimeter ((poly polygon))
 	(mapcar #'+ (mapcar #'distance (items poly) (rot-right (items poly)))))
 
+;;;
+;;; uzitecne metody
+;;;
 
 ;----------------------------------------------------------------------
 
@@ -423,6 +493,28 @@
 ;----------------------------------------------------------------------
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;;trida COMPOUND-SHAPE
+;;;
+
+;;;
+;;; uzitecne metody
+;;;
+
+(defmethod left ((s compound-shape))
+	(apply #'min (mapcar #'left (items s))))
+
+(defmethod right ((s compound-shape))
+	(apply #'max (mapcar #'right (items s))))
+
+(defmethod top ((s compound-shape))
+	(apply #'min (mapcar #'top (items s))))
+
+(defmethod bottom ((s compound-shape))
+	(apply #'max (mapcar #'bottom (items s))))
+
+;----------------------------------------------------------------------
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -536,3 +628,25 @@
     (scale (shape s) coeff center)
   s)
  
+;----------------------------------------------------------------------
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;;trida EMPTY-SHAPE
+;;;
+
+(defclass extended-picture (picture)
+	((propagate-color-p :initform nil)))
+
+(defmethod propagate-color-p ((pic extended-picture))
+	(slot-value pic 'propagate-color-p))
+
+(defmethod set-propagate-color-p ((pic extended-picture) value)
+	(setf (slot-value pic 'propagate-color-p) value))
+
+(defmethod set-color ((pic extended-picture) value)
+	(call-next-method)
+	(send-to-items pic 'set-color value))
+
+;----------------------------------------------------------------------
