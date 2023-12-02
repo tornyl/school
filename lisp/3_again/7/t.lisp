@@ -102,22 +102,16 @@
 ;(test (setf cw (make-instance 'confirm-window)))
 ;(test (set-shape cw ep))
 
-; u2 testy
-(test (setf tsmp1 (move (make-instance 'semaphore) 100 100)))
-(test (setf tsmp2 (move (set-semaphore-type (make-instance 'semaphore) :pedestrian) 300 100)))
-(test (setf tsmp3 (move (set-semaphore-type (make-instance 'semaphore) :vehicle) 400 100)))
-(test (setf tsmp4 (move (set-semaphore-type (make-instance 'semaphore) :pedestrian) 500 200)))
-(test (setf tsmp5 (move (set-semaphore-type (make-instance 'semaphore) :vehicle) 600 200)))
-(test (setf crs2 (set-program (set-items (make-instance 'crossroads) (list tsmp4 tsmp5 ep c2)) (list (list  0 0) (list 1 1) (list 2 0) (list 3 0)))))
-(next-phase tsmp1)
-(test (setf crs (set-program (set-items (make-instance 'crossroads) (list tsmp1 tsmp2 crs2 ep c2)) (list (list  0 0 0 0) (list 1 1 0 0) (list 2 0 1 2) (list 3 0 1 2)))))
+;(test (setf pw (make-instance 'polygon-window)))
 
-;(test (set-items crs (append (items crs) (list tsmp3))))
-;(next-phase crs)
-;(set-program crs (list (list 0 0 1) (list 3 1 3) (list 2 0 1)))
+;(test (setf cwaw (make-instance 'circle-with-arrows-window)))
 
-(test (setf w (make-instance 'window)))
-(test (set-shape w crs))
+(test (setf dipw (make-instance 'delete-item-picture-window)))
+(test (set-shape dipw ep))
+
+
+;(test (setf w (make-instance 'window)))
+;(test (set-shape w be))
 ;(test (redraw w))
 
 ;(test (setf w2 (display-halloween-window 50)))
