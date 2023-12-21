@@ -53,3 +53,11 @@ a upravujeme (výrazy by se měly vyhodnocovat jeden po druhém v Listeneru).
 (setf *circle* [*shape* clone])
 [*circle* set-name "CIRCLE"]
 [*circle* add "CENTER" :value [*point* clone]]
+
+[*circle* add "CLONE" :value (lambda (self)
+											(let ((c [[self center] clone])
+													(new-circle nil))
+												[self remove "CENTER"]
+												(setf new-circle  [self clone-object])
+												[new-circle add "CENTER" :value c]
+												new-circle))]

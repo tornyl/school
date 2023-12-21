@@ -53,3 +53,4 @@ a upravujeme (výrazy by se měly vyhodnocovat jeden po druhém v Listeneru).
 (setf *circle* [*shape* clone])
 [*circle* set-name "CIRCLE"]
 [*circle* add "CENTER" :value [*point* clone]]
+

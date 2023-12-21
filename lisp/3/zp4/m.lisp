@@ -65,7 +65,7 @@
 ;;ukol 11
 
 ;;[cons add "BROADCAST" :value {(arg1) [[[self eql nil] not] if-true [[{() [{} arg1 [self car]] [[self cdr] broadcast arg1]}] :else [nil clone]]}]
-[cons add "BROADCAST" :value {(arg1) [{} arg1 [self car]] [[self cdr] broadcast {(s) [[{} arg1] s]}]}]
+[cons add "BROADCAST" :value {(arg1) [{} arg1 [self car]] [[self cdr] broadcast arg1]}]
 [nil add "BROADCAST" :value {(arg1) nil}]
 
 ;;(lobby add "EVEN" :value {() [c
