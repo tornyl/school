@@ -105,3 +105,42 @@
 (add-tab ts "poly1" pol1)
 (add-tab ts "poly2" pol2)
 (add-tab ts "circle1" c1)
+
+
+;(mapcar #'slot-definition-name
+;                      (class-direct-slots (class-of (make-instance 'shape))))
+
+
+;ukol cliboard-picture
+
+
+(defun setter-name (prop)
+	(values (find-symbol (format nil "SET-~a" prop))))
+
+
+(defmethod duplicate2 ((s shape))
+	(let* ((new-s (make-instance (type-of s)))
+			(slots (mapcar #'slot-definition-name
+                      (class-slots (class-of new-s))))
+			(setter nil))
+		(print slots)
+		(print (type-of (first slots)))
+		;(format "sis ~a" (first slots))
+		(dolist (slot slots)
+			(print "a")
+			(setf setter (setter-name slot))
+			(when setter 
+				(print "b")
+				(ignore-errors (funcall setter new-s (funcall slot s)))))
+		new-s))
+
+(defmethod duplicate ((s shape))
+	(let* ((new-s (make-instance (type-of s)))
+			(slot-names (mapcar #'slot-definition-name
+                      (class-slots (class-of new-s)))))
+		(dolist (slot-name slot-names)
+			(setf (slot-value new-s slot-name) (slot-value s slot-name)))
+		new-s))
+
+(setf ts2 (duplicate2 ts))
+(set-shape w ts2)
