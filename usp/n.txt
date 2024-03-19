@@ -1,0 +1,847 @@
+
+                           Unixove systemy a shell
+
+                                 Jan Outrata
+
+                            Ăşnor-kvÄ›ten 2014-2022
+
+GNU texutils
+------------
+
+- obsah souboru: cat -n, tac, rev, head -n -1, tail -n +1 -f, wc -cmlw
+
+- tĹ™Ă­dÄ›nĂ­ Ĺ™ĂˇdkĹŻ, sloupce: sort -fnrukt, uniq -iu, cut -bcdf N-M, paste -d
+
+- rozdĂ­ly v souborech: diff -quyrNi, patch -iop
+
+
+- filtrace Ĺ™ĂˇdkĹŻ dle vzoru: grep -EefivclqABCr, [bz,lz,xz,z,zip][e,f]grep, rgrep
+
+RegulĂˇrnĂ­ vĂ˝razy (RE)
+---------------------
+
+= vzor popisujĂ­cĂ­ mnoĹľinu (vyhovujĂ­cĂ­ch) Ĺ™etÄ›zcĹŻ
+
+- zĂˇkladnĂ­ POSIX (BRE), rozĹˇĂ­Ĺ™enĂ© POSIX (ERE) a perlovskĂ© (PCRE), man
+7 regex, pcre
+
+- znak: jakĂ˝koliv ., potlaÄŤenĂ­ spec. vĂ˝znamu metaznaku za \
+(\.[]^$?*+{}|()), \t tabulĂˇtor, \n novĂ˝ Ĺ™Ăˇdek, ze seznamu mezi [] -
+negace pokud prvnĂ­ ^, rozsah - (lokalizace!), znakovĂ© tĹ™Ă­dy
+[:alnum:],[:alpha:],[:blank:] (mezera nebo
+tabulĂˇtor),[:(x)digit:],[:lower:],[:upper:],[:punct:],[:print:],[:space:]
+(mj. mezera a tabulĂˇtor) aj. (lokalizace!, takĂ© ne POSIX [. .] a [=
+=]), ] jako prvnĂ­, ^ jako ne prvnĂ­, - jako poslednĂ­
+
+- ^ prĂˇzdnĂ˝ Ĺ™etÄ›zec na zaÄŤĂˇtku Ĺ™Ăˇdku, $ na konci, \< na zaÄŤĂˇtku slova,
+\> na konci, \y obojĂ­, \b na hranici, \B ne na hranici, \w =
+[_[:alnum:]], \W = [^_[:alnum:]], \s = [[:space:]], \S = [^[:space:]],
+\d = [[:digit:]], \D = [^[:digit:]]
+
+- opakovĂˇnĂ­: za RE ? 1-, * libovolnÄ›krĂˇt, + 1+, {n} n-krĂˇt, {n,} n+,
+{n,m} n-m (n <= m)
+
+- zĹ™etezenĂ­: RE za sebou, vyhovuje zĹ™etÄ›zenĂ­ vyhovujĂ­cĂ­ch Ĺ™etÄ›zcĹŻ
+
+- volba: RE|RE, vyhovuje kterĂ˝koliv vyhovujĂ­cĂ­
+
+- priority: opakovĂˇnĂ­ > zĹ™etÄ›zenĂ­ > volba, () - podvĂ˝raz
+
+- podvĂ˝razy: (), reference \n - n ÄŤĂ­slice podvĂ˝razu, vyhovuje
+podĹ™etÄ›zec vyhovujĂ­cĂ­ n-tĂ©mu podvĂ˝razu
+
+- BRE: ?, +, {, }, |, (, ) s \ pro spec. vĂ˝znam
+
+ProgramovĂˇnĂ­ v shellu (BASH) -- zĂˇklady
+---------------------------------------
+
+- GNU BASH (Bourne-Again SHell) = pĹ™Ă­kazovĂ˝ interpret, programovacĂ­
+jazyk pro vykonĂˇvĂˇnĂ­ pĹ™Ă­kazĹŻ ze vstupu, jako parametrĹŻ nebo ze souboru
+(vÄŤetnÄ› spouĹˇtÄ›nĂ­ programĹŻ), dle ÄŤĂˇsti POSIX
+
+- komentĂˇĹ™: # do zbytku Ĺ™Ăˇdku
+
+- bĂ­lĂ˝ znak: mezera nebo tabulĂˇtor
+
+- slovo: posloupnost (ne bĂ­lĂ˝ch a meta-) znakĹŻ jako celek, rezervovanĂˇ
+pro pĹ™Ă­kazy dĂˇle, expanze {} - viz dĂˇle, promÄ›nnĂ˝ch a parametrĹŻ
+(hodnot) - viz dĂˇle, substituce vyhodnocenĂ­ aritmetickĂ©ho vĂ˝razu a
+vĂ˝stupu pĹ™Ă­kazu - viz dĂˇle, expanze ~ a cesty (jmen souborĹŻ a
+adresĂˇĹ™ĹŻ), odstranÄ›nĂ­ kvĂłtovĂˇnĂ­ - viz dĂˇle
+
+- jmĂ©no: slovo z pĂ­smen, ÄŤĂ­slic a _, nezaÄŤĂ­najĂ­cĂ­ ÄŤĂ­slicĂ­
+
+- metaznak = oddÄ›lovaÄŤ slov: | & ; ( ) < > mezera tabulĂˇtor novĂ˝ Ĺ™Ăˇdek
+
+- Ĺ™Ă­dĂ­cĂ­ operĂˇtor: || & && ; ;; ;& ;;& ( ) | |& novĂ˝ Ĺ™Ăˇdek
+
+- pĹ™Ă­kaz: bĂ­lĂ˝mi znaky oddÄ›lenĂˇ slova a pĹ™esmÄ›rovĂˇnĂ­, ukonÄŤenĂ˝ Ĺ™Ă­dĂ­cĂ­m
+operĂˇtorem, prvnĂ­ slovo (program) se vykonĂˇ (spustĂ­) s nĂˇvratovou
+hodnotou (nebo 128+ÄŤĂ­slo signĂˇlu), ostatnĂ­ argumenty
+
+- pĹ™esmÄ›rovĂˇnĂ­: vstupu a vĂ˝stupĹŻ pĹ™Ă­kazu pĹ™ed vykonĂˇnĂ­m, kdekoliv v
+pĹ™Ă­kazu (obvykle na konci), vstupu ze souboru <, vĂ˝stupu do
+(pĹ™epsanĂ©ho) souboru >, pĹ™idĂˇnĂ­ >>, i chybovĂ©ho &> (&>>) nebo >&, za
+<, > aj. slovo = jmĂ©no souboru
+
+- kolona: posloupnost pĹ™Ă­kazĹŻ oddÄ›lenĂ˝ch | nebo |&, std. vĂ˝stup (pĹ™i
+|& (zkratka za 2>&1 |) i chybovĂ˝, nakonec) pĹ™Ă­kazu nalevo propojenĂ˝ se
+std. vstupem pĹ™Ă­kazu napravo, pĹ™ed pĹ™esmÄ›rovĂˇnĂ­mi, nĂˇvratovĂˇ hodnota
+poslednĂ­ho, kaĹľdĂ˝ pĹ™Ă­kaz samostatnĂ˝ proces ("podshell")
+
+- seznam: posloupnost kolon oddÄ›lenĂ˝ch ;, &, && nebo ||, volitelnÄ›
+ukonÄŤenĂ˝ &, ; nebo novĂ˝m Ĺ™Ăˇdkem, ne & vykonĂˇnĂ­ za sebou, nĂˇvratovĂˇ
+hodnota poslednĂ­ho, & asynchronnÄ› na pozadĂ­ v "podshellu" (viz dĂˇle),
+nĂˇvratovĂˇ hodnota 0, kolona1 ||(&&) kolona2 - kolona2 se vykonĂˇ jen
+kdyĹľ kolona1 (ne)selĹľe = nĂˇvratovĂˇ hodnota nenulovĂˇ(0), nĂˇvratovĂˇ
+hodnota poslednĂ­ho vykonanĂ©ho, dĂˇle pĹ™Ă­kazy = seznam
+
+- seskupovĂˇnĂ­ pĹ™Ă­kazĹŻ: { pĹ™Ă­kazy; } = skupina (i novĂ˝ Ĺ™Ăˇdek mĂ­sto ;,
+metaznaky kolem pĹ™Ă­kazĹŻ!), (pĹ™Ă­kazy) = vykonĂˇnĂ­ v "podshellu" -
+pĹ™iĹ™azenĂ­ (pĹ™ekrytĂ˝ch) promÄ›nnĂ˝ch jen v nÄ›m, pĹ™esmÄ›rovĂˇnĂ­ celĂ©
+skupiny, substituce (jako bĂ­lĂ˝mi znaky oddÄ›lenĂˇ slova, bez koncĹŻ Ĺ™ĂˇdkĹŻ
+na konci) vĂ˝stupu pĹ™Ă­kazĹŻ $(pĹ™Ă­kazy) nebo `pĹ™Ă­kazy`, nĂˇvratovĂˇ hodnota
+pĹ™Ă­kazĹŻ
+
+- promÄ›nnĂ©: automatickĂ©, pĹ™iĹ™azenĂ­ hodnoty jmĂ©no=vĂ˝raz (i prĂˇzdnĂ˝),
+vĂ˝raz bĂ­lĂ˝mi znaky oddÄ›lenĂˇ slova, v '' nebo "" nebo znak za \ pro
+potlaÄŤenĂ­ spec. vĂ˝znamu metaznakĹŻ, ', " a $, `, \ (ne v ""), += pro
+pĹ™idĂˇnĂ­, hodnota (expanze) $jmĂ©no nebo ${jmĂ©no} Ĺ™etÄ›zec nebo ÄŤĂ­slo,
+promÄ›nnĂ© shellu napĹ™. BASH_COMMAND, HOSTNAME, HISTFILE
+(~/.bash_history), HISTSIZE, HISTFILESIZE, OLDPWD, PWD, RANDOM
+(0-32767), SRANDOM (32bit), HOME, PATH (seznam adresĂˇĹ™ĹŻ oddÄ›lenĂ˝ : pro
+hledĂˇnĂ­ programĹŻ pĹ™i spuĹˇtÄ›nĂ­, vĂ˝chozĂ­ neobsahuje akt. adresĂˇĹ™!), PS1,
+UID, lokalizaÄŤnĂ­ (LANG, LC_*) aj.
+
+- podmĂ­nky: if pĹ™Ă­kazy1; then pĹ™Ă­kazy2; elif pĹ™Ă­kazy1; then pĹ™Ă­kazy2;
+else pĹ™Ă­kazy3; fi - vykonĂˇnĂ­ pĹ™Ă­kazy2 pokud pĹ™Ă­kazy1 "pravdivĂ©" =
+pokud nĂˇvratovĂˇ hodnota 0, jinak vykonĂˇnĂ­ pĹ™Ă­kazy3, test vĂ˝raz nebo [
+vĂ˝raz ], [[ vĂ˝raz ]], pravdivĂ˝ vĂ˝raz = nĂˇvratovĂˇ hodnota 0, jinak 1,
+vĂ˝razy slova, -adefhrswxL/aj. soubor, soubor -nt/ot soubor, -v
+promÄ›nnĂˇ, -zn Ĺ™etÄ›zec, == = != < > pro Ĺ™etÄ›zce (oddÄ›lenĂ© bĂ­lĂ˝mi
+znaky!), -eq/ne/lt/le/gt/ge pro ÄŤĂ­sla, u [[ ]] za ==, != vzor, za =~
+ERE, < > tĹ™Ă­dĂ­ dle lokalizace, ve vĂ˝raz (), !, &&/-a, ||/-o, case
+slovo in vzor|vzor|...) pĹ™Ă­kazy;; ... esac - vykonĂˇnĂ­ pĹ™Ă­kazĹŻ pokud
+slovo odpovĂ­dĂˇ nÄ›jakĂ©mu vzoru, pĹ™i ;& (;;&) mĂ­sto ;; (test a )
+vykonĂˇnĂ­ pĹ™Ă­kazĹŻ dalĹˇĂ­ch vzorĹŻ
+
+- cykly: for jmĂ©no in slova; do pĹ™Ă­kazy; done - vykonĂˇnĂ­ pĹ™Ă­kazĹŻ s
+promÄ›nnou jmĂ©no nastavenou postupnÄ› na slova, while/until pĹ™Ă­kazy1; do
+pĹ™Ă­kazy2; done - vykonĂˇvĂˇnĂ­ pĹ™Ă­kazy2 dokud pĹ™Ă­kazy1 "/nepravdivĂ©"
+(while/until)
+
+- celoÄŤĂ­selnĂˇ aritmetika: ((vĂ˝raz)) nebo let "vĂ˝raz" ..., vĂ˝razy (jako
+v C) promÄ›nnĂ©, () ++ -- ! ~ ** * / % + - << >> <= => < > == != & ^ |
+&& || ?: = *= apod. ,, hodnota promÄ›nnĂ© i bez $ (prĂˇzdnĂˇ = 0),
+nenulovĂ˝ vĂ˝raz = nĂˇvratovĂˇ hodnota 0, jinak 1, substituce (jako slovo)
+vyhodnocenĂ­ vĂ˝razu $((vĂ˝raz)) ($[vĂ˝raz] zastaralĂ©, i vnoĹ™enĂ©), for
+((vĂ˝raz1; vĂ˝raz2; vĂ˝raz3)); do pĹ™Ă­kazy; done - vyhodnocenĂ­ vĂ˝raz1,
+opakovanÄ› vyhodnocenĂ­ vĂ˝raz2 dokud ne nulovĂ˝ a vykonĂˇnĂ­ pĹ™Ă­kazĹŻ a
+vyhodnocenĂ­ vĂ˝raz3, pĹ™i neuvedenĂ­ vĂ˝raz[1-3] je tento 1
+
+- funkce: jmĂ©no () skupina, function jmĂ©no skupina - vykonĂˇnĂ­ skupiny
+s (poziÄŤnĂ­mi) parametry zavolĂˇnĂ­m jmĂ©no argumenty jako pĹ™Ă­kazu, jmĂ©no
+slovo bez $, hodnota (expanze) parametru ${nenulovĂ© ÄŤĂ­slo} (0-9 i bez
+{}), poÄŤet $#, vĹˇechny jako slova $@, $* (v "" jako jedno slovo se
+slovami oddÄ›lenĂ˝mi mezerou!)
+
+- skript: program v (prog. jazyku) shellu, pro spuĹˇtÄ›nĂ­ jako program
+prvnĂ­ Ĺ™Ăˇdek #!/cesta/k/shellu parametry (napĹ™. #!/bin/bash), argumenty
+a parametry jako u funkce, jmĂ©no skriptu $0 (nebo pĹ™Ă­kazu nebo
+programu Bash = promÄ›nnĂˇ BASH)
+
+- bash skript argumenty, skript cesta nebo v akt. adresĂˇĹ™i nebo v
+adresĂˇĹ™i v PATH, bash -c pĹ™Ă­kazy argumenty, bash -s argumenty a
+pĹ™Ă­kazy ze std. vstupu, -x tisk pĹ™Ă­kazĹŻ, nĂˇvratovĂˇ hodnota poslednĂ­ho
+pĹ™Ă­kazu (nebo 0)
+
+- pĹ™Ă­kazy:
+
+cd dir - zmÄ›nĂ­ akt. adresĂˇĹ™ na dir (nebo HOME), - = OLDPWD
+
+pwd - vypĂ­Ĺˇe (absolutnĂ­) cestu k akt. adresĂˇĹ™i
+
+fg/bg id ... - pĹ™esune /pozastavenĂ© Ăşlohy s id (nebo poslednĂ­) na
+popĹ™edĂ­/pozadĂ­ (jako s &)
+
+jobs -lrs id ... - vypĂ­Ĺˇe Ăşlohy s id (nebo vĹˇechny), -l i PID, -r jen
+bÄ›ĹľĂ­cĂ­, -s jen pozastavenĂ©
+
+kill -sn signal PID | id ... - poĹˇle signal (nebo TERM) procesĹŻm s PID
+nebo id, -l vĂ˝pis signĂˇlĹŻ
+
+help vzor - zobrazĂ­ nĂˇpovÄ›du k pĹ™Ă­kazĹŻm odpovĂ­dajĂ­cĂ­m vzoru (nebo
+vĹˇem), -d/s struÄŤnĂ©
+
+./source skript argumenty - vykonĂˇ skript s parametry, pĹ™Ă­padnÄ›
+vyuĹľije PATH a pak hledĂˇ i v akt. adresĂˇĹ™i
+
+break/continue n - ukonÄŤĂ­ n (nebo poslednĂ­) nejvnitĹ™nÄ›jĹˇĂ­ch
+cyklĹŻ/pokraÄŤuje dalĹˇĂ­ iteracĂ­ n-tĂ©ho (nebo poslednĂ­ho) nejvnitĹ™nÄ›jĹˇĂ­ho
+cyklu
+
+echo -neE argumenty - vypĂ­Ĺˇe argumenty oddÄ›lenĂ© mezerou + novĂ˝ Ĺ™Ăˇdek
+pokud ne -n, s -e (-E potlaÄŤĂ­) escape sekvence \abceEfnrtv\'"?0xuU
+
+eval argumenty - vykonĂˇ zĹ™etÄ›zenĂ© argumenty jako pĹ™Ă­kaz
+
+exit n - ukonÄŤĂ­ shell s nĂˇvratovou hodnotou n (nebo poslednĂ­ho
+pĹ™Ă­kazu), pro login shell (viz dĂˇle) jeĹˇtÄ› logout
+
+export -n jmĂ©no=vĂ˝raz ... - exportuje promÄ›nnĂ© s hodnotou vĂ˝raz (s -f
+funkce) spuĹˇtÄ›nĂ˝m pĹ™Ă­kazĹŻm a do "podshellu", bez jmen nebo s -p
+exportovanĂ© vypĂ­Ĺˇe, pĹ™i -n zruĹˇĂ­ export
+
+local jmĂ©no=vĂ˝raz ... - vytvoĹ™Ă­ promÄ›nnou s hodnotou jako lokĂˇlnĂ­ ve
+funkci (a funkcĂ­ z nĂ­ volanĂ˝ch), bez jmen lokĂˇlnĂ­ vypĂ­Ĺˇe
+
+read jmĂ©na - naÄŤte Ĺ™Ăˇdek ze vstupu a pĹ™iĹ™adĂ­ slova promÄ›nnĂ˝m
+(poslednĂ­ zbytek Ĺ™Ăˇdku, pĹ™Ă­padnÄ› prĂˇzdnĂˇ, \ pro potlaÄŤenĂ­ spec.
+vĂ˝znamu znakĹŻ pokud ne -r) nebo promÄ›nnĂ© REPLY, -d oddÄ›lovaÄŤ mĂ­sto
+novĂ©ho Ĺ™Ăˇdku, -n poÄŤet znakĹŻ maximĂˇlnÄ›, -N poÄŤet znakĹŻ jako jedno
+slovo, -p prompt (bez novĂ©ho Ĺ™Ăˇdku) na chybovĂ˝ vĂ˝stup pĹ™i ÄŤtenĂ­ z
+terminĂˇlu, -s pro nevypisovĂˇnĂ­ znakĹŻ pĹ™i ÄŤtenĂ­ z terminĂˇlu, -t ÄŤas s
+pro ÄŤtenĂ­ z terminĂˇlu nebo roury, vracĂ­ 0, pĹ™i konci souboru nebo
+vyprĹˇenĂ­ ÄŤasu nenulovĂ© ÄŤĂ­slo
+
+return n - ukonÄŤĂ­ funkci nebo skript vykonĂˇvanĂ˝ pĹ™es ./source s
+nĂˇvratovou hodnotou n nebo poslednĂ­ho pĹ™Ă­kazu
+
+shift n - "posune" parametry o n (>= 0, <= $#) nebo 1 mĂ­st doleva,
+zbĂ˝vajĂ­cĂ­ vynuluje
+
+ProgramovĂˇnĂ­ v shellu (BASH) -- pokroÄŤilĂ©
+-----------------------------------------
+
+- login shell: -l, pĹ™i startu interpretovĂˇny /etc/profile a prvnĂ­ z
+~/.bash_profile, ~/.bash_login, ~/.profile, pĹ™i ukonÄŤenĂ­
+~/.bash_logout
+
+- interaktivnĂ­ shell: bez skriptu a -c nebo -i, pĹ™i startu
+interpretovĂˇny /etc/bash.bashrc a ~/.bashrc (i pĹ™i ssh), $- = i (viz
+dĂˇle)
+
+- neinteraktivnĂ­ shell: skript nebo -c, pĹ™i startu provedeno .
+"$BASH_ENV"
+
+- pĹ™Ă­kaz mĹŻĹľe na zaÄŤĂˇtku obsahovat pĹ™iĹ™azenĂ­ promÄ›nnĂ˝m pouze pro
+pĹ™Ă­kaz, negaci nĂˇvratovĂ© hodnoty !, pĹ™ed kolonou time - vĂ˝pis ÄŤasĹŻ
+trvĂˇnĂ­ (user, system, total)
+
+- dalĹˇĂ­ pĹ™esmÄ›rovĂˇnĂ­: vstupu ze vstupu shellu dokud ne Ĺ™Ăˇdek
+obsahujĂ­cĂ­ jen konec <<slovo vstup konec (slovo ne expanze, pro vstup
+expanze), vstupu jako slovo plus novĂ˝ Ĺ™Ăˇdek <<<slovo, pĹ™ed <, > aj.
+volitelnÄ› ÄŤĂ­slo (0 = /dev/stdin = vstup pĹ™i prvnĂ­m znaku <, 1 =
+/dev/stdout = vĂ˝stup pĹ™i >, dalĹˇĂ­ 2 = /dev/stderr, X = /dev/fd/X),
+kopie vstupu/vĂ˝stupu z/do (deskriptoru) X <&X/>&X, X z i do souboru
+X<>slovo, mĂ­sto ÄŤĂ­sla i {jmĂ©no} pouĹľitelnĂ© i po pĹ™Ă­kazu
+
+- select jmĂ©no in slova; do pĹ™Ă­kazy; done - opakovanÄ› vĂ˝pis slov s
+ÄŤĂ­sly na chybovĂ˝ vĂ˝stup, za prompt v PS3 zadĂˇnĂ­ a naÄŤtenĂ­ ÄŤĂ­sla
+(volby, takĂ© do promÄ›nnĂ© REPLY), vykonĂˇnĂ­ pĹ™Ă­kazĹŻ s promÄ›nnou jmĂ©no
+nastavenou na slovo s ÄŤĂ­slem (nebo nic), dokud nenĂ­ naÄŤten EOF nebo
+break
+
+- kvĂłtovĂˇnĂ­ (= potlaÄŤenĂ­ speciĂˇlnĂ­ho vĂ˝znamu (meta)znakĹŻ a slov): \,
+'' a "", \novĂ˝ Ĺ™Ăˇdek = pokraÄŤovĂˇnĂ­ Ĺ™Ăˇdku, mezi "" zĹŻstĂˇvĂˇ speciĂˇlnĂ­
+vĂ˝znam $,`,\ (za \ jen $,`,",\,novĂ˝ Ĺ™Ăˇdek), $'Ĺ™etÄ›zec' vracĂ­ Ĺ™etÄ›zec s
+interpetovanĂ˝mi \znak (viz echo)
+
+- zruĹˇenĂ­ promÄ›nnĂ©: unset jmĂ©no
+
+- dalĹˇĂ­ speciĂˇlnĂ­ promÄ›nnĂ©: nĂˇvratovĂˇ hodnota poslednĂ­ho pĹ™Ă­kazu na
+popĹ™edĂ­ ?, PID shellu $, PID poslednĂ­ho pĹ™Ă­kazu na pozadĂ­ !, IFS -
+oddÄ›lovacĂ­ znaky slov pĹ™i expanzi slov ze seznamu, viz dĂˇle, pĹ™i read
+nebo v "$*" (prvnĂ­), vĂ˝chozĂ­ mezera, tabulĂˇtor a novĂ˝ Ĺ™Ăˇdek, PS1 -
+(primĂˇrnĂ­) prompt pro zadĂˇnĂ­ pĹ™Ă­kazu, PS2 - prompt pro dokonÄŤenĂ­
+pĹ™Ă­kazu (napĹ™. na dalĹˇĂ­m Ĺ™Ăˇdku), aj. (napĹ™. GLOBIGNORE, LINENO,
+MACHTYPE, OSTYPE, PROMPT_COMMAND, SECONDS, TIMEFORMAT, TMPDIR)
+
+- pole: jednorozmÄ›rnĂˇ, indexovanĂˇ (nezĂˇpornĂ˝mi celĂ˝mi ÄŤĂ­sly od 0) nebo
+asociativnĂ­ (indexovanĂˇ texty), indexovanĂ© automaticky pĹ™i pĹ™iĹ™azenĂ­
+promÄ›nnĂ© jmĂ©no[index]=slovo, index je vĂ˝raz vyhodnocenĂ˝ na celĂ©
+ÄŤĂ­slo, zĂˇpornĂ© se pĹ™iÄŤĂ­tĂˇ k maximĂˇlnĂ­mu indexu + 1 (tj. -1 =
+maximĂˇlnĂ­), asociativnĂ­ pomocĂ­ declare -A jmĂ©no (indexovanĂˇ -a, i
+local a readonly), pĹ™iĹ™azenĂ­ jmĂ©no=([index]=slovo ...), pro indexovanĂˇ
+i jmĂ©no=(slovo ...), pro asociativnĂ­ i jmĂ©no=(index slovo ...) (takĂ©
++=, na dalĹˇĂ­ index za maximĂˇlnĂ­m), hodnota prvku ${jmĂ©no[index]} (bez
+indexu je tento 0, pĹ™Ă­padnĂ© vytvoĹ™enĂ­ prĂˇzdnĂ©ho), vĹˇechny prvky jako
+slova ${jmĂ©no[@]}, ${jmĂ©no[*]} (v "" jako jedno slovo se slovami
+oddÄ›lenĂ˝mi mezerou!), indexy jako slova ${!jmĂ©no[@]}, ${!jmĂ©no[*]}
+(...), poÄŤet prvkĹŻ ${#jmĂ©no[@]}, ${#jmĂ©no[*]}, dĂ©lka prvku
+${#jmĂ©no[index]}, read -a jmĂ©no pĹ™iĹ™adĂ­ slova do indexovanĂ©ho pole
+jmĂ©no
+
+- expanze: {}, ~, promÄ›nnĂ˝ch a parametrĹŻ ($), substituce vyhodnocenĂ­
+aritmetickĂ©ho vĂ˝razu, substituce vĂ˝stupu pĹ™Ă­kazĹŻ, substituce
+vstupu/vĂ˝stupu pĹ™Ă­kazĹŻ jako jmĂ©na souboru, expanze slov, expanze cesty
+- pak odstranÄ›nĂ­ kvĂłtovĂˇnĂ­
+
+- expanze {}: prefix{Ĺ™etÄ›zec,...}postfix ({ a , v Ĺ™etÄ›zec za \) nebo
+prefix{0ÄŤĂ­slo1/znak1..0ÄŤĂ­slo2/znak2..pĹ™Ă­rĹŻstek}postfix (0 pro stejnou
+ĹˇĂ­Ĺ™ku 0ÄŤĂ­sel, pĹ™Ă­rĹŻstek vĂ˝chozĂ­ 1 nebo -1) expanduje na seznam
+prefixĹ™etÄ›zecpostfix,... nebo prefixÄŤĂ­slo/znakpostfix,... od
+0ÄŤĂ­slo1/znak1 do 0ÄŤĂ­slo2/znak2 (znaky lexikograficky), i vnoĹ™enĂ©,
+prefix ne $
+
+- expanze ~: ~login expanduje na domovskĂ˝ adresĂˇĹ™ uĹľivatele login nebo
+pĹ™i jen ~ = $HOME nebo domovskĂ˝ adresĂˇĹ™ uĹľivatele shellu, ~+ = $PWD,
+~- = $OLDPWD
+
+- expanze promÄ›nnĂ˝ch a parametrĹŻ ($): $jmĂ©no nebo ${jmĂ©no}, nepĹ™Ă­mĂˇ
+expanze ${!jmĂ©no} - jmĂ©no je jmĂ©no promÄ›nnĂ© (ne reference), jejĂ­Ĺľ
+hodnota je jmĂ©no expandovanĂ© promÄ›nnĂ©, slovo pokud promÄ›nnĂˇ/parametr
+nenastavenĂˇ nebo prĂˇzdnĂˇ (ne bez :) ${jmĂ©no:-slovo}, s nastavenĂ­m
+promÄ›nnĂ© ${jmĂ©no:=slovo} (ne parametry a speciĂˇlnĂ­ promÄ›nnĂ©), slovo
+pokud promÄ›nnĂˇ neprĂˇzdnĂˇ ${jmĂ©no:+slovo}, podĹ™etÄ›zec hodnoty
+${jmĂ©no:offset:dĂ©lka} (offset a dĂ©lka ÄŤĂ­sla, dĂ©lka nepovinnĂˇ, offset
+od 0, zĂˇpornĂ˝ offset (s mezerou pĹ™ed -) od konce (jako zĂˇpornĂ˝ index u
+pole), zĂˇpornĂˇ dĂ©lka = koncovĂ˝ offset od konce, pĹ™i jmĂ©nu @ nebo
+jmĂ©no[@/*] dĂ©lka = poÄŤet parametrĹŻ/prvkĹŻ od offset), jmĂ©na promÄ›nnĂ˝ch
+(oddÄ›lenĂˇ mezerou) se jmĂ©ny zaÄŤĂ­najĂ­cĂ­mi prefixem ${!prefix@} nebo
+${!prefix*} (v "" ...), dĂ©lka hodnoty ${#jmĂ©no}, poÄŤet parametrĹŻ ${#@}
+nebo ${#*} (vedle $#), odstraĹ�ovanĂ­ z ${jmĂ©no#vzor}, ${jmĂ©no##vzor},
+${jmĂ©no%vzor}, ${jmĂ©no%%vzor}, nahrazenĂ­ v ${jmĂ©no/vzor/text},
+${jmĂ©no//vzor/text} a zmÄ›na velikosti pĂ­smen ${jmĂ©no^^vzor},
+${jmĂ©no,,vzor} (vzor 1 znak, vĂ˝chozĂ­ ?) v hodnotÄ› promÄ›nnĂ© jmĂ©no (nebo
+@/* pro parametry a pole[@/*] pro jeho prvky) podle vzoru jako u
+expanze cesty a dalĹˇĂ­
+
+- substituce vĂ˝stupu pĹ™Ă­kazĹŻ: $(pĹ™Ă­kazy) nebo `pĹ™Ă­kazy` (\$,\`,\\),
+$(cat soubor) = $(< soubor), i vnoĹ™enĂ©, v "" ne expanze slov a cesty
+
+- substituce vstupu/vĂ˝stupu pĹ™Ă­kazĹŻ jako jmĂ©na souboru: <(pĹ™Ă­kazy),
+>(pĹ™Ă­kazy), pĹ™Ă­kazy spuĹˇtÄ›nĂ© na pozadĂ­, jejich vĂ˝stup/vstup jako jmĂ©no
+souboru (argument) pro ÄŤtenĂ­/zĂˇpis
+
+- expanze slov: po expanzi promÄ›nnĂ˝ch a parametrĹŻ a substituci vĂ˝stupu
+pĹ™Ă­kazĹŻ a vyhodnocenĂ­ aritm. vĂ˝razu pokud nejsou v "", oddÄ›lovacĂ­
+znaky (jejich posloupnosti) v promÄ›nnĂ© IFS, poÄŤĂˇteÄŤnĂ­ a ukonÄŤujĂ­cĂ­
+ignorovĂˇny, vĂ˝chozĂ­ mezera, tabulĂˇtor a novĂ˝ Ĺ™Ăˇdek, pĹ™i prĂˇzdnĂ© IFS
+neprobĂ­hĂˇ, "" a '' prĂˇzdnĂ© Ĺ™etÄ›zce
+
+- expanze cesty: ve slovÄ› * jakĂ˝koliv Ĺ™etÄ›zec (i prĂˇzdnĂ˝), ? jakĂ˝koliv
+znak, [znaky] jakĂ˝koliv ze znakĹŻ pro vzor pro setĹ™Ă­zenĂ˝ seznam
+vyhovujĂ­cĂ­ch jmen souborĹŻ a adresĂˇĹ™ĹŻ, pĹ™i ĹľĂˇdnĂ©m (a ne volba nullglob,
+jinak odstranÄ›nĂ­ slova) neprovedena, kvĂłtovĂˇnĂ­ *, ? a [, znak1-znak2
+rozsah znakĹŻ (dle lokalizace), negace rozsahu ! nebo ^ za [, -/[ za [,
+tĹ™Ă­dy znakĹŻ [:tĹ™Ă­da:] (alnum, aplha, blank, digit, lower, upper aj.),
+volby nocaseglob, dotglob, globstar
+
+- celoÄŤĂ­selnĂˇ aritmetika: 0ÄŤĂ­slo = osmiÄŤkovÄ›, 0x nebo 0X ĹˇestnĂˇctkovÄ›,
+zĂˇklad#ÄŤĂ­slo o zĂˇkladu zĂˇklad od 2 do 64 (cifry nad 9 malĂˇ a velkĂˇ
+pĂ­smena, @ a _)
+
+- pĹ™Ă­kazy:
+
+alias/unalias slovo=text ... - vytvoĹ™enĂ­/zruĹˇenĂ­ aliasu = prvnĂ­ slovo
+(bez spec. (meta)znakĹŻ, / a =) pĹ™Ă­kazu v interaktivnĂ­m shellu
+nahrazovanĂ© za text = kĂłd shellu, pĹ™i ÄŤtenĂ­ pĹ™Ă­kazu (seznam, funkce),
+ne vykonĂˇvĂˇnĂ­!, rekurzivnÄ›, ale ne sama sebe, pokud poslednĂ­ znak
+textu bĂ­lĂ˝, nahrazeno i dalĹˇĂ­ slovo pĹ™Ă­kazu, jen alias (nebo bez =text
+nebo s -p) vĂ˝pis aliasĹŻ
+
+bind - vĂ˝pis (-p/P, -v/V) nebo nastavenĂ­ klĂˇves na funkce a promÄ›nnĂ˝ch
+v pĹ™Ă­kazovĂ©m Ĺ™Ăˇdku (knihovna readline), s -x/X klĂˇves na funkce
+shellu!
+
+declare/typeset jmĂ©no=vĂ˝raz - deklaruje promÄ›nnou (a nastavĂ­ hodnotu
+na vĂ˝raz) a/nebo nastavĂ­ jejĂ­ atributy, napĹ™. -a indexovanĂ© pole, -A
+asociativnĂ­ pole, readonly -r, integer -i pro aritmetickĂ© vyhodnocenĂ­,
+nameref -n pro referenci na promÄ›nnou (~ jinĂ© jmĂ©no, napĹ™. na argument
+funkce ref=$1) aj., ve funkci lokĂˇlnĂ­, bez jmĂ©na nebo s -p vĂ˝pis
+promÄ›nnĂ˝ch, volby i pro local a readonly (jen a/A/p)
+
+dirs/pushd adr/popd - vĂ˝pis/pĹ™idĂˇvĂˇnĂ­/odebĂ­rĂˇnĂ­ adresĂˇĹ™ĹŻ ze/do/ze
+zĂˇsobnĂ­ku a nastavenĂ­ aktuĂˇlnĂ­ho adresĂˇĹ™e na prvnĂ­ (vrchol, pokud ne
+-n), -c vĂ˝maz, -p po Ĺ™ĂˇdcĂ­ch
+
+exec pĹ™Ă­kaz - nahradĂ­ shell pĹ™Ă­kazem (vÄŤetnÄ› pĹ™esmÄ›rovĂˇnĂ­)
+
+fc od do - oprava a znovuvykonĂˇnĂ­ (s -l vĂ˝pis) pĹ™Ă­kazĹŻ od (nebo
+poslednĂ­ho) do (nebo od) z historie, od/do jako prefix poslednĂ­ho
+pĹ™Ă­kazu nebo ÄŤĂ­slo (zĂˇpornĂ© od aktuĂˇlnĂ­ho pĹ™Ă­kazu), -e editor nebo z
+promÄ›nnĂ© FCEDIT nebo EDITOR (nebo vi), pĹ™i -s co=za pĹ™Ă­kaz (jako od)
+znovuvykonĂˇnĂ­ pĹ™Ă­kazu s nahrazenĂ­m kaĹľdĂ©ho co za za
+
+getopts volby jmĂ©no arg ... - parsovĂˇnĂ­ parametrĹŻ (nebo argumentĹŻ) dle
+voleb = znaky (ne : a ?), nĂˇsledovanĂ˝ : volba s argumentem (oddÄ›lenĂ˝
+bĂ­lĂ˝m znakem), kaĹľdĂ© zavolĂˇnĂ­ dalĹˇĂ­ volba do promÄ›nnĂ© jmĂ©no, index
+parametru do promÄ›nnĂ© OPTIND a pĹ™Ă­p. argument volby do promÄ›nnĂ©
+OPTARG, po vĹˇech nebo neplatnĂ© volbÄ› nĂˇvratovĂˇ hodnota > 0 (a jmĂ©no =
+?)
+
+history n - zobrazenĂ­ n poslednĂ­ch (nebo vĹˇech) pĹ™Ă­kazĹŻ z historie (ze
+souboru v HISTFILE nebo zadanĂ©ho), -c vĂ˝maz celĂ©, -d ÄŤĂ­slo/od-do vĂ˝maz
+pĹ™Ă­kazu s ÄŤĂ­slem/od-do (zĂˇpornĂ© odzadu), -s arg uloĹľenĂ­ arg, -a/r/w
+pĹ™idĂˇnĂ­/naÄŤtenĂ­/pĹ™epsĂˇnĂ­ souboru
+
+mapfile/readarray pole - naÄŤte Ĺ™Ăˇdky ze vstupu do (indexovanĂ©ho) pole
+nebo promÄ›nnĂ© MAPFILE, -d oddÄ›lovaÄŤ mĂ­sto novĂ©ho Ĺ™Ăˇdku, -n poÄŤet Ĺ™ĂˇdkĹŻ
+maximĂˇlnÄ›, -O index od indexu, -s poÄŤet bez poÄŤtu prvnĂ­ch Ĺ™ĂˇdkĹŻ, -t
+bez oddÄ›lovaÄŤe
+
+printf format args - vypĂ­Ĺˇe formĂˇtovanĂ© args nebo s -v jmĂ©no uloĹľĂ­ do
+promÄ›nnĂ©, format dle printf v C (vÄŤetnÄ› escape sekvencĂ­ dle echo pro
+%b)
+
+set/unset - vĂ˝pis promÄ›nnĂ˝ch shellu, nastavenĂ­/zruĹˇenĂ­ atributĹŻ
+shellu, nastavenĂ­ promÄ›nnĂ˝ch a parametrĹŻ, zruĹˇenĂ­ funkce (-f)
+
+shopt - volby shellu, pĹ™i spuĹˇtÄ›nĂ­ -+O volba
+
+trap - nastavenĂ­ obsluh signĂˇlĹŻ
+
+ulimit - vĂ˝pis (-a) a nastavenĂ­ limitĹŻ systĂ©movĂ˝ch zdrojĹŻ (pamÄ›ĹĄ,
+procesor aj.) shellu a procesĹŻ z nÄ›j spuĹˇtÄ›nĂ˝ch
+
+umask prĂˇva - vĂ˝pis (bez prĂˇv nebo -S) a nastavenĂ­ prĂˇv u novÄ›
+vytvĂˇĹ™enĂ˝ch souborĹŻ a adresĂˇĹ™ĹŻ (jako u chmod)
+
+aj.
+
+- dalĹˇĂ­: prostĹ™edĂ­ vykonĂˇvĂˇnĂ­ pĹ™Ă­kazu a programu, signĂˇly, sprĂˇva
+Ăşloh, nastavenĂ­ promptĹŻ, pĹ™Ă­kazovĂ˝ Ĺ™Ăˇdek (knihovna readline, klĂˇvesy),
+historie pĹ™Ă­kazĹŻ a expanze, aj.
+
+-> man bash
+
+sed = stream editor
+-------------------
+
+= proudovĂ˝, neinteraktivnĂ­ Ĺ™ĂˇdkovĂ˝, editor pro systematickou a
+opakovanou (a rychlou) manipulaci s Ĺ™Ăˇdky textu - typicky editace nebo
+filtrace
+
+- filtr = naÄŤĂ­tĂˇ text ze std. vstupu nebo souborĹŻ (zadanĂ˝ch jako
+argumenty a zĹ™etÄ›zeny) a zeditovanĂ˝ text vypisuje na std. vĂ˝stup (nebo
+s -i do naÄŤtenĂ˝ch souborĹŻ) - jedinĂ˝ prĹŻchod textem
+
+-> pouĹľitĂ­ ve skriptech
+
+- prĹŻbÄ›h: opakovĂˇnĂ­ naÄŤtenĂ­ Ĺ™Ăˇdku (bez znaku zalomenĂ­ Ĺ™Ăˇdku na konci)
+do vstupnĂ­ho bufferu (pattern space), test vykonĂˇnĂ­ a vykonĂˇnĂ­
+editovacĂ­ch pĹ™Ă­kazĹŻ v zadanĂ©m poĹ™adĂ­ nad vstupnĂ­m bufferem, vĂ˝pis
+vstupnĂ­ho bufferu (s odĹ™ĂˇdkovĂˇnĂ­m) - potlaÄŤenĂ­ -n, vĂ˝maz vstupnĂ­ho
+bufferu
+
+- editovacĂ­ pĹ™Ă­kazy, tzv. sed skript, jako argumenty na pĹ™Ă­kazovĂ©m
+Ĺ™Ăˇdku, -e skript, nebo v souboru, -f soubor_skriptu.sed: slouÄŤenĂ­
+vĹˇech skriptĹŻ do jednoho, bez -e nebo -f je prvnĂ­ argument
+nezaÄŤĂ­najĂ­cĂ­ - skript ÄŤi spĂ­Ĺˇe 'skript' pro potlaÄŤenĂ­ speciĂˇlnĂ­ho
+vĂ˝znamu (meta)znakĹŻ znakĹŻ v shellu (mezera, tabulĂˇtor, $, \, *, {},
+(), !, #)
+
+- skript: posloupnost pĹ™Ă­kazĹŻ oddÄ›lenĂ˝ch ; nebo na samostatnĂ˝ch
+Ĺ™ĂˇdcĂ­ch, pĹ™Ă­kaz = adresa1,adresa2 funkce argumenty - bez mezer (a
+tabulĂˇtorĹŻ, ignorovĂˇny!), adresy nepovinnĂ©, urÄŤujĂ­ rozsah Ĺ™ĂˇdkĹŻ od
+vyhovujĂ­cĂ­ho adresa1 po vyhovujĂ­cĂ­ adresa2, pro kterĂ© se mĂˇ funkce
+vykonat, pĹ™i jednĂ© jen vyhovujĂ­cĂ­ Ĺ™Ăˇdek, pĹ™i ĹľĂˇdnĂ© kaĹľdĂ˝
+
+- adresa: ÄŤĂ­slo Ĺ™Ăˇdku od 1, $ poslednĂ­ Ĺ™Ăˇdek, /regulĂˇrnĂ­ vĂ˝raz/ nebo
+\%regulĂˇrnĂ­ vĂ˝raz% (lib. znak mĂ­sto %) - Ĺ™Ăˇdky (vstupnĂ­ buffer)
+obsahujĂ­cĂ­ Ĺ™etÄ›zec vyhovujĂ­cĂ­ vĂ˝razu
+
+- regulĂˇrnĂ­ vĂ˝razy: zĂˇkladnĂ­ POSIX (BRE), -E/-r pro rozĹˇĂ­Ĺ™enĂ© (ERE),
+m,n v \{m,n\} 0-265, escape sekvence jako u pĹ™Ă­kazu echo shellu
+
+- funkce - max. poÄŤet adres jednopĂ­smennĂ© jmĂ©no(zbytek nĂˇzvu)
+argumenty (bez mezery):
+
+0 # - zahajuje komentĂˇĹ™ do konce Ĺ™Ăˇdku pĹ™Ă­kazu, pokud jako prvnĂ­ znak
+pĹ™Ă­kazu, #n navĂ­c vypĂ­nĂˇ automatickĂ˝ vĂ˝stup jako -n
+
+2 ! funkce - vykonĂˇnĂ­ funkce pokud adresa pro aktuĂˇlnĂ­ naÄŤtenĂ˝ Ĺ™Ăˇdek
+neplatĂ­
+
+1 q(uit) - vĂ˝pis vstupnĂ­ho bufferu (ne pĹ™i -n) a konec bÄ›hu
+
+2 d(elete lines) - vĂ˝maz vstupnĂ­ho bufferu a dalĹˇĂ­ iterace skriptu
+
+2 p(rint) - vĂ˝pis vstupnĂ­ho bufferu
+
+2 n(ext line) - vĂ˝pis vstupnĂ­ho bufferu a naÄŤtenĂ­ dalĹˇĂ­ho Ĺ™Ăˇdku ze
+vstupu do vstupnĂ­ho bufferu
+
+2 { ... } - skupina funkcĂ­ ..., vykonanĂ˝ch jen pĹ™i neprĂˇzdnĂ©m vstupnĂ­m
+bufferu, funkce oddÄ›lenĂ© ; nebo na samostatnĂ˝ch Ĺ™ĂˇdcĂ­ch
+
+2 s(ubstitute)/regulĂˇrnĂ­ vĂ˝raz/text/flags - nahrazenĂ­ prvnĂ­ ÄŤĂˇsti
+textu ve vstupnĂ­m bufferu vyhovujĂ­cĂ­ regulĂˇrnĂ­mu vĂ˝razu textem, mĂ­sto
+/ lze pouĹľĂ­t lib. znak (kromÄ› mezery a novĂ©ho Ĺ™Ăˇdku), kterĂ˝ nenĂ­ ve
+vĂ˝razu (jinak za \), \n v textu pro ÄŤĂˇst vyhovujĂ­cĂ­ n-tĂ©mu (1-9)
+podvĂ˝razu, & v textu pro ÄŤĂˇst vyhovujĂ­cĂ­ celĂ©mu vĂ˝razu, flags: ÄŤĂ­slo n
+(1 aĹľ 512) - nahrazena n-tĂˇ vyhovujĂ­cĂ­ ÄŤĂˇst textu, g - nahrazeny
+vĹˇechny vyhovujĂ­cĂ­ (nepĹ™ekrĂ˝vajĂ­cĂ­ se) ÄŤĂˇsti textu, p - pĹ™i nahrazenĂ­
+vĂ˝pis zmÄ›nÄ›nĂ©ho vstupnĂ­ho bufferu, w soubor - pĹ™i nahrazenĂ­ pĹ™idĂˇnĂ­
+zmÄ›nÄ›nĂ©ho vstupnĂ­ho bufferu do souboru (pĹ™epsĂˇn)
+
+2 y/Ĺ™etÄ›zec1/Ĺ™etÄ›zec2/ - nahrazenĂ­ znakĹŻ z Ĺ™etÄ›zce1 znaky v Ĺ™etÄ›zci2
+na stejnĂ© pozici ve vstupnĂ­m bufferu, Ĺ™etÄ›zce stejnÄ› dlouhĂ©, mĂ­sto /
+lze pouĹľĂ­t lib. znak (kromÄ› mezery a novĂ©ho Ĺ™Ăˇdku)
+
+1 a(ppend lines) \ text - vĂ˝pis textu po vĂ˝pisu vstupnĂ­ho bufferu (po
+odĹ™ĂˇdkovĂˇnĂ­), text od novĂ©ho Ĺ™Ăˇdku, pĹ™i vĂ­ce Ĺ™ĂˇdcĂ­ch textu na konci
+kaĹľdĂ©ho kromÄ› poslednĂ­ho \, text nenĂ­ zpracovĂˇvĂˇn (aĹľ na \), mezery (a
+tabulĂˇtory) na zaÄŤĂˇtcĂ­ch Ĺ™ĂˇdkĹŻ textu ignorovĂˇny, pokud neuvozeny \
+
+1 i(nsert lines) \ text - vĂ˝pis textu (pĹ™ed vĂ˝pisem vstupnĂ­ho bufferu,
+po odĹ™ĂˇdkovĂˇnĂ­), zbytek jako a
+
+2 c(hange lines) \ text - nahrazenĂ­ vstupnĂ­ho bufferu textem (jednou
+pro celĂ˝ rozsah adres), vĂ˝pis novĂ©ho vstupnĂ­ho bufferu a dalĹˇĂ­ iterace
+skriptu, zbytek jako a, novĂ˝ vstupnĂ­ buffer vypsĂˇn jeĹˇtÄ› pĹ™ed vĂ˝pisem
+textu/souboru funkcemi a a r
+
+1 = - vĂ˝pis ÄŤĂ­sla aktuĂˇlnĂ­ho naÄŤtenĂ©ho Ĺ™Ăˇdku na samostatnĂ˝ Ĺ™Ăˇdek
+
+2 l(ist pattern space on the standard output) - vĂ˝pis vstupnĂ­ho
+bufferu, netisknutelnĂ˝ znak jako ASCII hodnota (dvÄ› ĹˇestnĂˇctkovĂ©
+ÄŤĂ­slice), dlouhĂ© Ĺ™Ăˇdky zalomeny - dĂ©lka zadĂˇna parametrem sedu -l
+(vĂ˝chozĂ­ 70, 0 = nezalamovat)
+
+1 r(ead contents of a file) soubor - vĂ˝pis souboru po vĂ˝pisu vstupnĂ­ho
+bufferu (po odĹ™ĂˇdkovĂˇnĂ­,) mezi r a soubor jedna mezera, neexistujĂ­cĂ­
+soubor jako prĂˇzdnĂ˝
+
+2 w(rite to a file) soubor - pĹ™idĂˇnĂ­ vstupnĂ­ho bufferu do souboru
+(pĹ™epsĂˇn), mezi w a soubor jedna mezera
+
+2 D(elete first part of pattern space) - vĂ˝maz vstupnĂ­ho bufferu od
+zaÄŤĂˇtku do znaku novĂ©ho Ĺ™Ăˇdku (viz funkce N) a skok na zaÄŤĂˇtek
+skriptu, dalĹˇĂ­ Ĺ™Ăˇdek naÄŤten do vstupnĂ­ho bufferu jen pokud doĹˇlo k
+vĂ˝mazu celĂ©ho vstupnĂ­ho bufferu (= d)
+
+2 N(ext line) - pĹ™idĂˇnĂ­ dalĹˇĂ­ho Ĺ™Ăˇdku ze vstupu do vstupnĂ­ho bufferu,
+oddÄ›lenĂ˝ novĂ˝m Ĺ™Ăˇdkem
+
+2 P(rint first part of the pattern space) - vĂ˝pis vstupnĂ­ho bufferu od
+zaÄŤĂˇtku do znaku novĂ©ho Ĺ™Ăˇdku
+
+2 h(hold pattern space) - nahrazenĂ­ hold bufferu, pomocnĂ©ho mĂ­sta pro
+text (sed nemĂˇ promÄ›nnĂ©!), vstupnĂ­m bufferem
+
+2 H(old patter space) - vstupnĂ­ buffer pĹ™idĂˇn k hold bufferu, oddÄ›lenĂ˝
+novĂ˝m Ĺ™Ăˇdkem
+
+2 g(et contents of hold area) - nahrazenĂ­ vstupnĂ­ho bufferu hold
+bufferem
+
+2 G(et contents of hold area) - hold buffer pĹ™idĂˇn ke vstupnĂ­mu
+bufferu, oddÄ›lenĂ˝ novĂ˝m Ĺ™Ăˇdkem
+
+2 (e)x(change) - prohozenĂ­ obsahu vstupnĂ­ho a hold bufferu
+
+0 : nĂˇvÄ›ĹˇtĂ­ - definice nĂˇvÄ›ĹˇtĂ­ (Ĺ™etÄ›zec znakĹŻ), v rĂˇmci skriptu
+jedineÄŤnĂ©
+
+2 b(ranch to label) nĂˇvÄ›ĹˇtĂ­ - skok na nĂˇvÄ›ĹˇtĂ­, pĹ™i nezadĂˇnĂ­ na konec
+skriptu
+
+2 t(est substitutions) nĂˇvÄ›ĹˇtĂ­ - skok na nĂˇvÄ›ĹˇtĂ­, pokud od zaÄŤĂˇtku
+skriptu nebo poslednĂ­ho t doĹˇlo k nahrazenĂ­ funkcĂ­ s nebo y, pĹ™i
+nezadĂˇnĂ­ na konec skriptu
+
+- promÄ›nnĂ© shellu v sed skriptu (kterĂ˝ je mezi ''): vyjmutĂ­ expanze
+promÄ›nĂ© z '' (pĹ™eruĹˇenĂ­ '') nebo skript v "" (zĹŻstĂˇvĂˇ speciĂˇlnĂ­ vĂ˝znam
+$)
+
+-> man sed, info sed
+
+awk
+---
+
+- autoĹ™i Aho, Weinberger, Kernighan (The AWK Programming Language),
+1977, dnes verze z 1985 (gawk, GNU awk)
+
+= programovacĂ­ jazyk pro analĂ˝zu a zpracovĂˇnĂ­ textovĂ˝ch (vzorovĂ˝ch,
+typicky tabulkovĂ˝ch) dat, dle standardu POSIX
+
+- provedenĂ­ akcĂ­ awk programu pro jednotlivĂ© Ĺ™Ăˇdky textu vyhovujĂ­cĂ­
+tzv. vzorkĹŻm (pattern) - typicky vĂ˝bÄ›r ÄŤĂˇstĂ­ Ĺ™ĂˇdkĹŻ (sloupcĹŻ) nebo
+nahrazenĂ­ ÄŤĂˇstĂ­ jinĂ˝m textem
+
+- text naÄŤtenĂ˝ ze std. vstupu nebo ze souborĹŻ (zadanĂ˝ch jako
+argumenty), kaĹľdĂ˝ Ĺ™Ăˇdek, tzv. zĂˇznam (record), rozdÄ›lenĂ˝ do sloupcĹŻ
+(pokud nenĂ­ nastavena internĂ­ promÄ›nnĂˇ FIELDWIDTHS nebo FPAT), tzv.
+polĂ­ (field), oddÄ›lenĂ˝ch mezerami nebo tabulĂˇtory, a testovĂˇn vĹŻÄŤi
+vĹˇem vzorkĹŻm programu (v poĹ™adĂ­ zĂˇpisu) pro provedenĂ­ asociovanĂ© akce
+
+- syntaxe akcĂ­ awk programu podobnĂˇ prog. jazyku C - awk snadnÄ›jĹˇĂ­ pro
+zpracovĂˇnĂ­ textu, na Ăşkor rychlosti => programovĂˇnĂ­ nejdĹ™Ă­ve v awk, po
+odladÄ›nĂ­ pĹ™epsĂˇnĂ­ do jinĂ©ho prog. jazyka (automaticky awkcc, a2p)
+
+- awk program zadanĂ˝ jako prvnĂ­ argument na pĹ™Ă­kazovĂ©m Ĺ™Ăˇdku, mezi ''
+pro potlaÄŤenĂ­ speciĂˇlnĂ­ho vĂ˝znamu nÄ›kterĂ˝ch znakĹŻ v shellu, za
+argumenty -e, ze souborĹŻ -f program.awk nebo ze std. vstupu, vĂ­ce -e a
+-f zĹ™etÄ›zeno, mezery (a tabulĂˇtory) ignorovĂˇny, naÄŤtenĂ­ knihovny -i
+soubor (i pro -f hledĂˇnĂ­ v adresĂˇĹ™Ă­ch v AWKPATH obsahujĂ­cĂ­ i .),
+rozĹˇĂ­Ĺ™enĂ­ ze sdĂ­lenĂ© knihovny -l soubor (AWKLIBPATH)
+
+- awk program: posloupnost "vzorek { akce }" (bez "") na samostatnĂ˝ch
+Ĺ™ĂˇdcĂ­ch nebo oddÄ›lenĂ˝ch ;, vzorek anebo akce nepovinnĂˇ, pĹ™i neuvedenĂ­
+akce (vÄŤetnÄ› {}) je akcĂ­ vĂ˝pis celĂ©ho zĂˇznamu vyhovujĂ­cĂ­ho vzorku
+(print), pĹ™i neuvedenĂ­ vzorku provedenĂ­ akce pro vĹˇechny zĂˇznamy, akce
+vykonĂˇvĂˇny v poĹ™adĂ­ vyhovujĂ­cĂ­ch vzorkĹŻ (vyjma vzorkĹŻ BEGIN a END),
+dĂˇle funkce a direktivy (@include "soubor", @load "soubor")
+
+- vzorek: log. vĂ˝raz - zĂˇznam vyhovuje pĹ™i pravdivĂ©m (nenulovĂ© ÄŤĂ­slo,
+neprĂˇzdnĂ˝ Ĺ™etÄ›zec), /regulĂˇrnĂ­ vĂ˝raz/ - zĂˇznam vyhovuje kdyĹľ obsahuje
+Ĺ™etÄ›zec vyhovujĂ­cĂ­ vĂ˝razu, sloĹľenĂ­ z vĂ­ce vĂ˝razĹŻ &&,||,!,(),?: (vzorek
+pĹ™ed nebo za : v zĂˇvislosti na vzorku pĹ™ed ?), vĂ˝raz1,vĂ˝raz2 -
+vyhovujĂ­ zĂˇznamy od prvnĂ­ho vyhovujĂ­cĂ­mu vĂ˝razu1 po poslednĂ­
+vyhovujĂ­cĂ­ vĂ˝razu2 vÄŤetnÄ›, nelze kombinovat, speciĂˇlnĂ­ BEGIN - akce
+(vĂ­ce zĹ™etÄ›zenĂ˝ch) vykonĂˇna pĹ™ed prvnĂ­m zĂˇznamem vstupnĂ­ch dat, napĹ™.
+nastavenĂ­ oddÄ›lovaÄŤe polĂ­, END - po poslednĂ­m zĂˇznamu (nebo pĹ™i exit),
+napĹ™. souhrnnĂ˝ vĂ˝pis, oba nelze kombinovat, musĂ­ bĂ˝t akce, BEGINFILE a
+ENDFILE pro kaĹľdĂ˝ vstupnĂ­ soubor
+
+- regulĂˇrnĂ­ vĂ˝razy: rozĹˇĂ­Ĺ™enĂ© POSIX (ERE), escape sekvence jako u
+pĹ™Ă­kazu echo shellu (osmiÄŤkovÄ› bez 0), pĹ™i nenulovĂ© internĂ­ promÄ›nnĂ©
+IGNORECASE nezĂˇleĹľĂ­ na velikosti pĂ­smen u operacĂ­ s regulĂˇrnĂ­mi vĂ˝razy
+a Ĺ™etÄ›zci
+
+- akce: posloupnost pĹ™Ă­kazĹŻ oddÄ›lenĂ˝ch ; nebo na samostatnĂ˝ch
+Ĺ™ĂˇdcĂ­ch, { na stejnĂ©m Ĺ™Ăˇdku jako vzorek, pokraÄŤovĂˇnĂ­ Ĺ™Ăˇdku \
+
+- datovĂ© typy: necelĂˇ ÄŤĂ­sla s . nebo s -N podle lokalizace (celĂˇ i
+0ÄŤĂ­slo = osmiÄŤkovÄ›, 0x ĹˇestnĂˇctkovÄ›) a textovĂ© Ĺ™etÄ›zce zadanĂ© v ""
+(vÄŤetnÄ› escape sekvencĂ­, takĂ© regulĂˇrnĂ­ vĂ˝razy v // - do promÄ›nnĂ˝ch
+@//), vĂ˝stup ÄŤĂ­sla podle formĂˇtu v internĂ­ promÄ›nnĂ© OFMT, vĂ˝chozĂ­
+%.6g, aut. konverze dle kontextu, manuĂˇlnĂ­ ÄŤĂ­slo"" (podle formĂˇtu v
+internĂ­ promÄ›nnĂ© CONVFMT, vĂ˝chozĂ­ %.6g, ale celĂˇ ÄŤĂ­sla bez .),
+Ĺ™etÄ›zec+0 nebo funkce strtonum (jen poÄŤĂˇteÄŤnĂ­ znaky pro ÄŤĂ­sla)
+
+- promÄ›nnĂ©: jmĂ©no (i pouĹľitĂ­, alfanumerickĂ© znaky, prvnĂ­ znak),
+vytvoĹ™enĂ­ a inicializace pĹ™i prvnĂ­m pouĹľitĂ­ (tj. bez deklarace),
+vĂ˝chozĂ­ hodnoty 0 pro ÄŤĂ­selnĂ©, "" pro Ĺ™etÄ›zcovĂ©, vĹˇechny globĂˇlnĂ­ (ale
+i jmennĂ© prostory, prostor::jmĂ©no, zmÄ›na @namespace "prostor", vĂ˝chozĂ­
+awk), pĹ™iĹ™azenĂ­ hodnoty = (i -v jmĂ©no=hodnota pĹ™ed BEGIN nebo jen
+jmĂ©no=hodnota po BEGIN), vĂ˝pis (globĂˇlnĂ­ch) -dsoubor, internĂ­ NF -
+poÄŤet polĂ­ zĂˇznamu, NR ÄŤĂ­slo zĂˇznamu od 1 (FNR v aktuĂˇlnĂ­m
+zpracovĂˇvanĂ©m souboru), FS - znak nebo vĂ­ce jako reg. vĂ˝raz jako
+oddÄ›lovaÄŤ polĂ­, vĂ˝chozĂ­ mezera, pĹ™i mezeĹ™e lib. poÄŤet mezer a
+tabulĂˇtorĹŻ, pĹ™i prĂˇzdnĂ© ĹľĂˇdnĂ˝ (tj. kaĹľdĂ˝ znak zĂˇznamu pole), takĂ© za
+-F, RS - znak nebo vĂ­ce jako reg. vĂ˝raz jako oddÄ›lovaÄŤ zĂˇznamĹŻ (pro
+aktuĂˇlnĂ­ zĂˇznam v RT), vĂ˝chozĂ­ znak pro novĂ˝ Ĺ™Ăˇdek, pĹ™i prĂˇzdnĂ©
+oddÄ›lovaÄŤ prĂˇzdnĂ˝ Ĺ™Ăˇdek a znak pro novĂ˝ Ĺ™Ăˇdek i oddÄ›lovaÄŤ polĂ­, ARGC -
+poÄŤet dalĹˇĂ­ch argumentĹŻ (za volbami nebo programem nebo za --), ARGV -
+pole dalĹˇĂ­ch argumentĹŻ, ARGIND - index v ARGV aktuĂˇlnĂ­ho
+zpracovĂˇvanĂ©ho souboru, FILENAME - jeho jmĂ©no (nebo -, ne v BEGIN),
+ENVIRON - pole promÄ›nnĂ˝ch (indexy) prostĹ™edĂ­ (shellu) aj.
+
+- $N (N vĂ˝raz, pĹ™Ă­p. v (), vyhodnocenĂ˝ na celĂ© ÄŤĂ­slo >= 0) - N-tĂ© pole
+zĂˇznamu (jako Ĺ™etÄ›zec), $0 celĂ˝ zĂˇznam, pĹ™iĹ™azenĂ­ do pole za NF zvĂ˝ĹˇĂ­
+NF (s dalĹˇĂ­mi poli prĂˇzdnĂ˝mi), snĂ­ĹľenĂ­ NF zruĹˇĂ­ vyĹˇĹˇĂ­ pole, pĹ™i zmÄ›nÄ›
+(vÄŤetnÄ› pĹ™iĹ™azenĂ­ do) pole znovusestavenĂ­ $0 s poli oddÄ›lenĂ˝mi
+hodnotou OFS (vĂ˝chozĂ­ mezera), pĹ™i pĹ™iĹ™azenĂ­ do $0 znovurozdÄ›lenĂ­
+(novĂ©ho) zĂˇznamu
+
+- pole (prvkĹŻ): jmĂ©no[index], index celĂ© ÄŤĂ­slo nebo Ĺ™etÄ›zec, vytvoĹ™enĂ­
+a inicializace prvku pĹ™i prvnĂ­m pouĹľitĂ­ (tj. bez deklarace), vĂ˝chozĂ­
+hodnoty jako u promÄ›nnĂ˝ch, vymazĂˇnĂ­ delete jmĂ©no[index], delete jmĂ©no,
+i vĂ­cedimenzionĂˇlnĂ­ [][]
+
+- operĂˇtory: porovnĂˇnĂ­ (v log. vĂ˝razech) pro ÄŤĂ­sla a Ĺ™etÄ›zce
+<,>,==,!=,<=,>= (pro pĹ™ednÄ›jĹˇĂ­ Ĺ™etÄ›zce, vyjma "ÄŤĂ­selnĂ˝ch ne-konstant"
+ze vstupu = ÄŤĂ­sla, porovnĂˇnĂ­ po znacĂ­ch, napĹ™. podle ASCII), index in
+pole, Ĺ™etÄ›zec ~ reg. vĂ˝raz - Ĺ™etÄ›zec obsahuje podĹ™etÄ›zec vyhovujĂ­cĂ­
+vĂ˝razu, !~ - neobsahuje, aritmetickĂ© +,-,*,/,%,^(**),++,-- (i s =),
+Ĺ™etÄ›zcovĂ© spojenĂ­ = mezera
+
+- blok pĹ™Ă­kazĹŻ v {} oddÄ›lenĂ˝ch ;
+
+- podmĂ­nky: if (log. vĂ˝raz) pĹ™Ă­kaz else pĹ™Ă­kaz, switch (vĂ˝raz) {
+case hodnota|reg. vĂ˝raz : pĹ™Ă­kaz ... default: pĹ™Ă­kaz }
+
+- cykly: while (log. vĂ˝raz) pĹ™Ă­kaz, do pĹ™Ă­kaz while (log. vĂ˝raz), for
+(;;) pĹ™Ă­kaz - v () jako v C, for (promÄ›nnĂˇ in pole) pĹ™Ă­kaz, v bloku
+pĹ™Ă­kazy break, continue, kdekoliv exit vĂ˝raz
+
+- funkce: vlastnĂ­ function jmĂ©no(parametr,parametr,...) { pĹ™Ă­kazy }
+(vedle vzorkĹŻ a akcĂ­), volĂˇnĂ­ jmĂ©no(argument, argument,...), vrĂˇcenĂ­
+hodnoty return vĂ˝raz, vestavÄ›nĂ©:
+
+ - ÄŤĂ­selnĂ©: int, sin (argument v radiĂˇnech), cos, sqrt, log, exp, rand
+ (0 < N < 1) aj.
+
+ - Ĺ™etÄ›zcovĂ©: length (bez znaku novĂ©ho Ĺ™Ăˇdku), substr, index,
+ (g(en))sub, match, (pat)split, tolower, toupper, sprintf, asort(i)
+ aj.
+
+ - ÄŤasovĂ©: mktime, strftime, systime
+ 
+ - bitovĂ© (konverze na celĂ© ÄŤĂ­slo a zpÄ›t): and, or, xor, compl,
+ l/rshift
+ 
+ - vstupnĂ­ a vĂ˝stupnĂ­: pĹ™Ă­kazy, ne funkce
+
+print argumenty >soubor - vĂ˝pis argumentĹŻ nebo celĂ©ho zĂˇznamu do
+souboru nebo na vĂ˝stup (takĂ© -) ukonÄŤenĂ˝ hodnotou ORS (vĂ˝chozĂ­ znak
+pro novĂ˝ Ĺ™Ăˇdek), argumenty oddÄ›lenĂ© , (ÄŤĂˇrkou) vypsanĂ© oddÄ›lenĂ©
+hodnotou OFS, jinak bez oddÄ›lenĂ­, takĂ© >>soubor a | pĹ™Ă­kaz shellu
+
+printf formĂˇt, argumenty >soubor - formĂˇtovanĂ˝ vĂ˝stup jako v C
+(formĂˇt Ĺ™etÄ›zec v "" s formĂˇtovacĂ­mi instrukcemi za %)
+
+pĹ™Ă­kaz | getline promÄ›nnĂˇ <soubor - nastavenĂ­ promÄ›nnĂ© nebo $0 na
+dalĹˇĂ­ zĂˇznam souboru anebo vĂ˝stupu pĹ™Ă­kazu shellu nebo vstupu (takĂ©
+-), nastavĂ­ internĂ­ promÄ›nnou RT, bez promÄ›nnĂ© (a pĹ™Ă­kazu) i NF, bez
+souboru a pĹ™Ă­kazu i NR a FNR, vracĂ­ 0 pĹ™i konci souboru (vĂ˝stupu), -1
+pĹ™i chybÄ›, jinak 1
+
+next(file) - ukonÄŤenĂ­ zpracovĂˇnĂ­ aktuĂˇlnĂ­ho zĂˇznamu (souboru)
+
+system(pĹ™Ă­kaz) - vykonĂˇnĂ­ pĹ™Ă­kazu shellu s nĂˇvratovĂ˝m kĂłdem
+
+fflush(soubor) - vyprĂˇzdnÄ›nĂ­ bufferĹŻ pro soubor nebo vĹˇech
+
+a dalĹˇĂ­ funkce (isarray, typeof)
+
+- komentĂˇĹ™: # do zbytku Ĺ™Ăˇdku
+
+- "pretty print" vĂ˝pis programu -osoubor, profilovacĂ­ Ăşdaje -psoubor
+
+- internĂ­ promÄ›nnĂˇ PROCINFO: pole s info o programu (vĹˇechny
+argumenty, info o promÄ›nnĂ˝ch a funkcĂ­ch, PID, UID, GID uĹľivatele aj.)
+
+- integrovanĂ˝ debugger -Dsoubor: interaktivnĂ­ pĹ™Ă­kazy (nebo v
+souboru) po naÄŤtenĂ­ programu zadanĂ©ho pomocĂ­ -f nebo -i
+
+- sandbox mĂłd -S: ne funkce system a spouĹˇtÄ›nĂ­ pĹ™Ă­kazĹŻ (pĹ™es rouru),
+pĹ™esmÄ›rovĂˇnĂ­ vstupu a vĂ˝stupĹŻ
+
+TODO 38
+
+NĂˇrodnĂ­ prostĹ™edĂ­ (ÄŤeskĂ©)
+-------------------------
+
+- jazyk a rozloĹľenĂ­ klĂˇvesnice grafickĂ©ho prostĹ™edĂ­ zĂˇvisĂ­ na
+lokalizaci a nastavenĂ­ desktopovĂ©ho (grafickĂ©ho) prostĹ™edĂ­ nebo
+grafickĂ©ho reĹľimu systĂ©mu, zmÄ›na je v jejich reĹľii (napĹ™. klĂˇvesovĂˇ
+zkratka)
+
+- jazyk textovĂ©ho prostĹ™edĂ­ v oknÄ› emulĂˇtoru terminĂˇlu v grafickĂ©m
+prostĹ™edĂ­ zĂˇvisĂ­ na lokalizaci shellu, zmÄ›na lokalizaÄŤnĂ­ch promÄ›nnĂ˝ch
+shellu
+
+- jazyk a rozloĹľenĂ­ klĂˇvesnice textovĂ©ho prostĹ™edĂ­ v (celoobrazovkovĂ©)
+konzoli terminĂˇlu zĂˇvisĂ­ na lokalizaci systĂ©mu a shellu a (systĂ©movĂ©m)
+nastavenĂ­ klĂˇvesnice, zmÄ›na lokalizaÄŤnĂ­ch promÄ›nnĂ˝ch shellu a dle
+nastavenĂ­ (napĹ™. klĂˇvesa Pause)
+
+- lokalizace = nĂˇrodnĂ­ zvyklosti (jazykovĂˇ a kulturnĂ­ pravidla) v
+prostĹ™edĂ­/shellu/systĂ©mu (danĂˇ knihovnou libc) - jazyk zprĂˇv/vĂ˝pisĹŻ
+programĹŻ, mnoĹľiny znakĹŻ, uspoĹ™ĂˇdĂˇnĂ­ znakĹŻ, formĂˇty ÄŤĂ­sel a ÄŤasu atd.
+
+- kategorie: LC_CTYPE klasifikace znakĹŻ (posloupnostĂ­ bytĹŻ jako
+znakĹŻ), tĹ™Ă­dy (pĂ­smena aplha, ÄŤĂ­slice digit a xdigit, obojĂ­ alnum,
+bĂ­lĂ© znaky blank a space apod.) a velikosti pĂ­smen (lower, upper),
+LC_NUMERIC formĂˇt ÄŤĂ­sel kromÄ› penÄ›z (desetinnĂˇ ÄŤĂˇrka/teÄŤka,
+oddÄ›lovaÄŤ tisĂ­cĹŻ aj.), LC_TIME formĂˇt data a ÄŤasu (jmĂ©na dnĹŻ a mÄ›sĂ­cĹŻ,
+formĂˇty, prvnĂ­ den aj.), LC_COLLATE poĹ™adĂ­ znakĹŻ (pro rozsahy a
+porovnĂˇnĂ­ Ĺ™etÄ›zcĹŻ), LC_MONETARY formĂˇt penÄ›ĹľnĂ­ch ÄŤĂˇstek (desetinnĂˇ
+ÄŤĂˇrka/teÄŤka, oddÄ›lovaÄŤ tisĂ­cĹŻ, poÄŤet deset. mĂ­st, znak mÄ›ny aj.),
+LC_MESSAGES jazyk zprĂˇv/vĂ˝pisĹŻ programĹŻ a jakĂˇ je pozivinĂ­ a
+negativnĂ­ odpovÄ›ÄŹ, LC_PAPER velikost papĂ­ru, LC_NAME formĂˇt jmen,
+LC_ADDRESS formĂˇt adres a mĂ­st, LC_TELEPHONE formĂˇt tel. ÄŤĂ­sel,
+LC_MEASUREMENT jednotky (metrickĂ©, jinĂ©), LC_IDENTIFICATION metadata k
+lokalizaci, vĂ­ce man 5 locale
+
+- hodnoty jazyk[_ZEMÄš[.kĂłdovĂˇnĂ­]] (jazyky ISO 639, zemÄ› ISO 3166),
+napĹ™. cs_CZ.UTF-8, sk_SK.UTF-8, speciĂˇlnĂ­ (vĂ˝chozĂ­) C, POSIX, vĂ˝pis
+locale -ack
+
+- lokalizaÄŤnĂ­ promÄ›nnĂ© shellu (z nastavenĂ­ systĂ©mu): LC_ALL pro
+vĹˇechny, LC_* (CTYPE, COLLATE, NUMERIC, MESSAGES, TIME), LANG vĂ˝chozĂ­
+pro nenastavenĂ©, nastavenĂ­ pro shell (a vĹˇe z nÄ›j spuĹˇtÄ›nĂ©) - export
+
+- regulĂˇrnĂ­ vĂ˝razy: tĹ™Ă­dy [:jmĂ©no:], jmĂ©na z LC_CTYPE, rozsahy a
+porovnĂˇnĂ­ znakĹŻ, znaky jako vĂ­ceznakovĂ© sekvence [.sekvence.] (tzv.
+collating elements, napĹ™. ch) a ekvivalentnĂ­ znaky [=znak=] (napĹ™. e,
+Ă©, Ä›) podle LC_COLLATE
+
+- dnes standardnÄ› kĂłdovĂˇnĂ­ textu UTF-8, bez BOM (Byte Order Mark, UTF
+signatura, U+FEFF), dĹ™Ă­ve ISO 8859-2 (ISO Latin 2)
+
+- odĹ™ĂˇdkovĂˇnĂ­ znak LF (Line Feed, hodnota 0xA)
+
+- zjiĹˇtÄ›nĂ­ kĂłdovĂˇnĂ­: file, enca, chardet
+
+- pĹ™evod mezi kĂłdovĂˇnĂ­mi (vÄŤetnÄ› ASCII) a konci Ĺ™ĂˇdkĹŻ: cstocs, recode
+-l, iconv -ftl, enconv -x, dos2unix, unix2dos
+
+- pĹ™ekĂłdovĂˇnĂ­ jmen souborĹŻ a adresĂˇĹ™ĹŻ: convmv -ftr
+
+Specifika oproti UNIXu (standardu POSIX)
+----------------------------------------
+
+Linux
+
+= nejvĂ˝znamnÄ›jĹˇĂ­ unixovĂ˝ OS (GNU/Linux), rozĹˇĂ­Ĺ™enĂ˝
+
+- dokumentace SW v /usr/share/doc
+
+- podpora mnoha soub. systĂ©mĹŻ, p(u)mount, speciĂˇlnĂ­ soubory zaĹ™Ă­zenĂ­
+(/dev/[sda*,audio] aj.), LSB standard adresĂˇĹ™ovĂ© struktury (/media,
+/proc, /srv, /sys), soubory a adresĂˇĹ™e v /boot (vmlinuz, initrd.img),
+/etc (init.d), /lib (modules) aj.
+
+- priority procesĹŻ 19 aĹľ -20, ps: unixovĂ© (zaÄŤĂ­najĂ­cĂ­ -), BDS (bez -)
+a GNU (--dlouhe) parametry
+
+GNU
+
+= projekt volnÄ› pouĹľitelnĂ©ho a ĹˇiĹ™itelnĂ©ho (svobodnĂ©ho) SW a unixovĂ©ho
+OS: shell (Bash), pĹ™ekladaÄŤ (GCC), editor (Emacs) aj., licence GPL
+
+- dokumentace Info
+
+- parametry programĹŻ mohou bĂ˝t i za soubory, --dlouhe_parametry
+
+- textutils
+
+- grep: -q vedle -s (ale nejlĂ©pe &>/dev/null), nenĂ­ rozdĂ­l v
+moĹľnostech zĂˇkladnĂ­ch (-G, vĂ˝chozĂ­) a rozĹˇĂ­Ĺ™enĂ˝ch (-E, egrep) reg.
+vĂ˝razĹŻ, promÄ›nnĂˇ POSIXLY_CORRECT
+
+- Bash: --posix, spuĹˇtÄ›nĂ­ jako sh, nastavenĂ­ promÄ›nnĂ©
+POSIXLY_CORRECT, set -o posix -> POSIX reĹľim, time -p pro POSIX
+vĂ˝stup, dĂˇle POSIX reĹľim: ./source nehledĂˇ v akt. adresĂˇĹ™i, bg
+vyĹľaduje zadĂˇnĂ­ ÄŤĂ­sla Ăşlohy, vĂ˝chozĂ­ soubor historie ~/.sh_history
+mĂ­sto ~/.bash_history, kill neznĂˇ specifikaci signĂˇlĹŻ s prefixem SIG,
+jmĂ©na funkcĂ­ jen pĂ­smena, ÄŤĂ­slice (ne na zaÄŤĂˇtku) a _, pĹ™iĹ™azenĂ­ pĹ™ed
+volĂˇnĂ­m funkce zĹŻstĂˇvajĂ­ po ukonÄŤenĂ­ funkce, set nevypisuje funkce,
+expanze ~ jen pĹ™ed pĹ™Ă­kazem, pĹ™i login shellu jen /etc/profile a
+~/.profile, ENV mĂ­sto BASH_ENV, ale pĹ™i interaktivnĂ­m shellu, samotnĂ˝
+pĹ™Ă­kaz time pro ÄŤas shellu (a podshellĹŻ), dalĹˇĂ­ v BASH ManuĂˇlu, ÄŤĂˇst
+6.11 (http://www.gnu.org/software/bash/manual/bash.html)
+
+- sed: --posix, /RE/I pro nerozliĹˇovĂˇnĂ­ velikosti pĂ­smen, /RE/e pĹ™i
+nahrazenĂ­ vykonĂˇnĂ­ zmÄ›nÄ›nĂ©ho vstupnĂ­ho bufferu jako pĹ™Ă­kazu a jeho
+nahrazenĂ­ vĂ˝stupem, -s pro soubory samostatnÄ›, ne zĹ™etÄ›zenĂ­, adresy
+n~k pro kaĹľdĂ˝ k-tĂ˝ Ĺ™Ăˇdek od n (pĹ™i n=0 je n=k), 0,/RE/ pro 1. Ĺ™Ăˇdek
+vyhovujĂ­cĂ­ RE, adresa1,+n i pro n Ĺ™ĂˇdkĹŻ za Ĺ™Ăˇdkem vyhovujĂ­cĂ­m adresa1,
+adresa1,~n pro Ĺ™Ăˇdky od vyhovujĂ­cĂ­ adresa1 po ÄŤĂ­slo Ĺ™Ăˇdku nĂˇsobek n,
+nĂˇvratovĂ˝ kĂłd u funkce q/Q, dĂ©lka Ĺ™Ăˇdku u funkce l, funkce Q pro konec
+bÄ›hu, R soubor pro vĂ˝pis Ĺ™Ăˇdky souboru (dalĹˇĂ­ s kaĹľdĂ˝m pouĹľitĂ­m), T
+pro skok na nĂˇvÄ›ĹˇtĂ­, pokud od zaÄŤĂˇtku skriptu nebo poslednĂ­ho t
+NEdoĹˇlo k nahrazenĂ­ funkcĂ­ s nebo y, W soubor pro pĹ™idĂˇnĂ­ Ĺ™Ăˇdky
+vstupnĂ­ho bufferu do souboru
+
+- awk: gawk (GNU awk), -P/--posix a -c/--traditional
+UNIX/compatibility mode (znak t za -F dĂˇ TAB do FS, klasicky '\t', ne
+{n,m} v reg. vĂ˝razech pokud ne -r, neznĂˇmĂ© argumenty), \yB<>sSwW`' v
+reg. vĂ˝razech, -N pro oddÄ›lovaÄŤ desetinnĂ˝ch mĂ­st podle locales
+(vĂ˝chozĂ­ .), ne -i knihovna.awk a direktiva @include "knihovna.awk"
+pro vloĹľenĂ­ ze souboru, cesty pro soubory pro -f a -i v promÄ›nnĂ©
+prostĹ™edĂ­ AWKPATH, osmiÄŤkovĂ© a ĹˇestnĂˇctkovĂ© konstanty, nÄ›jakĂ© spec.
+promÄ›nnĂ©, operĂˇtor ** jako ^, vzorky BEGINFILE a ENDFILE, reg. vĂ˝raz v
+FS a RS (jen prvnĂ­ znak), FS jako prĂˇzdnĂ˝ Ĺ™etÄ›zec = rozdÄ›lenĂ­ Ĺ™Ăˇdku na
+znaky, func kromÄ› function, dalĹˇĂ­ volitelnĂ© parametry nÄ›kterĂ˝ch funkcĂ­
+a novĂ© funkce (and, or, xor, asort, mktime, patsplit l/rshift aj.),
+nepĹ™Ă­mĂ© volĂˇnĂ­ funkcĂ­ pĹ™es promÄ›nnou (var="jmeno_funkce", @var()),
+dynamickĂ© nahrĂˇvĂˇnĂ­ funkcĂ­ pomocĂ­ extension(), delete pole, nextfile
+
+Mac OS X
+

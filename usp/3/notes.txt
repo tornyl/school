@@ -1,0 +1,63 @@
+
+#echo $path
+
+
+#home/students/SHELL/2024
+
+# | - roura, &,; < >
+# prikax arg1 arg2 arg3 $ (& spusteni na pozadi]
+
+# program arg1 arg2 > soubur2
+# > prepise
+# >> prida do souboru
+# &> i chybovy vystup( presmerovani obou vystupu)
+# prikax1 &| prikaz2 | prikaz3  -spusteni prikazu zaraz
+# prikaz & prikaz2
+
+
+: '
+ prikaz || prika2  - spust p1 nebo p2( kdyz p1 skonci s 0, tak p2 uz se neprovede)
+prikaz && prikaz2 - logicky soucin, vykonej p1 a p2, p2 se vykona pouzky kdyz p1 skonci s 0
+
+{prikaz; prikaz2; } - skupina prikazu
+{prikaz; prikaz2; } & - skupina prikazu, & plati pro celoou skupinu( same pro ||)
+(prikaz; prikaz2) -vykonai v podshellu, kazdy prikaz ma svuj shell
+$(prikax; prikaz2) - jako retezecova hodnota z prikazu
+
+C='3 \$4' -potlaceni dolaru vpromenne 
+ca=10
+echo $ca
+$HOSTNAME, $PWD,$HOME, $PATH, ...
+$RANDOM -prikazem ziskani nahodneho cisal 0 - 32000..neco
+if prikaz; then prikax2; fi - s navratovou hodnotou 0 == true , neulova vabratova hodnota ==false
+[ logicky vyraz ] 
+if [ -d adresar] then prikaz
+if [ -f file] then prikaz
+if [ file -nt file2]
+if [ -z $R ]  -jestli je prazdna
+-eq rovna se
+-ne
+
+for promenta in slovo1 slovo2; do priakzy; done
+for i in 1 2 $(echo 3); do echo $i; done
+while test; do prikazt; done
+unitlll test; do prikazy; done
+
+
+a=4
+echo  $(($a+5))
+
+ukol2 prikaz read
+read p; echo $p
+
+
+
+
+
+
+
+
+
+
+'
+

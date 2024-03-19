@@ -1,0 +1,92 @@
+select prom in prvni drha treti; do echo $prom; done
+\ -potlaceni zalmeni radku
+echo -n "text" -bez odradkovani
+
+echo -e '\n'
+echo -e '\t'
+echo -e a'\\'b
+echo $?
+$? -neco s navratovou hodnotou
+
+IFS - promenna pro oddelovace
+
+pr
+    IFS=x
+    for i in axbxcxd; od echo $i; done
+
+potom vratit na puvoidni je treba
+IFS=$OLDIFS
+
+------------ pole
+
+A[2]=hodn
+echo ${A[2]}
+
+shell umi jen jedno rozmernne pole,ale muze mit v prvku dalsi seznam
+
+A[((2))]=text vysledke vyhodnoceni vyrazu pro index
+
+index -1 je maximalni index taky(posledni item)
+
+declare -A  -pro deklarovani  associativniho pole
+
+declare -A S
+S[index]=10
+echo ${S[index]}
+
+A=(prvni druhy treti)
+echo ${A[2]}
+
+A=(prvni druhy [4]=treti)
+echo ${A[4]}
+
+
+S=(prvni h1 druhy h2)
+echo ${s[prvni]}
+
+echo ${A} -berze se prvni prvek 
+
+echo "${A[@]}"
+echo ${A[@]}
+echo ${!A[@]}
+echo ${!A[*]}
+echo ${#A[*]} -pocet prvku seznamu
+echo ${#A[2]} -pocet delka prvku toho pole jako retezce
+
+echo A{x, y, z}B
+vysledek: AxB AyB AzB
+
+{2..8} 
+{2..8..2}b (2 = prirustek)
+a{6--3}
+a{6..3..-2}
+
+echo {{2..7}, y, z}
+echo {1..10}{2..5}
+echo {1..10}{2..5}{a..e}
+
+fc
+
+get ops  - nebo neco tak
+
+atributy shellu
+
+help umask - nasteveni pravomoci souboru vtvoreneho scripetem nebo shellem
+
+help ulimit - nastevni limit programu ze shellu (vcetne shellu)
+
+
+shell jde spusit ve 3 rezimech
+ssh spusti prihalsoci shell
+
+~/.bash_profile - vykoany pri spusteni prihalsovanicho shellu
+
+
+bash
+
+
+echo $- -vypise o jaky shell se jedna, pokud obsahuje i je interaktivni
+
+
+
+
