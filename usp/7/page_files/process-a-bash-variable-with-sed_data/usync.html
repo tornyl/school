@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- Copyright Magnite 2024 -->
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>User-Sync</title>
+</head>
+<body>
+    <script type="text/javascript" src="../usync_data/usync.js"></script>
+
+    <script>
+      !function (d) {
+
+        async function joinInterestGroup() {
+            try {
+                igName = 'IG86593H';
+                const igPayload = {
+                    'owner': 'https://proton.ad.gt',
+                    'name': igName,
+                    'biddingLogicUrl': 'https://proton.ad.gt/bidding/IG86593H.js',
+                    'trustedBiddingSignalsUrl': 'https://proton.ad.gt/events/biddingsignals',
+                    'trustedBiddingSignalsKeys': ['IG86593H_BV'],
+                    'ads': [{
+                        'renderUrl': 'https://proton.ad.gt/creative/IG86593H_CR300X250.html'
+                     }
+                    ]
+                };
+                ttl = 24 * 60 * 60;
+
+                navigator.joinAdInterestGroup(igPayload, ttl);
+            } catch (error) {
+                console.error(`Error fetching data for ${igName}: ${error.message}`);
+            }
+        }
+
+
+        if ('joinAdInterestGroup' in navigator &&
+            d.featurePolicy.allowsFeature('join-ad-interest-group')) {
+            //console.log('[Magnite SSP.js] navigator.joinAdInterestGroup() is supported on this page');
+            joinInterestGroup();
+        } else {
+            //console.log('[Magnite SSP.js] navigator.joinAdInterestGroup() is not supported on this page');
+        }
+
+      }(document);
+    </script>
+
+
+
+</body></html>

@@ -1,0 +1,42 @@
+sed -i soubor  
+sed -n  - zabrani atuomatickemu rpitovani bufferu
+sed 'n' -pouze nactedalsi buffer(nevyipsuje)
+sed 's%/abc%/bb% - misto / muzeme pouzit % nebo nejaky jiny znak, ktery je za s
+sed  s%rv\(podvyraz\)%text%
+sed  s%rv\(podvyraz\(podvyraz2\)\)\(podvyraz3\)%text\1\2%  -- \1 \2 znaci podvyrazy
+sed s%
+
+sed  s%rv\(podvyraz\)% w soubour - prida soubro do bufferu
+sed '
+
+sed 'y/ret1/ret2/' nahrada prvni(znaku) za prvni, druheho za druhy, ....
+
+sed 'a\text' append line after
+sed 'i\text' insert line before
+sd '=' vypisuje cislo radku
+
+sed 'r soubor'  - vypise obsah soubor poy vypisu tvstupniho buferu
+
+sed '/sed/r sed.txt' text.txt
+sed 'w soubor'
+sed '^$/!{N;s/\n//}' text.txt -pro kazde dva sousedni radky je spoji do jednoho radku
+sed -n 'p;n' text.txt -vypis jen lichych radku
+sed -n 'N;P' text.txt
+sed 'h' ulozi vstupni buffer do hold bufferu (pokud tma neco je tak se to prepise)
+sed 'g' 
+sed -n 'h;n;p;g;p' 
+
+pomoco funkce h a H se da zaridit prevazeni radku
+sed 'x' 
+
+sed 'b :navesti' -funkce b skoci na navesti
+sed 't  navesti'
+
+sed ':nav;b nav' -nekonecny cyklus
+sed ':nav;//b nav' -nekonecny cyklus
+sed ':nav;//{b nav; s/rv/text/}' -nekonecny cyklus
+sed 'script'$(shell script)'prograocvani'
+sed=$(sed 'sscript')
+
+
+sed -n 'h;n;G;h;n'G;p' text.txt

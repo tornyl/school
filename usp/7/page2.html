@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="cs"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Jan Outrata – Programování v unixovém shellu</title>
+    <link rel="author" href="http://outrata.inf.upol.cz/">
+    <style>
+     body { margin: 20px; background-color: WhiteSmoke; }
+     footer { clear: both; border-top: 1px solid black; width: 100%;
+       margin-top: 30px; padding-top: 10px; text-align: right;
+       vertical-align: top; }
+     kbd {
+       background-color: #eee;
+       border-radius: 3px;
+       border: 1px solid #b4b4b4;
+       box-shadow: 0 1px 1px rgba(0, 0, 0, .2), 0 2px 0 0 rgba(255, 255, 255, .7) inset;
+       color: #333;
+       display: inline-block;
+       font-size: .85em;
+       font-weight: 700;
+       line-height: 1;
+       padding: 2px 4px;
+       white-space: nowrap;
+     }
+    </style>
+  </head>
+  <body>
+    <main role="main">
+      <h1>Programování v unixovém shellu – úkoly</h1>
+
+      <a name="seminar1">
+      <h2>Seminář 1</h2>
+      <hr>
+
+      </a><p><a name="seminar1">
+        </a><a href="http://outrata.inf.upol.cz/courses/unixs/practices.html">Úkoly z cvičení 2 až 5</a> v předmětu <a href="http://outrata.inf.upol.cz/courses/unixs/">Unixové systémy</a>.
+      </p>
+
+      <a name="seminar2">
+      <h2>Seminář 2</h2>
+      <hr>
+
+      </a><p><a name="seminar2">
+        </a><a href="http://outrata.inf.upol.cz/courses/unixs/practices.html">Úkoly z cvičení 6 až 10</a> v předmětu <a href="http://outrata.inf.upol.cz/courses/unixs/">Unixové systémy</a>.
+      </p>
+
+      <a name="seminar3">
+      <h2>Seminář 3</h2>
+      <hr>
+
+      <p>
+        <strong>Úkol 1:</strong><br>
+        Vypište seznam všech souborů a podadresářů v adresáři (= obsah
+	adresáře) zadaném jako argument s informacemi o typu (<code>-</code> =
+        soubor, <code>d</code> = adresář, <code>l</code> = symbolický odkaz) a právech (<code>r</code> =
+        čtení, <code>w</code> = zápis, <code>x</code> = spouštění) pro spouštějícího uživatele,
+        ve tvaru: jméno typ práva, např. <code>pokus d rwx</code>. Při žádném argumentu v aktuálním
+        adresáři, při prvním argumentu <code>-a</code> (adresář by byl
+        druhý argument) včetně
+        tzv. skrytých souborů a podadresářů (jinak ne). Řešte bez
+        použití programů <b>ls</b> a <b>dir</b>!
+        <br><strong>[2 body]</strong>
+      </p>
+
+      <p>
+        <strong>Úkol 2:</strong><br>
+        Naprogramujte <q>hádání</q> (celého) čísla, které si uživatel
+        myslí, z intervalu zadaného až dvěma argumenty, sérií (pouze!)
+        dotazů
+        <q>je menší/větší než X?</q> s odpověďmi a/n algoritmem půlení intervalu. Při
+        jednom argumentu je levá mez intervalu 0, při žádném navíc pravá 100.
+        <br><strong>[2 body]</strong>
+      </p>
+
+      <p>
+        <strong>Úkol 3:</strong><br>
+        Implementujte zjednodušenou verzi programu <b>seq</b>: výpis
+        posloupnosti (celých) čísel oddělených mezerou od čísla
+        zadaného jako první argument do čísla zadaného jako třetí
+        argument, obojí včetně, s přírůstkem zadaným jako druhý
+        argument – kladným, pokud je počáteční číslo menší nebo rovno
+        než koncové, jinak záporným. Při dvou argumentech je
+        chybějící přírůstek roven 1, při jednom je i chybějící
+        počáteční číslo rovno 1.
+        <br><strong>[4 body]</strong>
+      </p>
+
+      </a><a name="seminar4">
+      <h2>Seminář 4</h2>
+      <hr>
+
+      <p>
+        <strong>Úkol 4:</strong><br>
+        Napište funkce vracející (vypisující)
+        </p><ol>
+          <li>číslo zadané
+            jako argument v poziční číselné soustavě o základu 2 až 64 (cifry
+            jsou 0-9, a-z, A-Z, @ a _) v desítkové soustavě,</li>
+          <li>zápis čísla zadaného jako argument v desítkové
+            soustavě v soustavě o základu 2 až 64 (...).</li>
+        </ol>
+        Základ soustavy je zadaný jako druhý argument, při chybějícím 2.
+        <br><strong>[3 body]</strong>
+      <p></p>
+
+      <p>
+        <strong>Úkol 5:</strong><br>
+        Implementujte jako funkce (zjednodušené)
+        programy <b>dirname</b> a <b>basename</b>: z cesty zadané jako argument, po odebrání
+        případného <code>/</code> na konci, vrátí (vypíše) část do
+        (dirname), resp. od (basename) posledního <code>/</code> (bez
+        něj, pokud to není jediný znak). Pokud cesta <code>/</code> neobsahuje, <b>dirname</b>
+        vrátí <code>.</code> (tečku) a <b>basename</b> celé jméno.
+        <br><strong>[2+2 body]</strong>
+      </p>
+
+      </a><a name="seminar5">
+      <h2>Seminář 5</h2>
+      <hr>
+
+      <p>
+        <strong>Úkol 6:</strong><br>
+        Vygenerujte 1000 souborů z následujícího úkolu s
+        pořadovými čísly 0001 až 1000 a náhodným datem (ne nutně reálným, MM
+        od 01 do 12, DD od 01 do 31, YYYY od 0001 do 9999), do
+        adresáře zadaného jako argument.
+        <br><strong>[2 body]</strong>
+      </p>
+
+      </a><p><a name="seminar5">
+        <strong>Úkol 7:</strong><br>
+        Uvažujme adresář obsahující soubory <code>XYZNNNN.jpg</code>, kde XYZ je nějaká předpona a NNNN je pořadové
+        číslo od 0000 do 9999. V každém souboru je textově zapsané datum
+        ve tvaru MM/DD/YYYY zleva zarovnané 0 (ve skutečnosti
+        by z validních souborů fotek ve formátu JPEG bylo možné získat
+        datum a čas pořízení fotky
+        z EXIF informací v souboru). Například adresář v </a><a href="http://outrata.inf.upol.cz/courses/shell/fotky.zip">ZIP
+          archivu</a>, pro rozbalení
+        spusťte <code>unzip fotky.zip</code>. Vytvořte skript s
+        tímto adresářem jako argumentem, který přesune soubory do
+        podadresářů adresáře s cestami ve tvaru <code>YYYY/MM/DD</code>. Každý podadresář bude
+        existovat jen pokud v něm bude alespoň jeden soubor.
+        <br><strong>[5 bodů]</strong>
+      </p>
+
+      <a name="seminar6">
+      <h2>Seminář 6</h2>
+      <hr>
+
+      <p>
+        <strong>Úkol 8:</strong><br>
+        Vytvořte sed skript, který z textu vyfiltruje jen řádky od
+        10. řádku do 20. řádku včetně (počítáno od 1) v opačném pořadí řádků.
+        <br><strong>[4 body]</strong>
+      </p>
+
+      <p>
+        <strong>Úkol 9:</strong><br>
+        Vytvořte sed skript, který sloučí sousední řádky textu
+        končící znakem <code>-</code>, pokud před ním nejsou bílé
+        znaky (mezera, tabulátor), spolu s následujícím
+        řádkem (již bez znaku <code>-</code> na konci) do jednoho řádku, s odstraněním znaků <code>-</code>.
+        <br><strong>[5 bodů]</strong>
+      </p>
+
+      </a><a name="seminar7">
+      <h2>Seminář 7</h2>
+      <hr>
+
+      <p>
+        <strong>Úkol 10:</strong><br>
+        Vytvořte skript (shell, sed), který pro
+        každý řádek na vstupu ve tvaru 'Jméno Příjmení
+        &lt;emailová@adresa&gt;' (bez '', položky oddělené mezerami) vytvoří kopii textového
+        souboru, šablony zadané jako argument skriptu, ve kterém
+        budou všechny řetězce JMENO a PRIJMENI nahrazeny Jménem a Příjmením ze
+        vstupu a před obsahem bude na prvním řádku &lt;emailová@adresa&gt; následovaná prázdným
+        řádkem. Kopie budou pojmenovány jako šablona s uvedením čísla
+        řádku ze vstupu ve jménu.
+        <br><strong>[3 body]</strong>
+      </p>
+
+      <p>
+        <strong>Úkol 11:</strong><br>
+        Vytvořte skript (shell, sed), který z HTML dokumentu
+        na vstupu vypíše pouze URL adresy všech odkazů, přesněji hodnoty atributu <code>HREF</code>
+        všech elementů <code>A</code> v dokumentu. Nezapomeňte korektně ošetřit i případy, kdy za jménem
+        elementu <code>A</code> mohou být i jiné atributy než <code>HREF</code> a kdekoliv mezi <code>A</code> a <code>HREF</code>
+        může být element (i vícekrát) zalomen na další řádek! Samotné URL adresy zalomeny
+        nebudou.
+        <br><strong>[4 body]</strong>
+      </p>
+
+      </a><a name="seminar8">
+      <h2>Seminář 8</h2>
+      <hr>
+
+      <p>
+        <strong>Úkol 12:</strong><br>
+        Implementujte v awk zjednodušenou verzi <b>wc</b>: výpis počtu
+        znaků (včetně konců řádků), slov (neprázdná posloupnost znaků oddělená mezerami nebo
+        tabulátory) a řádků v textu na vstupu.
+        <br><strong>[3 body]</strong>
+      </p>
+
+      <p>
+        <strong>Úkol 13:</strong><br>
+        Implementujte v awk převrácení tabulkových dat (sloupce
+        oddělené mezerami nebo tabulátory) ze vstupu podle hlavní diagonály, tj. výměnu řádků a
+        sloupců.
+        <br><strong>[3 body]</strong>
+      </p>
+
+      </a><a name="seminar9">
+      <h2>Seminář 9</h2>
+      <hr>
+
+      <p>
+        <strong>Úkol 14:</strong><br>
+        Vytvořte skript (shell, sed, awk aj.), který pro každého uživatele,
+        který má aktuálně v systému spuštěný alespoň jeden proces,
+        vypíše celkové množství paměti zabrané všemi těmito jeho aktuálně v
+        systému spuštěnými procesy. Jako
+        množství paměti zabrané procesem použijte hodnotu <code>rss</code> vypisovanou
+        pro procesy programem <b>ps</b>.
+        <br><strong>[3 body]</strong>
+      </p>
+
+      <p>
+        <strong>Úkol 15:</strong><br>
+        Vytvořte skript (shell, sed, awk aj.), který pro počet dní
+        zadaný jako argument a každého uživatele, který byl nebo aktuálně stále je v systému
+        přihlášen za posledních zadaný počet dní, vypíše celkovou dobu přihlášení (sezení) uživatele v
+        systému. Jako dobu jednoho přihlášení (sezení) uživatele v
+        systému použijte hodnotu vypisovanou v posledním sloupci, pro
+        uživatele v prvním sloupci, programem <b>last</b> spustěným s
+        argumentem <code>pts/{0..9}</code>. Tato hodnota má tvar
+        <code>(počet dní+hodin:minut)</code>, kde část <code>počet dní+</code> nemusí být uvedena, nebo je to <code>still logged
+        in</code> v případě, že uživatel je aktuálně stále v systému
+        přihlášen – v tomto případě je v předposledním sloupci
+        vypsaný čas přihlášení uživatele. Celkovou dobu vypište ve stejném tvaru.
+        <br><strong>[6 bodů]</strong>
+      </p>
+
+      </a><a name="seminar10">
+      <h2>Seminář 10</h2>
+      <hr>
+
+      </a><p><a name="seminar10">
+        <strong>Úkol 16:</strong><br>
+        Pro seznam jmen ve tvaru Jméno Jméno ... tabulátor PŘÍJMENÍ
+        PŘÍJMENÍ ... (Jména a PŘÍJMENÍ oddělená mezerou), např. ze </a><a href="http://outrata.inf.upol.cz/courses/shell/jmena.txt">souboru</a>,
+        v souboru zadaném jako argument nebo načtený ze vstupu, vypište ke každému
+        Jménu v seznamu, v abecedním pořadí Jmen, počet jmen s tímto Jménem.
+        <br><strong>[3 body]</strong>
+      </p>
+
+      <p>
+        <strong>Úkol 17:</strong><br>
+        V seznamu jmen z předchozího úkolu (opět v souboru zadaném jako 
+argument nebo načteném ze vstupu) přepište všechna PŘÍJMENÍ na Příjmení.
+        <br><strong>[4 body]</strong>
+      </p>
+
+    </main>
+    <footer>
+      Copyright © <a href="http://outrata.inf.upol.cz/">Jan Outrata</a>
+    </footer>
+  
+
+</body></html>

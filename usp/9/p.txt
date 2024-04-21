@@ -1,0 +1,353 @@
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root           1  0.0  0.0 166636 11944 ?        Ss   Mar18   0:05 /sbin/init splash
+root           2  0.0  0.0      0     0 ?        S    Mar18   0:00 [kthreadd]
+root           3  0.0  0.0      0     0 ?        I<   Mar18   0:00 [rcu_gp]
+root           4  0.0  0.0      0     0 ?        I<   Mar18   0:00 [rcu_par_gp]
+root           5  0.0  0.0      0     0 ?        I<   Mar18   0:00 [slub_flushwq]
+root           6  0.0  0.0      0     0 ?        I<   Mar18   0:00 [netns]
+root          10  0.0  0.0      0     0 ?        I<   Mar18   0:00 [mm_percpu_wq]
+root          11  0.0  0.0      0     0 ?        I    Mar18   0:00 [rcu_tasks_kthread]
+root          12  0.0  0.0      0     0 ?        I    Mar18   0:00 [rcu_tasks_rude_kthread]
+root          13  0.0  0.0      0     0 ?        I    Mar18   0:00 [rcu_tasks_trace_kthread]
+root          14  0.2  0.0      0     0 ?        S    Mar18  11:54 [ksoftirqd/0]
+root          15  0.0  0.0      0     0 ?        I    Mar18   0:44 [rcu_preempt]
+root          16  0.0  0.0      0     0 ?        S    Mar18   0:00 [migration/0]
+root          17  0.0  0.0      0     0 ?        S    Mar18   0:00 [idle_inject/0]
+root          19  0.0  0.0      0     0 ?        S    Mar18   0:00 [cpuhp/0]
+root          20  0.0  0.0      0     0 ?        S    Mar18   0:00 [cpuhp/1]
+root          21  0.0  0.0      0     0 ?        S    Mar18   0:00 [idle_inject/1]
+root          22  0.0  0.0      0     0 ?        S    Mar18   0:00 [migration/1]
+root          23  0.0  0.0      0     0 ?        S    Mar18   0:01 [ksoftirqd/1]
+root          25  0.0  0.0      0     0 ?        I<   Mar18   0:00 [kworker/1:0H-events_highpri]
+root          26  0.0  0.0      0     0 ?        S    Mar18   0:00 [cpuhp/2]
+root          27  0.0  0.0      0     0 ?        S    Mar18   0:00 [idle_inject/2]
+root          28  0.0  0.0      0     0 ?        S    Mar18   0:00 [migration/2]
+root          29  0.0  0.0      0     0 ?        S    Mar18   0:01 [ksoftirqd/2]
+root          32  0.0  0.0      0     0 ?        S    Mar18   0:00 [cpuhp/3]
+root          33  0.0  0.0      0     0 ?        S    Mar18   0:00 [idle_inject/3]
+root          34  0.0  0.0      0     0 ?        S    Mar18   0:00 [migration/3]
+root          35  0.0  0.0      0     0 ?        S    Mar18   0:09 [ksoftirqd/3]
+root          37  0.0  0.0      0     0 ?        I<   Mar18   0:00 [kworker/3:0H-events_highpri]
+root          38  0.0  0.0      0     0 ?        S    Mar18   0:00 [kdevtmpfs]
+root          39  0.0  0.0      0     0 ?        I<   Mar18   0:00 [inet_frag_wq]
+root          40  0.0  0.0      0     0 ?        S    Mar18   0:00 [kauditd]
+root          41  0.0  0.0      0     0 ?        S    Mar18   0:00 [khungtaskd]
+root          43  0.0  0.0      0     0 ?        S    Mar18   0:00 [oom_reaper]
+root          45  0.0  0.0      0     0 ?        I<   Mar18   0:00 [writeback]
+root          46  0.0  0.0      0     0 ?        S    Mar18   0:03 [kcompactd0]
+root          47  0.0  0.0      0     0 ?        SN   Mar18   0:00 [ksmd]
+root          49  0.0  0.0      0     0 ?        SN   Mar18   0:00 [khugepaged]
+root          50  0.0  0.0      0     0 ?        I<   Mar18   0:00 [kintegrityd]
+root          51  0.0  0.0      0     0 ?        I<   Mar18   0:00 [kblockd]
+root          52  0.0  0.0      0     0 ?        I<   Mar18   0:00 [blkcg_punt_bio]
+root          55  0.0  0.0      0     0 ?        I<   Mar18   0:00 [tpm_dev_wq]
+root          56  0.0  0.0      0     0 ?        I<   Mar18   0:00 [ata_sff]
+root          57  0.0  0.0      0     0 ?        I<   Mar18   0:00 [md]
+root          58  0.0  0.0      0     0 ?        I<   Mar18   0:00 [edac-poller]
+root          59  0.0  0.0      0     0 ?        I<   Mar18   0:00 [devfreq_wq]
+root          60  0.0  0.0      0     0 ?        S    Mar18   0:00 [watchdogd]
+root          62  0.0  0.0      0     0 ?        S    Mar18   0:00 [kswapd0]
+root          63  0.0  0.0      0     0 ?        S    Mar18   0:00 [ecryptfs-kthread]
+root          64  0.0  0.0      0     0 ?        I<   Mar18   0:00 [kthrotld]
+root          65  0.0  0.0      0     0 ?        S    Mar18   0:00 [irq/16-aerdrv]
+root          66  0.0  0.0      0     0 ?        S    Mar18   0:00 [irq/120-aerdrv]
+root          67  0.0  0.0      0     0 ?        S    Mar18   0:00 [irq/121-aerdrv]
+root          68  0.0  0.0      0     0 ?        S    Mar18   0:00 [irq/122-aerdrv]
+root          69  0.0  0.0      0     0 ?        S    Mar18   0:00 [irq/122-pciehp]
+root          70  0.0  0.0      0     0 ?        I<   Mar18   0:00 [acpi_thermal_pm]
+root          71  0.0  0.0      0     0 ?        S    Mar18   0:00 [xenbus_probe]
+root          72  0.0  0.0      0     0 ?        S    Mar18   0:00 [hwrng]
+root          73  0.0  0.0      0     0 ?        I<   Mar18   0:00 [vfio-irqfd-clea]
+root          74  0.0  0.0      0     0 ?        I<   Mar18   0:00 [mld]
+root          75  0.0  0.0      0     0 ?        I<   Mar18   0:00 [ipv6_addrconf]
+root          84  0.0  0.0      0     0 ?        I<   Mar18   0:00 [kstrp]
+root          86  0.0  0.0      0     0 ?        I<   Mar18   0:00 [zswap-shrink]
+root          91  0.0  0.0      0     0 ?        I<   Mar18   0:00 [charger_manager]
+root         112  0.0  0.0      0     0 ?        I<   Mar18   0:01 [kworker/1:1H-kblockd]
+root         116  0.0  0.0      0     0 ?        I<   Mar18   0:01 [kworker/2:1H-kblockd]
+root         127  0.0  0.0      0     0 ?        I<   Mar18   0:00 [kworker/3:1H-kblockd]
+root         144  0.0  0.0      0     0 ?        I<   Mar18   0:00 [cryptd]
+root         147  0.0  0.0      0     0 ?        S    Mar18   0:00 [scsi_eh_0]
+root         148  0.0  0.0      0     0 ?        I<   Mar18   0:00 [scsi_tmf_0]
+root         149  0.0  0.0      0     0 ?        S    Mar18   0:00 [scsi_eh_1]
+root         150  0.0  0.0      0     0 ?        I<   Mar18   0:00 [scsi_tmf_1]
+root         151  0.0  0.0      0     0 ?        S    Mar18   0:00 [scsi_eh_2]
+root         152  0.0  0.0      0     0 ?        I<   Mar18   0:00 [scsi_tmf_2]
+root         161  0.0  0.0      0     0 ?        I<   Mar18   0:00 [kdmflush/253:0]
+root         162  0.0  0.0      0     0 ?        I<   Mar18   0:00 [kdmflush/253:1]
+root         167  0.0  0.0      0     0 ?        S    Mar18   0:00 [card0-crtc0]
+root         168  0.0  0.0      0     0 ?        S    Mar18   0:00 [card0-crtc1]
+root         169  0.0  0.0      0     0 ?        S    Mar18   0:00 [card0-crtc2]
+root         199  0.0  0.0      0     0 ?        I<   Mar18   0:00 [raid5wq]
+root         250  0.0  0.0      0     0 ?        S    Mar18   0:10 [jbd2/dm-1-8]
+root         251  0.0  0.0      0     0 ?        I<   Mar18   0:00 [ext4-rsv-conver]
+root         301  0.0  0.2  65068 33996 ?        SNs  Mar18   0:05 /lib/systemd/systemd-journald
+root         346  0.0  0.0  27804  8020 ?        SNs  Mar18   0:03 /lib/systemd/systemd-udevd
+root         416  0.0  0.0      0     0 ?        I<   Mar18   0:00 [cfg80211]
+root         419  0.0  0.0      0     0 ?        I<   Mar18   0:00 [kworker/2:2H-kblockd]
+root         440  0.0  0.0      0     0 ?        S    Mar18   2:14 [irq/129-iwlwifi]
+systemd+     597  0.0  0.0  26616 14808 ?        SNs  Mar18   0:19 /lib/systemd/systemd-resolved
+message+     687  0.0  0.0  10364  4696 ?        SNs  Mar18   0:00 /usr/bin/dbus-broker-launch --scope system --audit
+message+     705  0.0  0.0   9072  4720 ?        S    Mar18   0:10 dbus-broker --log 4 --controller 9 --machine-id 8120f6543d0759d6df715e0360c9f24a --max-bytes 536870912 --max-fds 4096 --max-matches 131072 --audit
+root         716  0.0  0.1 345460 20608 ?        SNsl Mar18   0:38 /usr/sbin/NetworkManager --no-daemon
+root         717  0.0  0.0 250492  8736 ?        SNsl Mar18   0:02 /usr/libexec/accounts-daemon
+root         718  0.0  0.0   2812  2096 ?        SNs  Mar18   0:09 /usr/sbin/acpid
+avahi        720  0.0  0.0   7740  4100 ?        SNs  Mar18   0:00 avahi-daemon: running [pop-os.local]
+root         722  0.0  0.0  10820  5568 ?        SNs  Mar18   0:00 /usr/lib/bluetooth/bluetoothd
+root         723  0.0  0.0 153904  6228 ?        SNs  Mar18   1:10 /usr/bin/system76-power daemon
+root         724  0.0  0.0  84680 11356 ?        SNsl Mar18   0:00 /usr/bin/system76-scheduler daemon
+root         725  0.0  0.0  19296  3204 ?        SNs  Mar18   0:00 /usr/sbin/cron -f -P
+root         729  0.0  0.1  50900 21336 ?        SNs  Mar18   0:00 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+root         730  0.0  0.0 237112 10900 ?        SNsl Mar18   0:05 /usr/libexec/polkitd --no-debug
+syslog       734  0.0  0.0 222432  6556 ?        SNsl Mar18   0:00 /usr/sbin/rsyslogd -n -iNONE
+root         743  0.0  0.0 246288  7040 ?        SNsl Mar18   0:00 /usr/libexec/switcheroo-control
+root         745  0.0  0.0  48416  8092 ?        SNs  Mar18   0:01 /lib/systemd/systemd-logind
+root         746  0.0  0.0 138400 10440 ?        SNsl Mar18   0:06 /usr/sbin/thermald --systemd --dbus-enable --adaptive
+root         747  0.0  0.0 184820 15056 ?        SNsl Mar18   0:23 /usr/bin/touchegg --daemon
+root         748  0.0  0.0 396788 14936 ?        SNsl Mar18   0:23 /usr/libexec/udisks2/udisksd
+root         749  0.0  0.0  18024 12416 ?        SNs  Mar18   0:06 /sbin/wpa_supplicant -u -s -O /run/wpa_supplicant
+avahi        783  0.0  0.0   7472  1300 ?        SN   Mar18   0:00 avahi-daemon: chroot helper
+root         796  0.0  0.0      0     0 ?        S    Mar18   0:00 [nv_queue]
+root         797  0.0  0.0      0     0 ?        S    Mar18   0:00 [nv_queue]
+root         815  0.0  0.0 244356 12808 ?        SNsl Mar18   0:00 /usr/sbin/ModemManager
+root         830  0.0  0.0 252152  9488 ?        SNsl Mar18   0:02 /usr/libexec/upowerd
+root         884  0.0  0.1  87844 19156 ?        SNs  Mar18   0:01 /usr/sbin/winbindd --foreground --no-process-group
+root         903  0.0  1.0 279340 173728 ?       SN   Mar18   0:04 /usr/bin/python3 /usr/sbin/execsnoop-bpfcc
+root         915  0.0  0.0      0     0 ?        S    Mar18   0:00 [nvidia-modeset/kthread_q]
+root         916  0.0  0.0      0     0 ?        S    Mar18   0:00 [nvidia-modeset/deferred_close_kthread_q]
+_chrony      919  0.0  0.0  22312  9304 ?        S    Mar18   0:02 /usr/sbin/chronyd -F 1
+root         920  0.0  0.0      0     0 ?        S    Mar18   1:39 [irq/131-nvidia]
+root         922  0.0  0.0      0     0 ?        S    Mar18   1:25 [nv_queue]
+_chrony      927  0.0  0.0  10588  3040 ?        S    Mar18   0:00 /usr/sbin/chronyd -F 1
+root         993  0.0  0.0      0     0 ?        S    Mar18   0:00 [UVM global queue]
+root         994  0.0  0.0      0     0 ?        S    Mar18   0:00 [UVM deferred release queue]
+root         995  0.0  0.0      0     0 ?        S    Mar18   0:00 [UVM Tools Event Queue]
+root        1007  0.0  0.0 169424 11772 ?        SNl  Mar18   0:00 /usr/bin/system76-scheduler pipewire
+root        1014  0.0  0.0 251048  9112 ?        Ssl  Mar18   0:00 /usr/sbin/gdm3
+nvidia-+    1028  0.0  0.0   5268  2104 ?        Ss   Mar18   0:00 /usr/bin/nvidia-persistenced --user nvidia-persistenced --no-persistence-mode --verbose
+root        1040  0.0  0.0 429624 11648 ?        Ssl  Mar18   0:14 /usr/bin/pop-system-updater
+root        1041  0.0  0.0   6744  3196 ?        Ss   Mar18   0:00 /usr/lib/ipsec/starter --daemon charon --nofork
+root        1063  0.0  0.0   2896  1176 ?        Ss   Mar18   0:00 /usr/sbin/xl2tpd
+root        1066  0.0  0.0 1092172 14140 ?       Sl   Mar18   3:08 /opt/teamviewer/tv_bin/teamviewerd -d
+rtkit       1096  0.0  0.0 154032  3428 ?        SNsl Mar18   0:01 /usr/libexec/rtkit-daemon
+root        1111  0.0  0.0 1194716 9480 ?        Ssl  Mar18   0:00 /usr/lib/ipsec/charon
+root        1757  0.0  0.1 308036 20816 ?        Ssl  Mar18   0:00 /usr/libexec/packagekitd
+colord      1903  0.0  0.0 255168 13600 ?        Ssl  Mar18   0:00 /usr/libexec/colord
+root        1994  0.0  0.0 182268 11944 ?        Sl   Mar18   0:00 gdm-session-worker [pam/gdm-password]
+root        2008  0.0  0.0  88380 11908 ?        SN   Mar18   0:00 winbindd: domain child [POP-OS]
+torny       2020  0.0  0.0  17992 10456 ?        Ss   Mar18   0:00 /lib/systemd/systemd --user
+torny       2021  0.0  0.0 171608  5940 ?        S    Mar18   0:00 (sd-pam)
+torny       2030  0.7  0.1 168444 32188 ?        Ssl  Mar18  31:47 /usr/bin/pipewire
+torny       2033  0.0  0.1 271272 19868 ?        Ssl  Mar18   0:43 /usr/bin/wireplumber
+torny       2034  0.6  0.2  98164 47140 ?        SLsl Mar18  27:33 /usr/bin/pipewire-pulse
+torny       2037  0.0  0.0   9708  4140 ?        Ss   Mar18   0:00 /usr/bin/dbus-broker-launch --scope user
+torny       2039  0.0  0.0   6556  4100 ?        S    Mar18   0:00 dbus-broker --log 4 --controller 10 --machine-id 8120f6543d0759d6df715e0360c9f24a --max-bytes 100000000000000 --max-fds 25000000000000 --max-matches 5000000000
+torny       2041  0.0  0.0 250448  8248 ?        Ssl  Mar18   0:00 /usr/libexec/gvfsd
+torny       2046  0.0  0.0 380888  6980 ?        Sl   Mar18   0:00 /usr/libexec/gvfsd-fuse /run/user/1000/gvfs -f
+torny       2054  0.0  0.0 250684  7372 ?        Sl   Mar18   0:00 /usr/bin/gnome-keyring-daemon --daemonize --login
+torny       2065  0.0  0.0 172228  6316 tty2     Ssl+ Mar18   0:00 /usr/libexec/gdm-x-session --register-session --run-script i3
+root        2067  1.8  1.1 7367528 181728 tty2   Sl+  Mar18  80:56 /usr/lib/xorg/Xorg vt2 -displayfd 3 -auth /run/user/1000/gdm/Xauthority -nolisten tcp -background none -noreset -keeptty -novtswitch -verbose 3
+root        2068  0.0  0.0      0     0 ?        S<   Mar18   0:00 [krfcommd]
+torny       2081  0.0  0.0 245944  6548 ?        Ssl  Mar18   0:00 /usr/libexec/xdg-permission-store
+torny       2088  0.0  0.0 187620 15268 tty2     S+   Mar18   0:10 i3
+torny       2164  0.0  0.0   2888  1752 ?        S    Mar18   0:00 /bin/sh -c nm-applet
+torny       2166  0.0  0.2 720292 40584 ?        Sl   Mar18   0:45 nm-applet
+torny       2167  0.0  0.0   2888  1752 ?        S    Mar18   0:00 /bin/sh -c /usr/libexec/gsd-xsettings
+torny       2169  0.0  0.1 355796 29472 ?        Sl   Mar18   0:01 /usr/libexec/gsd-xsettings
+torny       2170  0.0  0.0   2888  1752 ?        S    Mar18   0:00 /bin/sh -c /usr/libexec/gsd-power
+torny       2172  0.0  0.5 905508 81528 ?        Sl   Mar18   0:01 /usr/libexec/gsd-power
+torny       2179  0.0  0.0   2888  1756 ?        S    Mar18   0:00 /bin/sh -c killall compton ; compton --config /home/torny/.config/compton/compton.conf
+torny       2182  0.1  0.0 179004 12852 ?        S    Mar18   4:26 i3bar --bar_id=bar-0 --socket=/run/user/1000/i3/ipc-socket.2088
+torny       2184  0.0  0.0  27420  6732 ?        S    Mar18   3:28 compton --config /home/torny/.config/compton/compton.conf
+torny       2193  0.0  0.0   2888  1756 ?        S    Mar18   0:00 /bin/sh -c i3status --config /home/torny/.config/i3/i3status.conf
+torny       2194  0.1  0.0  29244  6224 ?        S    Mar18   6:18 i3status --config /home/torny/.config/i3/i3status.conf
+torny       2198  0.0  0.0 309792  8492 ?        Ssl  Mar18   0:00 /usr/libexec/at-spi-bus-launcher
+torny       2203  0.0  0.0   9552  3776 ?        S    Mar18   0:00 /usr/bin/dbus-broker-launch --config-file=/usr/share/defaults/at-spi2/accessibility.conf --scope user
+torny       2204  0.0  0.0   4904  2624 ?        S    Mar18   0:00 dbus-broker --log 4 --controller 9 --machine-id 8120f6543d0759d6df715e0360c9f24a --max-bytes 100000000000000 --max-fds 6400000 --max-matches 5000000000
+torny       2213  0.0  0.0 162784  8256 ?        Ssl  Mar18   0:09 /usr/libexec/at-spi2-registryd --use-gnome-session
+torny       2220  0.0  0.2 645424 32704 ?        SNsl Mar18   0:01 /usr/libexec/tracker-miner-fs-3
+torny       2247  0.0  0.0 429316 11764 ?        Ssl  Mar18   0:00 /usr/bin/pop-system-updater
+torny       2266  0.0  0.0  19772  3516 ?        S    Mar18   0:00 /bin/bash
+torny       2312  2.1  0.9 1680868 159620 ?      S<l  Mar18  93:17 gnome-control-center
+torny       2324  0.0  0.0 486380 14828 ?        Ssl  Mar18   0:03 /usr/libexec/xdg-desktop-portal
+torny       2328  0.0  0.0 473008  7732 ?        Ssl  Mar18   0:00 /usr/libexec/xdg-document-portal
+root        2333  0.0  0.0   2792  1984 ?        Ss   Mar18   0:00 fusermount3 -o rw,nosuid,nodev,fsname=portal,auto_unmount,subtype=portal -- /run/user/1000/doc
+torny       2337  0.0  0.5 942288 92980 ?        Ssl  Mar18   0:02 /usr/libexec/xdg-desktop-portal-gnome
+torny       2354  0.0  0.1 354084 28268 ?        Ssl  Mar18   0:01 /usr/libexec/xdg-desktop-portal-gtk
+torny       2356  0.0  0.1 545964 17980 ?        Ssl  Mar18   0:05 /usr/bin/dunst
+torny       2384  0.0  0.0 250424  8404 ?        Ssl  Mar18   0:00 /usr/bin/gnome-keyring-daemon --start --foreground --components=secrets
+torny       2397  0.0  0.0 157224  6448 ?        Ssl  Mar18   0:00 /usr/libexec/dconf-service
+torny       2411  0.0  0.0 473224 11288 ?        Ssl  Mar18   0:00 /usr/libexec/gvfs-udisks2-volume-monitor
+torny       2416  0.0  0.0 247348  7156 ?        Ssl  Mar18   0:00 /usr/libexec/gvfs-gphoto2-volume-monitor
+torny       2420  0.0  0.0 246256  6796 ?        Ssl  Mar18   0:00 /usr/libexec/gvfs-mtp-volume-monitor
+torny       2424  0.0  0.0 246432  6816 ?        Ssl  Mar18   0:00 /usr/libexec/gvfs-goa-volume-monitor
+torny       2427  0.0  0.2 573988 40048 ?        Ssl  Mar18   0:00 /usr/libexec/goa-daemon
+torny       2433  0.0  0.0 348232 15520 ?        Ssl  Mar18   0:00 /usr/libexec/goa-identity-service
+torny       2439  0.0  0.0 324996  8244 ?        Ssl  Mar18   0:03 /usr/libexec/gvfs-afc-volume-monitor
+root        2898  0.0  0.0      0     0 ?        I<   Mar18   0:00 [tls-strp]
+torny       3418  0.0  0.0  19772  3552 ?        S    Mar18   0:00 /bin/bash
+torny       3421  3.8  7.0 13743920 1143472 ?    S<l  Mar18 166:43 firefox
+torny       3480  0.0  0.1 277804 25740 ?        S<   Mar18   0:08 /usr/lib/firefox/firefox-bin -contentproc -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {730cad84-b030-41f5-81a6-5eda13b10fde} 3421 true forkserver
+torny       3482  0.0  0.1 290584 29240 ?        S<l  Mar18   0:00 /usr/lib/firefox/firefox-bin -contentproc -parentBuildID 20240304104836 -prefsLen 37531 -prefMapSize 244362 -appDir /usr/lib/firefox/browser {1859bd43-b4a9-4d58-81a6-99e7be9dd228} 3421 true socket
+torny       3518  0.2  0.9 2662144 153236 ?      Sl   Mar18  11:57 /usr/lib/firefox/firefox-bin -contentproc -childID 1 -isForBrowser -prefsLen 37596 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {6f77b540-01b2-4fd8-b986-d1ddc1accfd5} 3421 true tab
+torny       3553  0.0  1.1 2578612 185312 ?      Sl   Mar18   0:09 /usr/lib/firefox/firefox-bin -contentproc -childID 2 -isForBrowser -prefsLen 27079 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {1a8f247a-a8a9-41b8-b543-8513a05e8783} 3421 true tab
+torny       3588  0.0  0.9 2603656 149128 ?      Sl   Mar18   4:11 /usr/lib/firefox/firefox-bin -contentproc -childID 3 -isForBrowser -prefsLen 42828 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {97cea3f5-84b0-4f7e-8cd4-da8c854bb12d} 3421 true tab
+torny       3642  0.0  0.2 433156 43712 ?        Sl   Mar18   0:32 /usr/lib/firefox/firefox-bin -contentproc -parentBuildID 20240304104836 -sandboxingKind 0 -prefsLen 42882 -prefMapSize 244362 -appDir /usr/lib/firefox/browser {cd8c3d32-572c-4bd0-8b46-94a31f1c6cff} 3421 true utility
+torny       3646  0.0  1.4 2711656 227812 ?      Sl   Mar18   1:10 /usr/lib/firefox/firefox-bin -contentproc -childID 4 -isForBrowser -prefsLen 32324 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {0640c1bd-ccae-498d-9f9d-09451f844ff3} 3421 true tab
+torny       3647  0.0  0.6 2444476 102876 ?      Sl   Mar18   0:03 /usr/lib/firefox/firefox-bin -contentproc -childID 5 -isForBrowser -prefsLen 32324 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {1a52dbb4-de7a-4c74-a03e-deff8a6743e4} 3421 true tab
+torny       3751  0.0  1.3 2612644 212008 ?      Sl   Mar18   0:08 /usr/lib/firefox/firefox-bin -contentproc -childID 6 -isForBrowser -prefsLen 32514 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {3645ef99-a733-4126-9375-3bfe89b2a3f3} 3421 true tab
+torny       3794  0.0  0.7 2506104 119820 ?      Sl   Mar18   1:03 /usr/lib/firefox/firefox-bin -contentproc -childID 7 -isForBrowser -prefsLen 32514 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {472c07c5-89e1-4d4e-9332-2b1e4fceed3b} 3421 true tab
+torny       3811  0.0  0.3 486848 49824 ?        Sl   Mar18   2:20 /usr/lib/firefox/firefox-bin -contentproc -parentBuildID 20240304104836 -prefsLen 43072 -prefMapSize 244362 -appDir /usr/lib/firefox/browser {c49e3193-461b-4155-87a7-79f0479332b5} 3421 true rdd
+torny       3837  0.0  0.7 2528688 122536 ?      Sl   Mar18   1:16 /usr/lib/firefox/firefox-bin -contentproc -childID 8 -isForBrowser -prefsLen 32514 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {ee971949-56ad-4c39-b228-f37c4b492ea5} 3421 true tab
+torny       3897  0.0  0.6 2487408 112088 ?      Sl   Mar18   0:55 /usr/lib/firefox/firefox-bin -contentproc -childID 9 -isForBrowser -prefsLen 32514 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {c4613c25-7d47-4605-83f9-4f74070fa963} 3421 true tab
+torny       3930  0.0  0.9 2497932 150924 ?      Sl   Mar18   0:10 /usr/lib/firefox/firefox-bin -contentproc -childID 10 -isForBrowser -prefsLen 32514 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {ee0d691f-4020-42c0-84aa-d6beb93ac0d5} 3421 true tab
+torny       3957  0.0  1.1 2535236 182076 ?      Sl   Mar18   0:13 /usr/lib/firefox/firefox-bin -contentproc -childID 11 -isForBrowser -prefsLen 32514 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {d99f2cf6-fb13-40db-9f0a-34e16f0a6de2} 3421 true tab
+torny       3989  0.0  0.7 2472852 114628 ?      Sl   Mar18   0:05 /usr/lib/firefox/firefox-bin -contentproc -childID 12 -isForBrowser -prefsLen 32514 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {cbfb941b-779f-46bf-9b3b-404548cfcc01} 3421 true tab
+torny       4033  0.0  0.6 2502248 113548 ?      Sl   Mar18   1:01 /usr/lib/firefox/firefox-bin -contentproc -childID 13 -isForBrowser -prefsLen 32514 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {00b43244-82f1-4da4-83aa-14c4ec7c9d5c} 3421 true tab
+torny       4038  0.0  0.7 2454756 117192 ?      Sl   Mar18   0:04 /usr/lib/firefox/firefox-bin -contentproc -childID 14 -isForBrowser -prefsLen 32514 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {c667c346-e304-438a-822f-96c9ea1c4286} 3421 true tab
+torny       4089  0.0  0.8 2492300 140524 ?      Sl   Mar18   0:34 /usr/lib/firefox/firefox-bin -contentproc -childID 15 -isForBrowser -prefsLen 32514 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {89891a78-81bc-4711-a3b0-97423d896b1d} 3421 true tab
+torny       4094  0.0  1.9 2826868 317148 ?      Sl   Mar18   0:16 /usr/lib/firefox/firefox-bin -contentproc -childID 16 -isForBrowser -prefsLen 32514 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {000471a2-eac6-4467-9b81-6b6799517605} 3421 true tab
+torny       4140  0.0  1.9 2811800 311284 ?      Sl   Mar18   0:18 /usr/lib/firefox/firefox-bin -contentproc -childID 17 -isForBrowser -prefsLen 32514 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {11648227-a1e1-4bae-a551-26368db52ce7} 3421 true tab
+torny       4172  0.0  1.9 2822236 310324 ?      Sl   Mar18   0:12 /usr/lib/firefox/firefox-bin -contentproc -childID 18 -isForBrowser -prefsLen 32514 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {ca9fb85a-75fc-4307-9bc5-51691caff1e2} 3421 true tab
+torny       4248  0.0  1.4 2855320 231276 ?      Sl   Mar18   3:41 /usr/lib/firefox/firefox-bin -contentproc -childID 19 -isForBrowser -prefsLen 32563 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {076cd41e-84e3-4a61-9956-89ba879e9c13} 3421 true tab
+torny       4373  0.0  0.0   2888  1748 ?        S    Mar18   0:00 /bin/sh -c i3-sensible-terminal
+torny       4374  0.0  0.1  45744 19588 ?        S    Mar18   0:00 /usr/bin/python3 /usr/bin/gnome-terminal --wait
+torny       4375  0.0  0.1 319108 29788 ?        Sl   Mar18   0:00 /usr/bin/gnome-terminal.real --wait
+torny       4378  0.1  0.3 567492 56944 ?        Ssl  Mar18   6:28 /usr/libexec/gnome-terminal-server
+torny       4398  0.0  0.0  21336  5624 pts/0    Ss   Mar18   0:00 bash
+torny       4405  0.0  0.0   2888  1752 ?        S    Mar18   0:00 /bin/sh -c i3-sensible-terminal
+torny       4406  0.0  0.1  45744 19548 ?        S    Mar18   0:00 /usr/bin/python3 /usr/bin/gnome-terminal --wait
+torny       4407  0.0  0.1 319108 29808 ?        Sl   Mar18   0:00 /usr/bin/gnome-terminal.real --wait
+torny       4411  0.0  0.0  21468  5768 pts/1    Ss+  Mar18   0:00 bash
+torny       4871  0.0  1.4 2583840 228672 ?      Sl   Mar18   4:03 /usr/lib/firefox/firefox-bin -contentproc -childID 22 -isForBrowser -prefsLen 32562 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {1b8e0ef5-435c-4f3f-b264-04f98742ec76} 3421 true tab
+torny       4995  0.3  3.3 3130620 542392 ?      Sl   Mar18  15:55 /usr/lib/firefox/firefox-bin -contentproc -childID 25 -isForBrowser -prefsLen 32562 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {7a5d3abb-0fc2-49fb-8770-7e5d267fb236} 3421 true tab
+torny       6278  0.4  1.3 2642908 219420 ?      Sl   Mar18  19:49 /usr/lib/firefox/firefox-bin -contentproc -childID 47 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {049a1998-ce50-43a9-ba08-8d3d510e8616} 3421 true tab
+torny      10208  0.0  0.7 2499828 117580 ?      Sl   Mar19   0:05 /usr/lib/firefox/firefox-bin -contentproc -childID 138 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {91869088-08da-496f-9f8e-0d4b1daeb415} 3421 true tab
+torny      10271  0.2  1.2 2617796 202328 ?      Sl   Mar19   8:08 /usr/lib/firefox/firefox-bin -contentproc -childID 140 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {e0885527-57d5-41b0-bcc8-cd993a17a433} 3421 true tab
+torny      10640  0.0  1.4 2730444 239680 ?      Sl   Mar19   2:52 /usr/lib/firefox/firefox-bin -contentproc -childID 151 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {d2a15ef1-45e3-4475-a4e5-40a54982adc9} 3421 true tab
+torny      10703  0.0  0.8 2487316 143856 ?      Sl   Mar19   0:07 /usr/lib/firefox/firefox-bin -contentproc -childID 153 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {8c1571b1-4280-4df1-9b7b-35dc79f251f3} 3421 true tab
+torny      10746  0.1  1.9 2755816 310132 ?      Sl   Mar19   3:40 /usr/lib/firefox/firefox-bin -contentproc -childID 154 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {634a744d-a807-4064-86c6-c54948433e57} 3421 true tab
+torny      10776  0.4  1.6 3125652 267840 ?      Sl   Mar19  13:25 /usr/lib/firefox/firefox-bin -contentproc -childID 155 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {84d1bbf1-d10d-42be-a7cb-b7a43520d578} 3421 true tab
+torny      10819  0.0  0.6 2441920 98816 ?       Sl   Mar19   0:03 /usr/lib/firefox/firefox-bin -contentproc -childID 156 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {18dc5b8e-6a0f-408d-8844-e3cf7b572bae} 3421 true tab
+torny      10849  1.4  2.6 2758072 425320 ?      Sl   Mar19  44:14 /usr/lib/firefox/firefox-bin -contentproc -childID 157 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {4cbe6973-4740-4ba6-8d3d-d56f68942fea} 3421 true tab
+torny      10902  0.0  0.0 127676  7976 ?        Ssl  Mar19   0:00 /usr/bin/speech-dispatcher -s -t 0
+torny      10916  0.0  0.0      0     0 ?        ZN   Mar19   0:00 [sd_espeak-ng-mb] <defunct>
+torny      10921  0.0  0.0 115428  9292 ?        SNl  Mar19   0:00 /usr/lib/speech-dispatcher-modules/sd_espeak-ng /etc/speech-dispatcher/modules/espeak-ng.conf
+torny      10959  0.0  0.0 161516  6032 ?        S<l  Mar19   0:14 /usr/lib/speech-dispatcher-modules/sd_dummy /etc/speech-dispatcher/modules/dummy.conf
+torny      15491  0.0  1.0 2564792 174328 ?      Sl   Mar19   0:24 /usr/lib/firefox/firefox-bin -contentproc -childID 296 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {87e11b59-65cd-49ba-957b-61e8ce0c8dee} 3421 true tab
+torny      15558  0.0  0.9 2513540 146824 ?      Sl   Mar19   0:09 /usr/lib/firefox/firefox-bin -contentproc -childID 298 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {c8bc8f62-e676-479b-85bb-bd6cd66c352e} 3421 true tab
+torny      17548  0.0  0.7 2451904 123552 ?      Sl   Mar19   0:09 /usr/lib/firefox/firefox-bin -contentproc -childID 359 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {048d0871-bae6-432b-950d-9dc3f3dcda64} 3421 true tab
+torny      17664  0.0  0.8 2618368 141376 ?      Sl   Mar19   0:13 /usr/lib/firefox/firefox-bin -contentproc -childID 361 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {4af27179-07be-4f5b-af0c-e41f531a496c} 3421 true tab
+torny      21023  0.7  3.5 3407444 585276 ?      SNl  Mar19  20:34 /usr/lib/firefox/firefox-bin -contentproc -childID 416 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {ee03d891-f234-488b-a521-8c7a3d75ac2d} 3421 true tab
+torny      22647  0.1  1.7 2925156 284188 ?      SNl  Mar19   3:14 /usr/lib/firefox/firefox-bin -contentproc -childID 435 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {415b897a-2980-4965-b45d-89db4679ab5c} 3421 true tab
+torny      22847  0.0  0.0 324512  9264 ?        Sl   Mar19   0:00 /usr/libexec/gvfsd-trash --spawner :1.6 /org/gtk/gvfs/exec_spaw/0
+torny      22867  0.0  0.0 398528  9556 ?        Sl   Mar19   0:00 /usr/libexec/gvfsd-network --spawner :1.6 /org/gtk/gvfs/exec_spaw/1
+torny      22888  0.0  0.0 326656  9424 ?        Sl   Mar19   0:00 /usr/libexec/gvfsd-dnssd --spawner :1.6 /org/gtk/gvfs/exec_spaw/3
+torny      22958  0.0  0.0 173900  7440 ?        Ssl  Mar19   0:00 /usr/libexec/gvfsd-metadata
+torny      25822  0.0  0.7 2454912 117012 ?      SNl  Mar19   0:06 /usr/lib/firefox/firefox-bin -contentproc -childID 516 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {578a3a26-2dbb-4b80-b603-c0dfc9b2b45f} 3421 true tab
+torny      25959  0.0  0.6 2441340 110312 ?      SNl  Mar19   0:27 /usr/lib/firefox/firefox-bin -contentproc -childID 519 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {8af1ec1f-7094-46e3-bcf5-b94fb4b04488} 3421 true tab
+torny      26107  0.0  0.0   2888  1756 ?        S    Mar19   0:00 /bin/sh -c i3-sensible-terminal
+torny      26108  0.0  0.1  45744 19472 ?        S    Mar19   0:00 /usr/bin/python3 /usr/bin/gnome-terminal --wait
+torny      26109  0.0  0.1 319116 29712 ?        Sl   Mar19   0:00 /usr/bin/gnome-terminal.real --wait
+torny      26113  0.0  0.0  21204  5572 pts/2    Ss+  Mar19   0:00 bash
+torny      26127  0.0  0.8 2488164 142068 ?      SNl  Mar19   0:21 /usr/lib/firefox/firefox-bin -contentproc -childID 524 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {19e7f5d8-c452-47cc-911f-f4faf1e2ebdb} 3421 true tab
+torny      26362  0.0  0.0  26748  8368 pts/0    Tl   Mar19   0:08 nvim
+torny      26365  0.0  0.6 125196 104572 ?       Ssl  Mar19   1:32 nvim --embed
+torny      26378  0.0  0.0  21208  5460 pts/3    Ss   Mar19   0:00 /bin/bash
+torny      26509  0.0  1.0 2768844 169700 ?      SNl  Mar19   2:22 /usr/lib/firefox/firefox-bin -contentproc -childID 531 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {13f8017a-2cd1-4ac9-b015-35a2693e576e} 3421 true tab
+torny      26548  0.1  2.3 2921324 376816 ?      SNl  Mar19   3:47 /usr/lib/firefox/firefox-bin -contentproc -childID 532 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {16baf0a4-967d-478a-8909-bf32ef55421e} 3421 true tab
+torny      27462  0.0  0.6 2495280 110060 ?      SNl  Mar19   1:02 /usr/lib/firefox/firefox-bin -contentproc -childID 556 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {7ce8edbb-ed8c-4714-8930-d802b26f84b0} 3421 true tab
+torny      27494  0.0  0.8 2519108 135968 ?      SNl  Mar19   1:16 /usr/lib/firefox/firefox-bin -contentproc -childID 557 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {9b42c5d7-7592-4739-8111-d930d3ce1e15} 3421 true tab
+torny      27595  0.0  0.9 2541980 159512 ?      SNl  Mar19   1:21 /usr/lib/firefox/firefox-bin -contentproc -childID 559 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {77c7466f-add5-4afd-b82d-fb173fe9d9e0} 3421 true tab
+torny      27618  0.0  0.6 2491760 108716 ?      SNl  Mar19   0:53 /usr/lib/firefox/firefox-bin -contentproc -childID 560 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {6b11a7fc-80a7-46ff-99b6-74fafb687ad2} 3421 true tab
+torny      27931  0.0  0.8 2510800 139136 ?      SNl  Mar19   1:15 /usr/lib/firefox/firefox-bin -contentproc -childID 570 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {e274d7b6-2b86-45f5-b510-598820fd3258} 3421 true tab
+torny      28091  0.0  1.0 2558116 170640 ?      SNl  Mar19   1:10 /usr/lib/firefox/firefox-bin -contentproc -childID 574 -isForBrowser -prefsLen 32561 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {15b1ffb6-da24-412b-be03-37d58f9b6341} 3421 true tab
+torny      29966  0.0  0.5 2433140 89088 ?       SNl  Mar19   0:01 /usr/lib/firefox/firefox-bin -contentproc -childID 623 -isForBrowser -prefsLen 32563 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {21fe439a-3cdf-4547-b19d-79d5d6f542ef} 3421 true tab
+torny      30224  0.0  1.3 2608972 213560 ?      SNl  Mar19   0:49 /usr/lib/firefox/firefox-bin -contentproc -childID 629 -isForBrowser -prefsLen 32605 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {20edc13b-e186-4d70-b678-28eeab657760} 3421 true tab
+torny      30826  0.0  0.8 2484120 139108 ?      SNl  Mar19   0:05 /usr/lib/firefox/firefox-bin -contentproc -childID 646 -isForBrowser -prefsLen 32605 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {0d362ba7-456e-4d1a-9337-bbecc5bf74aa} 3421 true tab
+torny      30855  0.0  0.6 2452244 112612 ?      SNl  Mar19   0:31 /usr/lib/firefox/firefox-bin -contentproc -childID 647 -isForBrowser -prefsLen 32605 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {e6132c60-b1e1-4473-8ee5-e63e9bb6c4dc} 3421 true tab
+torny      30891  0.0  0.6 2466792 108812 ?      SNl  Mar19   0:03 /usr/lib/firefox/firefox-bin -contentproc -childID 648 -isForBrowser -prefsLen 32605 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {520f8301-d191-472b-8676-3f76b099f191} 3421 true tab
+torny      30981  0.0  1.0 2524572 170624 ?      SNl  Mar19   0:10 /usr/lib/firefox/firefox-bin -contentproc -childID 650 -isForBrowser -prefsLen 32605 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {5cdc5fe2-f9d5-429f-89f0-77cc2e752931} 3421 true tab
+torny      31184  0.0  0.9 2507776 157496 ?      SNl  Mar19   0:16 /usr/lib/firefox/firefox-bin -contentproc -childID 655 -isForBrowser -prefsLen 32605 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {491a54e8-e528-49ad-b382-e5934584bd33} 3421 true tab
+torny      31215  0.0  0.7 2471344 119156 ?      SNl  Mar19   0:04 /usr/lib/firefox/firefox-bin -contentproc -childID 656 -isForBrowser -prefsLen 32605 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {21773864-0295-4ca8-af16-e3ef56687a41} 3421 true tab
+torny      32867  0.0  1.1 2543780 184248 ?      SNl  Mar19   0:12 /usr/lib/firefox/firefox-bin -contentproc -childID 701 -isForBrowser -prefsLen 32603 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {665620f4-af2f-4ba0-b35d-9f928f055354} 3421 true tab
+torny      34168  0.2  1.2 6914616 202820 ?      SNl  Mar19   6:43 /usr/lib/firefox/firefox-bin -contentproc -childID 738 -isForBrowser -prefsLen 32603 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {392f9d68-5d64-4e6a-9d4a-627e38cc3640} 3421 true tab
+torny      36392  0.0  1.4 2613732 234164 ?      SNl  Mar19   0:57 /usr/lib/firefox/firefox-bin -contentproc -childID 799 -isForBrowser -prefsLen 32603 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {35b23cf5-cdaa-45fc-b904-871214f9f303} 3421 true tab
+torny      36455  0.0  0.6 2464688 111552 ?      SNl  Mar19   0:03 /usr/lib/firefox/firefox-bin -contentproc -childID 801 -isForBrowser -prefsLen 32603 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {f6033b1b-68f5-4765-b98c-f172e1a60f6f} 3421 true tab
+torny      36505  0.0  0.9 2495772 149852 ?      SNl  Mar19   0:05 /usr/lib/firefox/firefox-bin -contentproc -childID 802 -isForBrowser -prefsLen 32603 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {09e7e64b-bb64-40b6-8674-058f9ad0f459} 3421 true tab
+torny      37939  0.0  1.1 2567176 185304 ?      SNl  Mar19   0:18 /usr/lib/firefox/firefox-bin -contentproc -childID 812 -isForBrowser -prefsLen 32603 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {03e57314-1dde-4d39-83f5-72e0bb6a61bc} 3421 true tab
+root       41233  0.0  0.0      0     0 ?        I<   Mar19   0:00 [kworker/0:1H-events_highpri]
+torny      42448  0.0  0.0  20716  4112 pts/3    S+   Mar20   0:00 tmux
+torny      42450  0.0  0.0  26464  8928 ?        Ss   Mar20   0:07 tmux
+torny      42451  0.0  0.0  21364  5876 pts/4    Ss+  Mar20   0:00 -bash
+torny      46065  0.3  1.2 2975232 208472 ?      SNl  Mar20   6:26 /usr/lib/firefox/firefox-bin -contentproc -childID 973 -isForBrowser -prefsLen 32603 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {00c8296f-247a-4861-badf-421afa8000c6} 3421 true tab
+torny      46370  0.0  0.6 2496664 109392 ?      SNl  Mar20   1:01 /usr/lib/firefox/firefox-bin -contentproc -childID 977 -isForBrowser -prefsLen 32603 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {cfe2304c-b14b-4048-ab37-8af022130dcd} 3421 true tab
+torny      46374  0.0  0.8 2700624 144500 ?      SNl  Mar20   1:19 /usr/lib/firefox/firefox-bin -contentproc -childID 978 -isForBrowser -prefsLen 32603 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {1ebea4e9-fddd-4e1e-ac60-175a861be7d8} 3421 true tab
+torny      46962  0.0  0.0  21364  5784 pts/5    Ss+  Mar20   0:00 -bash
+torny      48021  0.0  0.8 2496384 144820 ?      SNl  Mar20   1:21 /usr/lib/firefox/firefox-bin -contentproc -childID 1006 -isForBrowser -prefsLen 32603 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {f0932f9e-0b11-482d-9b35-df08163ad384} 3421 true tab
+torny      48676  0.0  1.1 2591456 182664 ?      SNl  Mar20   0:41 /usr/lib/firefox/firefox-bin -contentproc -childID 1015 -isForBrowser -prefsLen 33816 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {53363831-634c-477e-8b5e-34c48ea74d12} 3421 true tab
+torny      48752  0.0  0.5 2431636 91000 ?       SNl  Mar20   0:02 /usr/lib/firefox/firefox-bin -contentproc -childID 1016 -isForBrowser -prefsLen 33989 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {79f2d11e-78bf-482d-9d4a-cdf451cdf793} 3421 true tab
+torny      54907  0.2  1.4 2910144 239260 ?      SNl  Mar20   3:18 /usr/lib/firefox/firefox-bin -contentproc -childID 1148 -isForBrowser -prefsLen 33990 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {6581b38d-e3b6-4846-bb23-8dbdba6d5fb7} 3421 true tab
+torny      56902  0.1  1.6 2850452 271076 ?      SNl  Mar20   2:18 /usr/lib/firefox/firefox-bin -contentproc -childID 1179 -isForBrowser -prefsLen 34039 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {edd19d31-0610-43bc-a083-9f609c6a419e} 3421 true tab
+torny      57010  0.0  0.6 2443956 98820 ?       SNl  Mar20   0:02 /usr/lib/firefox/firefox-bin -contentproc -childID 1182 -isForBrowser -prefsLen 34039 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {09991c19-3e1f-4808-a58c-45f667cbfc76} 3421 true tab
+torny      57095  0.0  0.6 2464352 102396 ?      SNl  Mar20   0:02 /usr/lib/firefox/firefox-bin -contentproc -childID 1183 -isForBrowser -prefsLen 34039 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {8befb138-7f70-4ba5-aa35-8c54522dbca8} 3421 true tab
+root       57387  0.0  0.0      0     0 ?        I<   Mar20   0:01 [kworker/u9:1-rb_allocator]
+torny      57520  0.0  0.0  21208  5324 pts/6    Ss+  Mar20   0:00 /bin/bash
+torny      59268  0.0  1.1 2547668 182572 ?      S<l  Mar20   0:09 /usr/lib/firefox/firefox-bin -contentproc -childID 1240 -isForBrowser -prefsLen 34038 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {d207fd6b-1d50-458d-9070-f4669130105d} 3421 true tab
+torny      59580  0.0  0.8 2519772 134308 ?      S<l  Mar20   0:06 /usr/lib/firefox/firefox-bin -contentproc -childID 1247 -isForBrowser -prefsLen 34038 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {f2df5cd4-5054-48ec-b9b8-ffaf708f7a03} 3421 true tab
+torny      61659  0.0  1.0 2517768 166184 ?      S<l  Mar20   0:04 /usr/lib/firefox/firefox-bin -contentproc -childID 1282 -isForBrowser -prefsLen 34038 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {4bfb738d-0693-4712-a130-e6db2443e8b3} 3421 true tab
+torny      61909  0.0  0.9 6780236 148944 ?      S<l  Mar20   0:38 /usr/lib/firefox/firefox-bin -contentproc -childID 1289 -isForBrowser -prefsLen 34038 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {00b2694e-c6cf-4c60-bdc8-3932b4a79e35} 3421 true tab
+torny      65650  0.0  0.0   2888  1760 ?        S    Mar20   0:00 /bin/sh -c i3-sensible-terminal
+torny      65651  0.0  0.1  45744 19496 ?        S    Mar20   0:00 /usr/bin/python3 /usr/bin/gnome-terminal --wait
+torny      65652  0.0  0.1 319108 29744 ?        Sl   Mar20   0:00 /usr/bin/gnome-terminal.real --wait
+torny      65656  0.0  0.0  21204  5508 pts/7    Ss+  Mar20   0:00 bash
+root       66883  0.0  0.0      0     0 ?        D    Mar20   0:01 [kworker/u8:1+events_unbound]
+torny      67093  0.0  0.0  21208  5348 pts/8    Ss   Mar20   0:00 /bin/bash
+torny      67099  0.0  0.0  20716  4096 pts/8    S+   Mar20   0:00 tmux
+torny      67100  0.0  0.0  21364  5768 pts/9    Ss+  Mar20   0:00 -bash
+root       67530  0.0  0.0  82708 14120 ?        Ss   00:00   0:00 /usr/sbin/cupsd -l
+root       67532  0.0  0.0 172648 11568 ?        Ssl  00:00   0:00 /usr/sbin/cups-browsed
+root       67784  0.0  0.0      0     0 ?        I<   00:08   0:00 [kworker/u9:0-hci0]
+root       67838  0.0  0.0      0     0 ?        S    13:22   0:00 [irq/128-mei_me]
+root       67884  0.0  0.0      0     0 ?        I<   13:22   0:00 [kworker/0:2H]
+root       67896  0.0  0.0      0     0 ?        S    13:22   0:00 [nvidia]
+root       68696  0.0  0.0      0     0 ?        D    13:27   0:00 [kworker/u8:0+events_unbound]
+torny      68866  0.0  0.8 2525928 139980 ?      S<l  13:29   0:09 /usr/lib/firefox/firefox-bin -contentproc -childID 1450 -isForBrowser -prefsLen 34038 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {70cc7904-80ba-472f-8cba-2737216e49af} 3421 true tab
+torny      69613  0.0  0.0  21232  5504 pts/10   Ss+  13:35   0:00 -bash
+root       70378  0.0  0.0      0     0 ?        D    13:44   0:00 [kworker/u8:3+events_unbound]
+root       70903  0.0  0.0      0     0 ?        D    13:54   0:00 [kworker/u8:2+events_unbound]
+torny      70966  0.0  0.0  26784  8320 pts/0    Sl+  13:54   0:02 nvim
+torny      70969  0.3  0.3  76196 58740 ?        Ssl  13:54   0:26 nvim --embed
+torny      70980  0.0  0.0  21208  5120 pts/11   Ss   13:55   0:00 /bin/bash
+torny      71390  0.0  0.9 2632176 155432 ?      S<l  14:04   0:03 /usr/lib/firefox/firefox-bin -contentproc -childID 1498 -isForBrowser -prefsLen 34174 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {c52c7cd1-167a-42db-8df1-1cabbd5560b9} 3421 true tab
+torny      71421  0.0  0.6 2445092 101000 ?      S<l  14:05   0:03 /usr/lib/firefox/firefox-bin -contentproc -childID 1499 -isForBrowser -prefsLen 34174 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {0a7a00f1-2dae-421e-9449-5e5ffeb5b705} 3421 true tab
+torny      71908  0.0  0.0  21208  5376 pts/12   Ss+  14:16   0:00 /bin/bash
+torny      72219  0.1  0.8 2490716 133740 ?      S<l  14:20   0:07 /usr/lib/firefox/firefox-bin -contentproc -childID 1518 -isForBrowser -prefsLen 34174 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {6ec6bed8-5ab6-41e9-adab-fd3588ee0b02} 3421 true tab
+torny      72283  0.0  0.9 2536324 161924 ?      S<l  14:20   0:03 /usr/lib/firefox/firefox-bin -contentproc -childID 1520 -isForBrowser -prefsLen 34174 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {b07ae22d-2205-4e30-b8c2-8045de0b7d88} 3421 true tab
+root       74142  0.0  0.0      0     0 ?        I    14:39   0:01 [kworker/u8:6-events_unbound]
+root       76917  0.0  0.0      0     0 ?        I    15:37   0:00 [kworker/u8:7-events_unbound]
+torny      77026  0.1  0.6 2450972 106412 ?      S<l  15:38   0:01 /usr/lib/firefox/firefox-bin -contentproc -childID 1640 -isForBrowser -prefsLen 34174 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {853c561a-48ea-40e2-9a88-3f0d716b0b69} 3421 true tab
+torny      77179  0.5  0.7 2489472 128848 ?      S<l  15:39   0:09 /usr/lib/firefox/firefox-bin -contentproc -childID 1643 -isForBrowser -prefsLen 34174 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {7e08cd00-9bac-4338-8520-00f0d6172a24} 3421 true tab
+root       77576  0.0  0.0      0     0 ?        I    15:47   0:00 [kworker/2:1-events]
+root       77606  0.0  0.0      0     0 ?        I    15:48   0:00 [kworker/1:1-inet_frag_wq]
+root       77671  0.3  0.0      0     0 ?        I    15:50   0:03 [kworker/0:1-events]
+root       77701  0.0  0.0      0     0 ?        I    15:51   0:00 [kworker/3:0-inet_frag_wq]
+root       77831  0.0  0.0      0     0 ?        I    15:54   0:00 [kworker/1:2-events]
+torny      77832  0.0  0.0  20716  3968 pts/11   S+   15:54   0:00 tmux a -t 1
+root       77833  0.0  0.0      0     0 ?        I    15:54   0:00 [kworker/u8:4-phy0]
+root       77919  0.0  0.0      0     0 ?        I    15:56   0:00 [kworker/3:1-events]
+root       77985  0.0  0.0      0     0 ?        I    15:57   0:00 [kworker/2:0-events]
+root       78519  0.0  0.0      0     0 ?        I    16:00   0:00 [kworker/u8:5-events_unbound]
+root       78523  0.6  0.0      0     0 ?        I    16:00   0:02 [kworker/0:0-events]
+root       78526  0.5  0.6 476628 106920 ?       Ssl  16:00   0:02 /usr/libexec/fwupd/fwupd
+torny      78621  0.0  0.0  21232  5504 pts/14   Ss   16:02   0:00 -bash
+root       79093  0.0  0.0      0     0 ?        I    16:02   0:00 [kworker/u8:8]
+root       79129  0.0  0.0      0     0 ?        I    16:03   0:00 [kworker/2:2-events]
+root       79130  0.0  0.0      0     0 ?        I    16:03   0:00 [kworker/1:0-events]
+torny      79139  0.0  0.3 2433848 64836 ?       S<l  16:03   0:00 /usr/lib/firefox/firefox-bin -contentproc -childID 1674 -isForBrowser -prefsLen 34174 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {873a948a-6f57-4f5d-98dd-5d4adc02b2b3} 3421 true tab
+root       79157  0.0  0.0      0     0 ?        I    16:04   0:00 [kworker/3:2-events]
+torny      79178  0.0  0.2 2412188 43332 ?       S<l  16:05   0:00 /usr/lib/firefox/firefox-bin -contentproc -childID 1675 -isForBrowser -prefsLen 34174 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {c57a63fa-d800-4c7b-96c5-01f409f013f0} 3421 true tab
+torny      79214  0.0  0.2 2412188 43332 ?       S<l  16:06   0:00 /usr/lib/firefox/firefox-bin -contentproc -childID 1676 -isForBrowser -prefsLen 34174 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {070fdfb4-fca4-4edc-b6e2-10883d25cb12} 3421 true tab
+torny      79232  0.0  0.0   5280  1552 pts/14   S    16:06   0:00 xclip -sel c
+torny      79257  0.4  0.2 2412204 43076 ?       S<l  16:07   0:00 /usr/lib/firefox/firefox-bin -contentproc -childID 1677 -isForBrowser -prefsLen 34174 -prefMapSize 244362 -jsInitLen 235124 -parentBuildID 20240304104836 -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appDir /usr/lib/firefox/browser {f63c775b-e54e-485e-89f3-8cca6ff82293} 3421 true tab
+torny      79273  0.0  0.0  22504  3328 pts/14   R+   16:07   0:00 ps aux

@@ -50,11 +50,11 @@ kazdy instance tridy shape ma vlastnost "propperties", ktera vrati seznam s vlas
 ;;;
 
 (defmethod mouse-double-click ((s shape) button position)
-  (send-event s 'ev-mouse-double-click s button position)
-  (print "doublke clicks"))
+	(send-event s 'ev-mouse-double-click s button position)
+	(print "doublke clicks"))
 
 (defmethod properties ((s shape))
-  (list (list 'color t  t) (list 'thickness t t) (list 'filledp t  t) (list 'move nil t 'move) (list 'rotate nil t 'rotate) (list 'scale nil t 'scale) (list 'solidp t nil)))
+  (list (list 'color t  t) (list 'thickness t t) (list 'filledp t  t) (list 'solidp t nil)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -240,7 +240,19 @@ kazdy instance tridy shape ma vlastnost "propperties", ktera vrati seznam s vlas
 (defmethod inspected-window ((w inspector-window))
   (slot-value w 'inspected-window))
 
+(defmethod remove-delegate-inspected-window ((w inspector-window))
+  (when (inspected-window w)
+    (set-delegate (inspected-window w) nil)))
+
+(defmethod check-window ((w inspector-window) value)
+  (unless (or (not value)
+              (typep value 'abstract-window))
+    (error "Value must be abstract-window or nil")))
+
+
 (defmethod set-inspected-window ((w inspector-window) value)
+  (check-window w value)
+  (remove-delegate-inspected-window w)
   (send-with-change w 'do-set-inspected-window value)
   (when value
     (set-delegate value w)
@@ -263,7 +275,7 @@ kazdy instance tridy shape ma vlastnost "propperties", ktera vrati seznam s vlas
   (add-property (property-box w) (type-of object) nil nil)
   (dolist (property (properties object))
     (let ((mgs (if (> (length property) 3) (fourth property) (setter-name (first property))))
-          (name (format nil "~s: ~s" (first property) (if (second property) (funcall (car property) object) " ")))
+          (name (format nil "~a: ~a" (first property) (if (second property) (funcall (car property) object) " ")))
           (setp (third property)))
       (add-property (property-box w) name  mgs setp))))
 
@@ -282,6 +294,12 @@ kazdy instance tridy shape ma vlastnost "propperties", ktera vrati seznam s vlas
 (defmethod ev-set-property ((w inspector-window) sender origin msg args)
   (apply msg (slot-value w 'inspected-object)  args)
   (send-with-change w 'update-info (slot-value w 'inspected-object)))
+
+(defmethod ev-change ((w inspector-window) sender origin message &rest msg-args)
+  (when (eql sender (inspected-window w))
+    (send-with-change w 'update-info (slot-value w 'inspected-object)))
+  (call-next-method))
+	
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -302,6 +320,7 @@ kazdy instance tridy shape ma vlastnost "propperties", ktera vrati seznam s vlas
   (call-next-method)
   (send-event w 'ev-mouse-down-on-object shape)
   w) 
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

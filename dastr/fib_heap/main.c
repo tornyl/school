@@ -219,61 +219,61 @@ int main(){
 	Heap heap;
 	heap.min = NULL;
 	heap.n = 0;
-	//insert(&heap, 51);
-	//print_roots(&heap);
-	//insert(&heap, 7);
-	//insert(&heap, 14);
-	//insert(&heap, 5);
-	//insert(&heap, 1);
-	//insert(&heap, 7);
-	//insert(&heap,12);
-	//insert(&heap, 9);
-	//insert(&heap, 8);
-	//print_roots(&heap);
-
-
-	//printf("extracted min: %d\n", extract_min(&heap));
-	//print_roots(&heap);
-	//printf("test: %d\n", heap.min->right->child->left->key);
-	//printf("extracted min: %d\n", extract_min(&heap));
-	//print_roots(&heap);
-	//printf("extracted min: %d\n", extract_min(&heap));
-	//print_roots(&heap);
-	//printf("extracted min: %d\n", extract_min(&heap));
-	//print_roots(&heap);
-	//printf("extracted min: %d\n", extract_min(&heap));
-	//printf("extracted min: %d\n", extract_min(&heap));
-	//printf("extracted min: %d\n", extract_min(&heap));
-	//printf("extracted min: %d\n", extract_min(&heap));
-	//printf("extracted min: %d\n", extract_min(&heap));
-
-	int arr[1000];
-	int i = 0;
-	while(arr[i]){
-		arr[i] = 0;
-		i++;
-	}
-
-	clock_t start = clock();
-	for(int i = 0; i < num_insert_operation; i++){
-		int num = random_int(0,999);
-		if(arr[num] == 0){
-			//insert(&heap, num);
-			arr[num] = 1;
-		}
-		insert(&heap, random_int(0,10000));
-	}
-	printf("|||||||||||||||||||| n: %d\n",heap.n); 
+	insert(&heap, 51);
 	print_roots(&heap);
-	for(int i = 0; i < num_extract_operation; i++){
-	    extract_min(&heap);
-		 //print_roots(&heap);
-	}
+	insert(&heap, 7);
+	insert(&heap, 14);
+	insert(&heap, 5);
+	insert(&heap, 1);
+	insert(&heap, 7);
+	insert(&heap,12);
+	insert(&heap, 9);
+	insert(&heap, 8);
 	print_roots(&heap);
 
-   clock_t end = clock();
-   float seconds = (float)(end - start) / CLOCKS_PER_SEC;
-   printf("Insert operations: %d\nExtract operations: %d\nTime needed: %f\n", num_insert_operation, num_extract_operation, seconds);
+
+	printf("extracted min: %d\n", extract_min(&heap));
+	print_roots(&heap);
+	printf("test: %d\n", heap.min->right->child->left->key);
+	printf("extracted min: %d\n", extract_min(&heap));
+	print_roots(&heap);
+	printf("extracted min: %d\n", extract_min(&heap));
+	print_roots(&heap);
+	printf("extracted min: %d\n", extract_min(&heap));
+	print_roots(&heap);
+	printf("extracted min: %d\n", extract_min(&heap));
+	printf("extracted min: %d\n", extract_min(&heap));
+	printf("extracted min: %d\n", extract_min(&heap));
+	printf("extracted min: %d\n", extract_min(&heap));
+	printf("extracted min: %d\n", extract_min(&heap));
+
+	//int arr[1000];
+	//int i = 0;
+	//while(arr[i]){
+	//	arr[i] = 0;
+	//	i++;
+	//}
+
+	//clock_t start = clock();
+	//for(int i = 0; i < num_insert_operation; i++){
+	//	int num = random_int(0,999);
+	//	if(arr[num] == 0){
+	//		//insert(&heap, num);
+	//		arr[num] = 1;
+	//	}
+	//	insert(&heap, random_int(0,10000));
+	//}
+	//printf("|||||||||||||||||||| n: %d\n",heap.n); 
+	//print_roots(&heap);
+	//for(int i = 0; i < num_extract_operation; i++){
+	//    extract_min(&heap);
+	//	 //print_roots(&heap);
+	//}
+	//print_roots(&heap);
+
+   //clock_t end = clock();
+   //float seconds = (float)(end - start) / CLOCKS_PER_SEC;
+   //printf("Insert operations: %d\nExtract operations: %d\nTime needed: %f\n", num_insert_operation, num_extract_operation, seconds);
 
 
 	return 0;

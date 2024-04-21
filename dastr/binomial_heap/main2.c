@@ -208,7 +208,7 @@ int main(){
 	    binomial_heap_insert(&bh, random_int(0, 100));
 	}
 	for(int i = 0; i < num_extract_operation; i++){
-	    binomial_heap_extract_min(&bh);
+	    //binomial_heap_extract_min(&bh);
 	}
 
     clock_t end = clock();
